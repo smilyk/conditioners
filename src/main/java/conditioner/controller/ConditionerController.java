@@ -32,6 +32,4 @@ public class ConditionerController {
     public List<ConditionerDto> getAllConditioners(){
         return conditionerService.getAllConditioners();
     }
-
-
 }
