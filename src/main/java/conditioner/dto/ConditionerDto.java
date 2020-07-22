@@ -1,0 +1,40 @@
+package conditioner.dto;
+
+
+import conditioner.model.TypeMaintenanceEntity;
+import lombok.*;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@ToString
+public class ConditionerDto {
+
+    private String uuidConditioner;
+    @NotNull(message = "field nameConditioner id required")
+    private String nameConditioner;
+    @NotNull(message = "field inventoryNumber id required")
+    private String inventoryNumber;
+    @NotNull(message = "field place id required")
+    private String place;
+    private Date startDate;
+    private List<TypeMaintenanceEntity> maintenance = new ArrayList<>();
+    /**
+     * сколько часов кондиуионер должен отработать до того, как необходимо
+     * провести ТО
+     *
+     * в случае остановки кондиционера, сохраняется количество часов,
+     * которые он успел отработать с момента последнего ТО
+     */
+    @NotNull(message = "field workedHours id required")
+    private Integer workedHours;
+
+}
