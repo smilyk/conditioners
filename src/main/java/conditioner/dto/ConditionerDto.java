@@ -36,5 +36,6 @@ public class ConditionerDto {
      */
     @NotNull(message = "field workedHours id required")
     private Integer workedHours;
+    private Boolean deleted;
 
 }

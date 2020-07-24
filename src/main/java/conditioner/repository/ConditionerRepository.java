@@ -10,4 +10,6 @@ public interface ConditionerRepository extends JpaRepository<ConditionerEntity, 
     Optional<ConditionerEntity> findByInventoryNumber(String inventoryNumber);
 
     Optional<ConditionerEntity>findByUuidConditioner(String conditionerUuid);
+
+    Optional<ConditionerEntity> findByUuidConditionerAndDeleted(String conditionerUuid, boolean deleted);
 }

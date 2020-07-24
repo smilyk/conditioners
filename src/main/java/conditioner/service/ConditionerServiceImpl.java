@@ -10,10 +10,8 @@ import conditioner.utils.Utils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,6 +32,7 @@ public class ConditionerServiceImpl {
     public ConditionerDto createConditioner(ConditionerDto conditionerDto)  {
         ConditionerEntity conditioner = conditionerDtoToEntity(conditionerDto);
         conditioner.setStart(false);
+        conditioner.setDeleted(false);
         conditioner.setUuidConditioner(utils.createRandomUuid());
         String conditionerUuid = conditionerRepository.save(conditioner).getUuidConditioner();
         conditionerDto.setUuidConditioner(conditionerUuid);
@@ -47,7 +46,7 @@ public class ConditionerServiceImpl {
     }
 
     public ConditionerDto getConditionerById(String conditionerUuid) {
-        Optional<ConditionerEntity> optionalConditionerEntity = conditionerRepository.findByUuidConditioner(conditionerUuid);
+        Optional<ConditionerEntity> optionalConditionerEntity = conditionerRepository.findByUuidConditionerAndDeleted(conditionerUuid, false);
         if(!optionalConditionerEntity.isPresent()){
             LOGGER.error(Messages.CONDITIONER + Messages.WITH_ID + conditionerUuid + Messages.NOT_FOUND);
             throw new ConditionerException(Messages.CONDITIONER + Messages.WITH_ID + conditionerUuid + Messages.NOT_FOUND);
@@ -84,8 +83,9 @@ public class ConditionerServiceImpl {
             throw new ConditionerException(Messages.CONDITIONER + Messages.WITH_ID + conditionerUuid + Messages.NOT_FOUND);
         }
         ConditionerEntity conditioner = optionalConditionerEntity.get();
+        conditioner.setDeleted(true);
+        conditionerRepository.save(conditioner);
         ConditionerDto conditionerDto = conditionerToDto(conditioner);
-        conditionerRepository.delete(conditioner);
         try {
             LOGGER.info("Conditioner deleted {}", mapper.writeValueAsString(conditioner));
         }catch (Exception e){

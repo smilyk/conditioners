@@ -50,6 +50,7 @@ public class ConditionerEntity extends BaseEntity implements Serializable  {
      * которые он успел отработать с момента последнего ТО
    */
     private Integer workedHours;
-
+    @Column(nullable = false)
+    private Boolean deleted = false;
 
 }
