@@ -32,4 +32,9 @@ public class ConditionerController {
     public List<ConditionerDto> getAllConditioners(){
         return conditionerService.getAllConditioners();
     }
+    @DeleteMapping("/{conditionerUuid}")
+    public ConditionerDto deleteConditioner(@PathVariable String conditionerUuid){
+        return conditionerService.deleteConditionerById(conditionerUuid);
+    }
+
 }

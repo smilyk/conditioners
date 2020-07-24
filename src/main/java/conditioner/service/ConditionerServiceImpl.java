@@ -10,8 +10,9 @@ import conditioner.utils.Utils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,8 +25,8 @@ public class ConditionerServiceImpl {
     ConditionerRepository conditionerRepository;
     @Autowired
     Utils utils;
+    private static final Logger LOGGER = LogManager.getLogger(ConditionerServiceImpl.class);
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConditionerServiceImpl.class);
     private ObjectMapper mapper = new ObjectMapper();
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -37,8 +38,9 @@ public class ConditionerServiceImpl {
         String conditionerUuid = conditionerRepository.save(conditioner).getUuidConditioner();
         conditionerDto.setUuidConditioner(conditionerUuid);
         try {
-            LOGGER.info("Conditioner {} created", mapper.writeValueAsString(conditioner));
+            LOGGER.info("Conditioner created {}", mapper.writeValueAsString(conditioner));
         }catch (Exception e){
+            LOGGER.error(e.getMessage());
             throw new ConditionerException(e.getMessage());
         }
         return conditionerDto;
@@ -47,13 +49,15 @@ public class ConditionerServiceImpl {
     public ConditionerDto getConditionerById(String conditionerUuid) {
         Optional<ConditionerEntity> optionalConditionerEntity = conditionerRepository.findByUuidConditioner(conditionerUuid);
         if(!optionalConditionerEntity.isPresent()){
+            LOGGER.error(Messages.CONDITIONER + Messages.WITH_ID + conditionerUuid + Messages.NOT_FOUND);
             throw new ConditionerException(Messages.CONDITIONER + Messages.WITH_ID + conditionerUuid + Messages.NOT_FOUND);
         }
         ConditionerEntity conditioner = optionalConditionerEntity.get();
         ConditionerDto conditionerDto = conditionerToDto(conditioner);
         try {
-            LOGGER.info("Conditioner {} found", mapper.writeValueAsString(conditioner));
+            LOGGER.info("Conditioner found {}", mapper.writeValueAsString(conditioner));
         }catch (Exception e){
+            LOGGER.error(e.getMessage());
             throw new ConditionerException(e.getMessage());
         }
         return conditionerDto;
@@ -71,5 +75,23 @@ public class ConditionerServiceImpl {
 
     private ConditionerEntity conditionerDtoToEntity(ConditionerDto conditionerDto) {
         return modelMapper.map(conditionerDto, ConditionerEntity.class);
+    }
+
+    public ConditionerDto deleteConditionerById(String conditionerUuid) {
+        Optional<ConditionerEntity> optionalConditionerEntity = conditionerRepository.findByUuidConditioner(conditionerUuid);
+        if(!optionalConditionerEntity.isPresent()){
+            LOGGER.error(Messages.CONDITIONER + Messages.WITH_ID + conditionerUuid + Messages.NOT_FOUND);
+            throw new ConditionerException(Messages.CONDITIONER + Messages.WITH_ID + conditionerUuid + Messages.NOT_FOUND);
+        }
+        ConditionerEntity conditioner = optionalConditionerEntity.get();
+        ConditionerDto conditionerDto = conditionerToDto(conditioner);
+        conditionerRepository.delete(conditioner);
+        try {
+            LOGGER.info("Conditioner deleted {}", mapper.writeValueAsString(conditioner));
+        }catch (Exception e){
+            LOGGER.error(e.getMessage());
+            throw new ConditionerException(e.getMessage());
+        }
+        return conditionerDto;
     }
 }
