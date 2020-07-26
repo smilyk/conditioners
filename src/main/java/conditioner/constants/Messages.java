@@ -7,4 +7,6 @@ public class Messages {
     public static final String NOT_FOUND =" not found" ;
     public static final String CONDITIONER = " conditioner";
     public static final String WITH_ID = " with id";
+    public static final String CHECK_UNIQUE_TYPE_MAINTENANCE = " Type maintenance with inventoryNumber";
+    public static final String TYPE_MAINTENANCE = " Type maintenance";
 }

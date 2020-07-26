@@ -24,6 +24,9 @@ public class TypeMaintenanceEntity extends BaseEntity implements Serializable {
     @Column(nullable = false)
     private String peopleHours;
 
+    @Column(nullable = false)
+    private Boolean deleted = false;
+
     @Column
     @ManyToMany(mappedBy = "maintenance")
     private List<ConditionerEntity> conditioners = new ArrayList<>();

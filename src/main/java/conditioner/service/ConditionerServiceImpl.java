@@ -5,6 +5,7 @@ import conditioner.constants.Messages;
 import conditioner.dto.ConditionerDto;
 import conditioner.exceptions.ConditionerException;
 import conditioner.model.ConditionerEntity;
+import conditioner.model.TypeMaintenanceEntity;
 import conditioner.repository.ConditionerRepository;
 import conditioner.utils.Utils;
 import org.modelmapper.ModelMapper;
@@ -54,7 +55,7 @@ public class ConditionerServiceImpl {
         ConditionerEntity conditioner = optionalConditionerEntity.get();
         ConditionerDto conditionerDto = conditionerToDto(conditioner);
         try {
-            LOGGER.info("Conditioner found {}", mapper.writeValueAsString(conditioner));
+            LOGGER.info("Conditioner with id {} found", conditionerUuid);
         }catch (Exception e){
             LOGGER.error(e.getMessage());
             throw new ConditionerException(e.getMessage());
@@ -87,7 +88,7 @@ public class ConditionerServiceImpl {
         conditionerRepository.save(conditioner);
         ConditionerDto conditionerDto = conditionerToDto(conditioner);
         try {
-            LOGGER.info("Conditioner deleted {}", mapper.writeValueAsString(conditioner));
+            LOGGER.info("Conditioner with id {} deleted ", conditionerUuid);
         }catch (Exception e){
             LOGGER.error(e.getMessage());
             throw new ConditionerException(e.getMessage());

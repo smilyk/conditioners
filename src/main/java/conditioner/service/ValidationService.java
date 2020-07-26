@@ -2,9 +2,12 @@ package conditioner.service;
 
 import conditioner.constants.Messages;
 import conditioner.dto.ConditionerDto;
+import conditioner.dto.TypeMaintenanceDto;
 import conditioner.exceptions.ConditionerException;
 import conditioner.model.ConditionerEntity;
+import conditioner.model.TypeMaintenanceEntity;
 import conditioner.repository.ConditionerRepository;
+import conditioner.repository.TypeMaintenanceRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,8 @@ public class ValidationService {
 
     @Autowired
     ConditionerRepository conditionerRepository;
+    @Autowired
+    TypeMaintenanceRepository typeMaintenanceRepository;
 
     public void validConditioner(ConditionerDto conditionerDto) {
         String field = "Name of conditioner";
@@ -43,6 +48,21 @@ public class ValidationService {
         if(entity.isPresent()){
             LOGGER.error(Messages.CHECK_UNIQUE_CONDITIONER + inventoryNumber + Messages.EXISTS);
             throw new ConditionerException(Messages.CHECK_UNIQUE_CONDITIONER + inventoryNumber + Messages.EXISTS);
+        }
+    }
+
+
+    public void validTypeMaintenance(TypeMaintenanceDto typeMaintenanceDto) {
+        Optional<TypeMaintenanceEntity> typeMaintenanceEntity = typeMaintenanceRepository
+                .findByNameMaintenanceAndPeopleHours(
+                typeMaintenanceDto.getNameMaintenance(), typeMaintenanceDto.getPeopleHours()
+        );
+        if(typeMaintenanceEntity.isPresent()){
+            LOGGER.error(Messages.CHECK_UNIQUE_TYPE_MAINTENANCE + typeMaintenanceDto.getNameMaintenance()
+            + Messages.EXISTS);
+            throw new ConditionerException(Messages.CHECK_UNIQUE_TYPE_MAINTENANCE + typeMaintenanceDto.getNameMaintenance()
+                    + Messages.EXISTS);
+
         }
     }
 }

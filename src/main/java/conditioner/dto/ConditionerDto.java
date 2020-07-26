@@ -26,7 +26,7 @@ public class ConditionerDto {
     @NotNull(message = "field place id required")
     private String place;
     private Date startDate;
-    private List<TypeMaintenanceEntity> maintenance = new ArrayList<>();
+    private List<TypeMaintenanceForDto> maintenance = new ArrayList<>();
     /**
      * сколько часов кондиуионер должен отработать до того, как необходимо
      * провести ТО
@@ -36,6 +36,7 @@ public class ConditionerDto {
      */
     @NotNull(message = "field workedHours id required")
     private Integer workedHours;
+    @NotNull(message = "field deleted id required")
     private Boolean deleted;
 
 }
