@@ -7,12 +7,16 @@ import conditioner.exceptions.ConditionerException;
 import conditioner.model.ConditionerEntity;
 import conditioner.model.TypeMaintenanceEntity;
 import conditioner.repository.ConditionerRepository;
+import conditioner.repository.TypeMaintenanceRepository;
 import conditioner.utils.Utils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,13 +28,17 @@ public class ConditionerServiceImpl {
     ConditionerRepository conditionerRepository;
     @Autowired
     Utils utils;
+    @Autowired
+    TypeMaintenanceRepository typeMaintenanceRepository;
     private static final Logger LOGGER = LogManager.getLogger(ConditionerServiceImpl.class);
 
     private ObjectMapper mapper = new ObjectMapper();
     private ModelMapper modelMapper = new ModelMapper();
 
 
-    public ConditionerDto createConditioner(ConditionerDto conditionerDto)  {
+    public ConditionerDto createConditioner(ConditionerDto conditionerDto) {
+
+//        TODO написать проверку - существует ли то ТО которое собираются подключить к кондиционеру
         ConditionerEntity conditioner = conditionerDtoToEntity(conditionerDto);
         conditioner.setStart(false);
         conditioner.setDeleted(false);
@@ -39,7 +47,7 @@ public class ConditionerServiceImpl {
         conditionerDto.setUuidConditioner(conditionerUuid);
         try {
             LOGGER.info("Conditioner created {}", mapper.writeValueAsString(conditioner));
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
             throw new ConditionerException(e.getMessage());
         }
@@ -48,7 +56,7 @@ public class ConditionerServiceImpl {
 
     public ConditionerDto getConditionerById(String conditionerUuid) {
         Optional<ConditionerEntity> optionalConditionerEntity = conditionerRepository.findByUuidConditionerAndDeleted(conditionerUuid, false);
-        if(!optionalConditionerEntity.isPresent()){
+        if (!optionalConditionerEntity.isPresent()) {
             LOGGER.error(Messages.CONDITIONER + Messages.WITH_ID + conditionerUuid + Messages.NOT_FOUND);
             throw new ConditionerException(Messages.CONDITIONER + Messages.WITH_ID + conditionerUuid + Messages.NOT_FOUND);
         }
@@ -56,7 +64,7 @@ public class ConditionerServiceImpl {
         ConditionerDto conditionerDto = conditionerToDto(conditioner);
         try {
             LOGGER.info("Conditioner with id {} found", conditionerUuid);
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
             throw new ConditionerException(e.getMessage());
         }
@@ -79,7 +87,7 @@ public class ConditionerServiceImpl {
 
     public ConditionerDto deleteConditionerById(String conditionerUuid) {
         Optional<ConditionerEntity> optionalConditionerEntity = conditionerRepository.findByUuidConditioner(conditionerUuid);
-        if(!optionalConditionerEntity.isPresent()){
+        if (!optionalConditionerEntity.isPresent()) {
             LOGGER.error(Messages.CONDITIONER + Messages.WITH_ID + conditionerUuid + Messages.NOT_FOUND);
             throw new ConditionerException(Messages.CONDITIONER + Messages.WITH_ID + conditionerUuid + Messages.NOT_FOUND);
         }
@@ -89,10 +97,54 @@ public class ConditionerServiceImpl {
         ConditionerDto conditionerDto = conditionerToDto(conditioner);
         try {
             LOGGER.info("Conditioner with id {} deleted ", conditionerUuid);
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
             throw new ConditionerException(e.getMessage());
         }
+        return conditionerDto;
+    }
+
+    public String startWorkConditioner(String conditionerUuid) {
+//        TODO logger
+        Optional<ConditionerEntity> optionalConditionerEntity = conditionerRepository.findByUuidConditionerAndDeleted(
+                conditionerUuid, false
+        );
+        if (optionalConditionerEntity.isPresent()) {
+            ConditionerEntity conditionerEntity = optionalConditionerEntity.get();
+            conditionerEntity.setStart(true);
+            conditionerEntity.setStartDate(new Date());
+            conditionerRepository.save(conditionerEntity);
+            LOGGER.info(Messages.CHECK_UNIQUE_CONDITIONER + conditionerEntity.getInventoryNumber() +
+                    Messages.STARTED_WORK);
+            return Messages.CHECK_UNIQUE_CONDITIONER + conditionerEntity.getInventoryNumber() +
+                    Messages.STARTED_WORK;
+        }
+        LOGGER.error(Messages.CHECK_VALID_CONDITIONER + conditionerUuid + Messages.NOT_FOUND);
+        throw new ConditionerException(Messages.CHECK_VALID_CONDITIONER + conditionerUuid + Messages.NOT_FOUND);
+    }
+
+    public ConditionerDto addTypeMaintenanceToConditioner(String conditionerUuid, String typeMaintenanceUuid) {
+        Optional<ConditionerEntity> optionalConditionerEntity = conditionerRepository.findByUuidConditionerAndDeleted(
+                conditionerUuid, false
+        );
+        if (!optionalConditionerEntity.isPresent()) {
+            LOGGER.error(Messages.CHECK_VALID_CONDITIONER + conditionerUuid + Messages.NOT_FOUND);
+            throw new ConditionerException(Messages.CHECK_VALID_CONDITIONER + conditionerUuid + Messages.NOT_FOUND);
+        }
+        Optional<TypeMaintenanceEntity> optionalTypeMaintenanceEntity = typeMaintenanceRepository
+                .findByUuidTypeMaintenanceAndDeleted(typeMaintenanceUuid, false);
+        if (!optionalTypeMaintenanceEntity.isPresent()) {
+            LOGGER.error(Messages.CHECK_UNIQUE_TYPE_MAINTENANCE + conditionerUuid + Messages.NOT_FOUND);
+
+        }
+        ConditionerEntity conditionerEntity = optionalConditionerEntity.get();
+        TypeMaintenanceEntity typeMaintenanceEntity = optionalTypeMaintenanceEntity.get();
+        List<TypeMaintenanceEntity> list = new ArrayList<>();
+        list.add(typeMaintenanceEntity);
+        conditionerEntity.setMaintenance(list);
+        conditionerRepository.save(conditionerEntity);
+        ConditionerDto conditionerDto = conditionerToDto(conditionerEntity);
+        //        TODO logger
         return conditionerDto;
     }
 }

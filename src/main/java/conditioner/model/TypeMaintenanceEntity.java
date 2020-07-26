@@ -22,7 +22,7 @@ public class TypeMaintenanceEntity extends BaseEntity implements Serializable {
     private String nameMaintenance;
 
     @Column(nullable = false)
-    private String peopleHours;
+    private Integer peopleHours;
 
     @Column(nullable = false)
     private Boolean deleted = false;

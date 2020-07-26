@@ -44,7 +44,6 @@ public class ConditionerEntity extends BaseEntity implements Serializable  {
     private List<TypeMaintenanceEntity> maintenance = new ArrayList<>();
 
     private Boolean start;
-
     /**
      * в случае остановки кондиционера, сохраняется количество часов,
      * которые он успел отработать с момента последнего ТО

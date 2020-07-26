@@ -24,7 +24,7 @@ public class TypeMaintenanceDto {
     private String nameMaintenance;
 
     @NotNull(message = "field peopleHours id required")
-    private String peopleHours;
+    private Integer peopleHours;
 
     @NotNull(message = "field deleted id required")
     private Boolean deleted = false;

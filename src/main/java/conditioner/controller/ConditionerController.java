@@ -37,4 +37,16 @@ public class ConditionerController {
         return conditionerService.deleteConditionerById(conditionerUuid);
     }
 
+    @PutMapping("/{conditionerUuid}")
+    public String startWorkConditioner(@PathVariable String conditionerUuid){
+        return conditionerService.startWorkConditioner(conditionerUuid);
+    }
+
+    @PutMapping("/{conditionerUuid}/{typeMaintenanceUuid}")
+    public ConditionerDto putTypeMaintenanceToConditioner(@PathVariable String conditionerUuid,
+                                                          @PathVariable String typeMaintenanceUuid){
+        return conditionerService.addTypeMaintenanceToConditioner(conditionerUuid, typeMaintenanceUuid);
+    }
+
+
 }

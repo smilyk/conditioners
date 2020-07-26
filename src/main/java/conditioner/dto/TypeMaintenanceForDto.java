@@ -14,7 +14,7 @@ public class TypeMaintenanceForDto {
 
     private String nameMaintenance;
 
-    private String peopleHours;
+    private Integer peopleHours;
 
     private Boolean deleted = false;
 
