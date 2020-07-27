@@ -142,7 +142,12 @@ public class ConditionerServiceImpl {
             LOGGER.error(Messages.CHECK_UNIQUE_TYPE_MAINTENANCE + conditionerUuid + Messages.NOT_FOUND);
         }
         ConditionerEntity conditionerEntity = optionalConditionerEntity.get();
-        List<TypeMaintenanceEntity> typeMaintenanceEntityList = new ArrayList<>();
+
+        List<TypeMaintenanceEntity> typeMaintenanceEntityList = conditionerEntity.getMaintenance();
+        if(typeMaintenanceEntityList.stream().filter(x-> x.getUuidTypeMaintenance().equals(typeMaintenanceUuid)).count()!= 0){
+            LOGGER.info(Messages.CHECK_UNIQUE_TYPE_MAINTENANCE + typeMaintenanceUuid + Messages.EXISTS);
+            throw  new ConditionerException(Messages.CHECK_UNIQUE_TYPE_MAINTENANCE + typeMaintenanceUuid + Messages.EXISTS);
+        }
         typeMaintenanceEntityList.add(optionalTypeMaintenanceEntity.get());
         conditionerEntity.setMaintenance(typeMaintenanceEntityList);
         conditionerRepository.save(conditionerEntity);
