@@ -144,9 +144,16 @@ public class ConditionerServiceImpl {
         ConditionerEntity conditionerEntity = optionalConditionerEntity.get();
 
         List<TypeMaintenanceEntity> typeMaintenanceEntityList = conditionerEntity.getMaintenance();
-        if(typeMaintenanceEntityList.stream().filter(x-> x.getUuidTypeMaintenance().equals(typeMaintenanceUuid)).count()!= 0){
-            LOGGER.info(Messages.CHECK_UNIQUE_TYPE_MAINTENANCE + typeMaintenanceUuid + Messages.EXISTS);
-            throw  new ConditionerException(Messages.CHECK_UNIQUE_TYPE_MAINTENANCE + typeMaintenanceUuid + Messages.EXISTS);
+        if (typeMaintenanceEntityList.stream().filter(x ->
+                x.getUuidTypeMaintenance().equals(typeMaintenanceUuid)).count() != 0) {
+            LOGGER.info(Messages.CHECK_UNIQUE_TYPE_MAINTENANCE + typeMaintenanceUuid +
+                    Messages.EXISTS + Messages.IN +
+                    Messages.CHECK_VALID_CONDITIONER
+                    + conditionerUuid);
+            throw new ConditionerException(Messages.CHECK_UNIQUE_TYPE_MAINTENANCE + typeMaintenanceUuid +
+                    Messages.EXISTS + Messages.IN +
+                    Messages.CHECK_VALID_CONDITIONER
+                    + conditionerUuid);
         }
         typeMaintenanceEntityList.add(optionalTypeMaintenanceEntity.get());
         conditionerEntity.setMaintenance(typeMaintenanceEntityList);

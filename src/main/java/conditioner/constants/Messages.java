@@ -13,4 +13,5 @@ public class Messages {
     public static final String CHECK_VALID_CONDITIONER = " conditioner with UUID " ;
     public static final String WORKING_NOW = " is working now ";
     public static final String ADDED = " was added to ";
+    public static final String IN = " in the ";
 }
