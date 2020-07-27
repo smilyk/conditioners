@@ -6,6 +6,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +27,7 @@ public class ConditionerDto {
     private String inventoryNumber;
     @NotNull(message = "field place id required")
     private String place;
-    private Date startDate;
+    private LocalDateTime startDate;
     private List<TypeMaintenanceForDto> maintenance = new ArrayList<>();
     /**
      * сколько часов кондиуионер должен отработать до того, как необходимо

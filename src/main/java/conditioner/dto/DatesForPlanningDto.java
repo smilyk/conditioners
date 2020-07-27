@@ -1,21 +1,20 @@
 package conditioner.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
-@ToString
-public class ConditionerForDto {
-    private String uuidConditioner;
-    private String nameConditioner;
-    private String inventoryNumber;
-    private String place;
+public class DatesForPlanningDto {
     private LocalDateTime startDate;
+    private LocalDateTime finishDate;
 }

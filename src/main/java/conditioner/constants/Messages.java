@@ -14,4 +14,8 @@ public class Messages {
     public static final String WORKING_NOW = " is working now ";
     public static final String ADDED = " was added to ";
     public static final String IN = " in the ";
+    public static final String DATES_NOT_RELEVANT = " dates not relevant ";
+    public static final String SHOULD_BE_BEFORE = " should be befor ";
+    public static final String RECORD_FOR_PLANNING = " records for planning for ";
+    public static final String CREATED = " created ";
 }

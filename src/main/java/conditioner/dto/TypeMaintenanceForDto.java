@@ -18,4 +18,6 @@ public class TypeMaintenanceForDto {
 
     private Boolean deleted = false;
 
+    private Integer hoursBeforeTypeMaintenance;
+
 }

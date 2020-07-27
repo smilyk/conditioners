@@ -3,24 +3,28 @@ package conditioner.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import conditioner.constants.Messages;
 import conditioner.dto.ConditionerDto;
+import conditioner.dto.DatesForPlanningDto;
 import conditioner.exceptions.ConditionerException;
 import conditioner.model.ConditionerEntity;
+import conditioner.model.ForPlanningTypeMaintenanceEntity;
 import conditioner.model.TypeMaintenanceEntity;
 import conditioner.repository.ConditionerRepository;
+import conditioner.repository.ForPlanningTypeMaintenanceRepository;
 import conditioner.repository.TypeMaintenanceRepository;
 import conditioner.utils.Utils;
+import org.apache.logging.log4j.message.MapMessage;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 
 @Service
 public class ConditionerServiceImpl {
@@ -30,6 +34,10 @@ public class ConditionerServiceImpl {
     Utils utils;
     @Autowired
     TypeMaintenanceRepository typeMaintenanceRepository;
+    @Autowired
+    ForPlanningTypeMaintenanceRepository forPlanningTypeMaintenanceRepository;
+
+
     private static final Logger LOGGER = LogManager.getLogger(ConditionerServiceImpl.class);
 
     private ObjectMapper mapper = new ObjectMapper();
@@ -117,8 +125,9 @@ public class ConditionerServiceImpl {
                         + Messages.WORKING_NOW);
             }
             conditionerEntity.setStart(true);
-            conditionerEntity.setStartDate(new Date());
+            conditionerEntity.setStartDate(LocalDateTime.now());
             conditionerRepository.save(conditionerEntity);
+            createForPlanningTypeMaintenance(conditionerEntity);
             LOGGER.info(Messages.CHECK_UNIQUE_CONDITIONER + conditionerEntity.getInventoryNumber() +
                     Messages.STARTED_WORK);
             return Messages.CHECK_UNIQUE_CONDITIONER + conditionerEntity.getInventoryNumber() +
@@ -129,18 +138,8 @@ public class ConditionerServiceImpl {
     }
 
     public ConditionerDto addTypeMaintenanceToConditioner(String conditionerUuid, String typeMaintenanceUuid) {
-        Optional<ConditionerEntity> optionalConditionerEntity = conditionerRepository.findByUuidConditionerAndDeleted(
-                conditionerUuid, false
-        );
-        if (!optionalConditionerEntity.isPresent()) {
-            LOGGER.error(Messages.CHECK_VALID_CONDITIONER + conditionerUuid + Messages.NOT_FOUND);
-            throw new ConditionerException(Messages.CHECK_VALID_CONDITIONER + conditionerUuid + Messages.NOT_FOUND);
-        }
-        Optional<TypeMaintenanceEntity> optionalTypeMaintenanceEntity = typeMaintenanceRepository
-                .findByUuidTypeMaintenanceAndDeleted(typeMaintenanceUuid, false);
-        if (!optionalTypeMaintenanceEntity.isPresent()) {
-            LOGGER.error(Messages.CHECK_UNIQUE_TYPE_MAINTENANCE + conditionerUuid + Messages.NOT_FOUND);
-        }
+        Optional<ConditionerEntity> optionalConditionerEntity = checkConditionerEntity(conditionerUuid);
+        Optional<TypeMaintenanceEntity> optionalTypeMaintenanceEntity = checkTypeMaintenanceEntity(conditionerUuid, typeMaintenanceUuid);
         ConditionerEntity conditionerEntity = optionalConditionerEntity.get();
 
         List<TypeMaintenanceEntity> typeMaintenanceEntityList = conditionerEntity.getMaintenance();
@@ -162,6 +161,58 @@ public class ConditionerServiceImpl {
         LOGGER.info(Messages.CHECK_UNIQUE_TYPE_MAINTENANCE +
                 optionalTypeMaintenanceEntity.get().getUuidTypeMaintenance() + Messages.ADDED +
                 Messages.CHECK_UNIQUE_CONDITIONER + conditionerEntity.getUuidConditioner());
+//        TODO не добавлять ТО к работающему кондиционеру - реализоыать проверку.
+//        TODO можем останавливать и запускать кондиционер. Продумать как учитывать часы, которые уже отработаны
+//        createForPlanningTypeMaintenance(conditionerEntity);
         return conditionerDto;
+    }
+
+    private void createForPlanningTypeMaintenance(ConditionerEntity conditionerEntity) {
+
+        List<TypeMaintenanceEntity> listOdMaintenancy = conditionerEntity.getMaintenance();
+        for(TypeMaintenanceEntity entity : listOdMaintenancy) {
+            Integer hoursBeforeTypeMaintenance = entity.getHoursBeforeTypeMaintenance();
+            LocalDateTime startDate = conditionerEntity.getStartDate();
+            LocalDateTime nextTypeMaintenancy = startDate.plusHours(hoursBeforeTypeMaintenance);
+            ForPlanningTypeMaintenanceEntity en =ForPlanningTypeMaintenanceEntity.builder()
+                    .inventoryNumber(conditionerEntity.getInventoryNumber())
+                    .lastTypeMaintenanceDate(conditionerEntity.getStartDate())
+                    .nameConditioner(conditionerEntity.getNameConditioner())
+                    .nextTypeMaintenanceDate(nextTypeMaintenancy)
+                    .place(conditionerEntity.getPlace())
+                    .uuidConditioner(conditionerEntity.getUuidConditioner())
+                    .uuidRecord(utils.createRandomUuid())
+                    .build();
+            forPlanningTypeMaintenanceRepository.save(en);
+            LOGGER.info(Messages.RECORD_FOR_PLANNING + Messages.CHECK_UNIQUE_CONDITIONER +
+                    conditionerEntity.getInventoryNumber() + Messages.CREATED);
+        }
+    }
+
+    private Optional<TypeMaintenanceEntity> checkTypeMaintenanceEntity(String conditionerUuid, String typeMaintenanceUuid) {
+        Optional<TypeMaintenanceEntity> optionalTypeMaintenanceEntity = typeMaintenanceRepository
+                .findByUuidTypeMaintenanceAndDeleted(typeMaintenanceUuid, false);
+        if (!optionalTypeMaintenanceEntity.isPresent()) {
+            LOGGER.error(Messages.CHECK_UNIQUE_TYPE_MAINTENANCE + conditionerUuid + Messages.NOT_FOUND);
+        }
+        return optionalTypeMaintenanceEntity;
+    }
+
+    private Optional<ConditionerEntity> checkConditionerEntity(String conditionerUuid) {
+        Optional<ConditionerEntity> optionalConditionerEntity = conditionerRepository.findByUuidConditionerAndDeleted(
+                conditionerUuid, false
+        );
+        if (!optionalConditionerEntity.isPresent()) {
+            LOGGER.error(Messages.CHECK_VALID_CONDITIONER + conditionerUuid + Messages.NOT_FOUND);
+            throw new ConditionerException(Messages.CHECK_VALID_CONDITIONER + conditionerUuid + Messages.NOT_FOUND);
+        }
+        return optionalConditionerEntity;
+    }
+
+    public List<ConditionerDto> getConditionersForPlanning(DatesForPlanningDto dates) {
+// TODO проверяем, есть ли уже в таблице выполненных работ или в таблице планируемых работа такой кондиционер
+//        TODO
+//        Optional<List<ConditionerDto>> conditionerDtos = conditionerRepository.
+return null;
     }
 }

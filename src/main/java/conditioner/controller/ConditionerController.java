@@ -1,4 +1,5 @@
 package conditioner.controller;
+import conditioner.dto.DatesForPlanningDto;
 import conditioner.service.ConditionerServiceImpl;
 import conditioner.dto.ConditionerDto;
 import conditioner.service.ValidationService;
@@ -48,5 +49,10 @@ public class ConditionerController {
         return conditionerService.addTypeMaintenanceToConditioner(conditionerUuid, typeMaintenanceUuid);
     }
 
+    @GetMapping("/for-planning")
+    public List<ConditionerDto> getConditionersForPlanning(@RequestBody DatesForPlanningDto dates){
+        validationService.checkDatesForPlanning(dates);
+        return conditionerService.getConditionersForPlanning(dates);
+    }
 
 }

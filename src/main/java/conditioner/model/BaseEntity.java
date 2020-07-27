@@ -4,6 +4,9 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @MappedSuperclass
@@ -14,19 +17,21 @@ public class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private Date createDate;
+    private LocalDateTime createDate;
 
-    private Date updateDate;
+    private LocalDateTime updateDate;
 
     @PrePersist
     public void onPersist() {
         final DateTime nowDt = new DateTime(DateTimeZone.UTC);
-        final Date current = new Date(nowDt.getMillis());
+        final LocalDateTime current = LocalDateTime.now();
+//
+//                new Date(nowDt.getMillis());
         setCreateDate(current);
         setUpdateDate(current);
     }
     @PreUpdate
     public void onUpdate() {
-        setUpdateDate(new Date(new DateTime(DateTimeZone.UTC).getMillis()));
+        setUpdateDate(LocalDateTime.now());
     }
 }

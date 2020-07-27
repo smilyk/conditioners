@@ -2,6 +2,7 @@ package conditioner.service;
 
 import conditioner.constants.Messages;
 import conditioner.dto.ConditionerDto;
+import conditioner.dto.DatesForPlanningDto;
 import conditioner.dto.TypeMaintenanceDto;
 import conditioner.exceptions.ConditionerException;
 import conditioner.model.ConditionerEntity;
@@ -62,7 +63,16 @@ public class ValidationService {
             + Messages.EXISTS);
             throw new ConditionerException(Messages.CHECK_UNIQUE_TYPE_MAINTENANCE + typeMaintenanceDto.getNameMaintenance()
                     + Messages.EXISTS);
+        }
+    }
 
+    public void checkDatesForPlanning(DatesForPlanningDto dates) {
+        if(!dates.getStartDate().isBefore(dates.getFinishDate()))
+             {
+            LOGGER.error(Messages.DATES_NOT_RELEVANT + dates.getStartDate() + Messages.SHOULD_BE_BEFORE +
+                    dates.getFinishDate());
+            throw new ConditionerException(Messages.DATES_NOT_RELEVANT + dates.getStartDate() + Messages.SHOULD_BE_BEFORE +
+                    dates.getFinishDate());
         }
     }
 }
