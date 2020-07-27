@@ -105,12 +105,17 @@ public class ConditionerServiceImpl {
     }
 
     public String startWorkConditioner(String conditionerUuid) {
-//        TODO logger
         Optional<ConditionerEntity> optionalConditionerEntity = conditionerRepository.findByUuidConditionerAndDeleted(
                 conditionerUuid, false
         );
         if (optionalConditionerEntity.isPresent()) {
             ConditionerEntity conditionerEntity = optionalConditionerEntity.get();
+            if (conditionerEntity.getStart()) {
+                LOGGER.info(Messages.CHECK_UNIQUE_CONDITIONER + conditionerEntity.getInventoryNumber() +
+                        Messages.WORKING_NOW);
+                throw new ConditionerException(Messages.CHECK_UNIQUE_CONDITIONER + conditionerEntity.getInventoryNumber()
+                        + Messages.WORKING_NOW);
+            }
             conditionerEntity.setStart(true);
             conditionerEntity.setStartDate(new Date());
             conditionerRepository.save(conditionerEntity);
@@ -135,16 +140,16 @@ public class ConditionerServiceImpl {
                 .findByUuidTypeMaintenanceAndDeleted(typeMaintenanceUuid, false);
         if (!optionalTypeMaintenanceEntity.isPresent()) {
             LOGGER.error(Messages.CHECK_UNIQUE_TYPE_MAINTENANCE + conditionerUuid + Messages.NOT_FOUND);
-
         }
         ConditionerEntity conditionerEntity = optionalConditionerEntity.get();
-        TypeMaintenanceEntity typeMaintenanceEntity = optionalTypeMaintenanceEntity.get();
-        List<TypeMaintenanceEntity> list = new ArrayList<>();
-        list.add(typeMaintenanceEntity);
-        conditionerEntity.setMaintenance(list);
+        List<TypeMaintenanceEntity> typeMaintenanceEntityList = new ArrayList<>();
+        typeMaintenanceEntityList.add(optionalTypeMaintenanceEntity.get());
+        conditionerEntity.setMaintenance(typeMaintenanceEntityList);
         conditionerRepository.save(conditionerEntity);
         ConditionerDto conditionerDto = conditionerToDto(conditionerEntity);
-        //        TODO logger
+        LOGGER.info(Messages.CHECK_UNIQUE_TYPE_MAINTENANCE +
+                optionalTypeMaintenanceEntity.get().getUuidTypeMaintenance() + Messages.ADDED +
+                Messages.CHECK_UNIQUE_CONDITIONER + conditionerEntity.getUuidConditioner());
         return conditionerDto;
     }
 }
