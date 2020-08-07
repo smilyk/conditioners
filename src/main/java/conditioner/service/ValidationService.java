@@ -4,13 +4,17 @@ import conditioner.constants.Messages;
 import conditioner.dto.ConditionerDto;
 import conditioner.dto.DatesForPlanningDto;
 import conditioner.dto.TypeMaintenanceDto;
+import conditioner.dto.UserDetailsRequestModel;
 import conditioner.exceptions.ConditionerException;
 import conditioner.model.ConditionerEntity;
 import conditioner.model.TypeMaintenanceEntity;
+import conditioner.model.UserEntity;
 import conditioner.repository.ConditionerRepository;
 import conditioner.repository.TypeMaintenanceRepository;
+import conditioner.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.omg.PortableInterceptor.USER_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +29,8 @@ public class ValidationService {
     ConditionerRepository conditionerRepository;
     @Autowired
     TypeMaintenanceRepository typeMaintenanceRepository;
+    @Autowired
+    UserRepository userRepository;
 
     public void validConditioner(ConditionerDto conditionerDto) {
         String field = "Name of conditioner";
@@ -73,6 +79,14 @@ public class ValidationService {
                     dates.getFinishDate());
             throw new ConditionerException(Messages.DATES_NOT_RELEVANT + dates.getStartDate() + Messages.SHOULD_BE_BEFORE +
                     dates.getFinishDate());
+        }
+    }
+
+    public void validUser(UserDetailsRequestModel user) {
+        Optional<UserEntity> userEntityOptional = userRepository.findByEmail(user.getEmail());
+        if (userEntityOptional.isPresent()){
+            LOGGER.error(Messages.USER_WITH_EMAIL + user.getEmail() + Messages.EXISTS);
+            throw new ConditionerException(Messages.USER_WITH_EMAIL + user.getEmail() + Messages.EXISTS);
         }
     }
 }

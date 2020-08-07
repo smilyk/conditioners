@@ -23,4 +23,5 @@ public class Messages {
     public static final String NOT_STARTED = " not started ";
     public static final String FOUND = " found ";
     public static final String WITHOUT_TYPE_MAINTENANCE = " without type maintenance";
+    public static final String USER_WITH_EMAIL = " user with email: ";
 }
