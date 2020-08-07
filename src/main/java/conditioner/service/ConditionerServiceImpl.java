@@ -170,11 +170,11 @@ public class ConditionerServiceImpl {
     private void createForPlanningTypeMaintenance(ConditionerEntity conditionerEntity) {
 
         List<TypeMaintenanceEntity> listOdMaintenancy = conditionerEntity.getMaintenance();
-        for(TypeMaintenanceEntity entity : listOdMaintenancy) {
+        for (TypeMaintenanceEntity entity : listOdMaintenancy) {
             Integer hoursBeforeTypeMaintenance = entity.getHoursBeforeTypeMaintenance();
             LocalDateTime startDate = conditionerEntity.getStartDate();
             LocalDateTime nextTypeMaintenancy = startDate.plusHours(hoursBeforeTypeMaintenance);
-            ForPlanningTypeMaintenanceEntity en =ForPlanningTypeMaintenanceEntity.builder()
+            ForPlanningTypeMaintenanceEntity en = ForPlanningTypeMaintenanceEntity.builder()
                     .inventoryNumber(conditionerEntity.getInventoryNumber())
                     .lastTypeMaintenanceDate(conditionerEntity.getStartDate())
                     .nameConditioner(conditionerEntity.getNameConditioner())
@@ -213,6 +213,26 @@ public class ConditionerServiceImpl {
 // TODO проверяем, есть ли уже в таблице выполненных работ или в таблице планируемых работа такой кондиционер
 //        TODO
 //        Optional<List<ConditionerDto>> conditionerDtos = conditionerRepository.
-return null;
+        return null;
+    }
+
+    public List<ConditionerDto> getAllNotStartedConditioner() {
+        List<ConditionerEntity> notStartedConditioners = conditionerRepository.findByStart(false);
+        List<ConditionerDto> conditionerDtoList = notStartedConditioners.stream()
+                .filter(x -> x.getMaintenance().size() != 0)
+                .map(
+                        this::conditionerToDto)
+                .collect(Collectors.toList());
+        return conditionerDtoList;
+//        TODO Logger
+    }
+
+    public List<ConditionerDto> getAllNotTypeMaintenanceConditioners() {
+        List<ConditionerEntity> allConditioners = conditionerRepository.findAll();
+        List<ConditionerDto> conditionerDtoList = allConditioners.stream().filter(
+                x -> x.getMaintenance().size() == 0
+        ).map(this::conditionerToDto).collect(Collectors.toList());
+        return conditionerDtoList;
+//        TODO LOGGER
     }
 }

@@ -38,9 +38,14 @@ public class ConditionerController {
         return conditionerService.deleteConditionerById(conditionerUuid);
     }
 
-    @PutMapping("/{conditionerUuid}")
+    @PutMapping("/start/{conditionerUuid}")
     public String startWorkConditioner(@PathVariable String conditionerUuid){
         return conditionerService.startWorkConditioner(conditionerUuid);
+    }
+
+    @GetMapping("/not-type-maintenance")
+    public List<ConditionerDto> getAllNotTypeMaintenanceConditioner(){
+        return conditionerService.getAllNotTypeMaintenanceConditioners();
     }
 
     @PutMapping("/{conditionerUuid}/{typeMaintenanceUuid}")
@@ -54,5 +59,14 @@ public class ConditionerController {
         validationService.checkDatesForPlanning(dates);
         return conditionerService.getConditionersForPlanning(dates);
     }
+
+    @GetMapping("/not-start")
+    public List<ConditionerDto> getAllNotStartedConditioners(){
+        return conditionerService.getAllNotStartedConditioner();
+    }
+
+
+
+
 
 }
