@@ -27,6 +27,9 @@ public class TypeMaintenanceEntity extends BaseEntity implements Serializable {
     @Column(nullable = false)
     private Boolean deleted = false;
 
+    /**
+     *  сколько часов до следующего ТО
+     */
     @Column(nullable = false)
     private Integer hoursBeforeTypeMaintenance;
 

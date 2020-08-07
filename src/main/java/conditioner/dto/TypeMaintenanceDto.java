@@ -29,6 +29,7 @@ public class TypeMaintenanceDto {
     @NotNull(message = "field deleted id required")
     private Boolean deleted = false;
 
+    @NotNull(message = "field hoursBeforeTypeMaintenance id required")
     private Integer hoursBeforeTypeMaintenance;
 
 //    private List<ConditionerForDto> conditioners = new ArrayList<>();

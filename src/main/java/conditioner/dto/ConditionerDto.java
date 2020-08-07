@@ -30,13 +30,9 @@ public class ConditionerDto {
     private LocalDateTime startDate;
     private List<TypeMaintenanceForDto> maintenance = new ArrayList<>();
     /**
-     * сколько часов кондиуионер должен отработать до того, как необходимо
-     * провести ТО
-     *
      * в случае остановки кондиционера, сохраняется количество часов,
      * которые он успел отработать с момента последнего ТО
      */
-    @NotNull(message = "field workedHours id required")
     private Integer workedHours;
     @NotNull(message = "field deleted id required")
     private Boolean deleted;
