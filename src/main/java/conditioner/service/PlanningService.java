@@ -1,5 +1,6 @@
 package conditioner.service;
 
+import conditioner.dto.DatesForPlanningDto;
 import conditioner.dto.PlanningTypeMaintenanceConditioner;
 import conditioner.dto.TypeMaintenanceForDto;
 import conditioner.model.ForPlanningTypeMaintenanceEntity;
@@ -35,12 +36,21 @@ public class PlanningService {
         return missedCond;
     }
 
+    public List<PlanningTypeMaintenanceConditioner> getAllForPlanning(DatesForPlanningDto dates) {
+        List<ForPlanningTypeMaintenanceEntity> forPlanningEntities =
+                forPlanningTypeMaintenanceRepository.getAllPlanningTypeMaintenanceConditioners(dates.getStartDate(),
+                        dates.getFinishDate());
+        List<PlanningTypeMaintenanceConditioner> planningCond = forPlanningEntities.stream().map(this::fromForPlanningToPlanning)
+                .collect(Collectors.toList());
+        return planningCond;
+    }
+
     private PlanningTypeMaintenanceConditioner fromForPlanningToPlanning
             (ForPlanningTypeMaintenanceEntity forPlanningEntities) {
         Optional<TypeMaintenanceEntity> maintenance = typeMaintenanceRepository.findByUuidTypeMaintenanceAndDeleted(
                 forPlanningEntities.getUuidTypeMaintenance(), false
         );
-        if(!maintenance.isPresent()){
+        if (!maintenance.isPresent()) {
 //            TODO error
         }
         TypeMaintenanceForDto maintenanceDto = maintenanceToDto(maintenance.get());
@@ -52,17 +62,20 @@ public class PlanningService {
     private PlanningTypeMaintenanceConditioner getPlanningTypeMaintenanceConditioner(
             ForPlanningTypeMaintenanceEntity forPlanningEntities, TypeMaintenanceForDto maintenanceDto) {
         return PlanningTypeMaintenanceConditioner.builder()
-                    .uuidConditioner(forPlanningEntities.getUuidConditioner())
-                    .inventoryNumber(forPlanningEntities.getInventoryNumber())
-                    .nameConditioner(forPlanningEntities.getNameConditioner())
-                    .maintenance(maintenanceDto)
-                    .lastTypeMaintenanceDate(forPlanningEntities.getLastTypeMaintenanceDate())
-                    .nextTypeMaintenanceDate(forPlanningEntities.getNextTypeMaintenanceDate())
-                    .place(forPlanningEntities.getPlace())
-                    .build();
+                .uuidRecords(forPlanningEntities.getUuidRecord())
+                .uuidConditioner(forPlanningEntities.getUuidConditioner())
+                .inventoryNumber(forPlanningEntities.getInventoryNumber())
+                .nameConditioner(forPlanningEntities.getNameConditioner())
+                .maintenance(maintenanceDto)
+                .lastTypeMaintenanceDate(forPlanningEntities.getLastTypeMaintenanceDate())
+                .nextTypeMaintenanceDate(forPlanningEntities.getNextTypeMaintenanceDate())
+                .place(forPlanningEntities.getPlace())
+                .build();
     }
 
     private TypeMaintenanceForDto maintenanceToDto(TypeMaintenanceEntity typeMaintenance) {
-         return modelMapper.map(typeMaintenance, TypeMaintenanceForDto.class);
+        return modelMapper.map(typeMaintenance, TypeMaintenanceForDto.class);
     }
+
+
 }

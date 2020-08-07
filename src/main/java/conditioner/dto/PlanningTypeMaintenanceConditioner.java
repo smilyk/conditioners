@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 @Builder
 public class PlanningTypeMaintenanceConditioner {
+    String uuidRecords;
     String uuidConditioner;
     String nameConditioner;
     String inventoryNumber;
