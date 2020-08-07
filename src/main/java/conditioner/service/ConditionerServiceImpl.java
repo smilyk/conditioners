@@ -130,6 +130,9 @@ public class ConditionerServiceImpl {
             conditionerEntity.setStart(true);
             conditionerEntity.setStartDate(LocalDateTime.now());
             conditionerRepository.save(conditionerEntity);
+            /**
+             * making record to table for planning
+             */
             createForPlanningTypeMaintenance(conditionerEntity);
             LOGGER.info(Messages.CHECK_UNIQUE_CONDITIONER + conditionerEntity.getInventoryNumber() +
                     Messages.STARTED_WORK);
@@ -184,6 +187,7 @@ public class ConditionerServiceImpl {
                     .nextTypeMaintenanceDate(nextTypeMaintenancy)
                     .place(conditionerEntity.getPlace())
                     .uuidConditioner(conditionerEntity.getUuidConditioner())
+                    .uuidTypeMaintenance(entity.getUuidTypeMaintenance())
                     .uuidRecord(utils.createRandomUuid())
                     .build();
             forPlanningTypeMaintenanceRepository.save(en);
@@ -211,13 +215,13 @@ public class ConditionerServiceImpl {
         }
         return optionalConditionerEntity;
     }
-
-    public List<ConditionerDto> getConditionersForPlanning(DatesForPlanningDto dates) {
-// TODO проверяем, есть ли уже в таблице выполненных работ или в таблице планируемых работа такой кондиционер
-//        TODO
-//        Optional<List<ConditionerDto>> conditionerDtos = conditionerRepository.
-        return null;
-    }
+//
+//    public List<ConditionerDto> getConditionersForPlanning(DatesForPlanningDto dates) {
+//// TODO проверяем, есть ли уже в таблице выполненных работ или в таблице планируемых работа такой кондиционер
+////        TODO
+////        Optional<List<ConditionerDto>> conditionerDtos = conditionerRepository.
+//        return null;
+//    }
 
     public List<ConditionerDto> getAllNotStartedConditioner() {
         List<ConditionerEntity> notStartedConditioners = conditionerRepository.findByStart(false);

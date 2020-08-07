@@ -25,6 +25,9 @@ public class ForPlanningTypeMaintenanceEntity extends BaseEntity implements Seri
     @Column(nullable = false, length = 50)
     private String uuidConditioner;
 
+    @Column(nullable = false, length = 50)
+    private String uuidTypeMaintenance;
+
     @Column(nullable = false, length = 100)
     private String nameConditioner;
 

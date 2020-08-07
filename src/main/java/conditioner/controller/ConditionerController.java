@@ -54,11 +54,11 @@ public class ConditionerController {
         return conditionerService.addTypeMaintenanceToConditioner(conditionerUuid, typeMaintenanceUuid);
     }
 
-    @GetMapping("/for-planning")
-    public List<ConditionerDto> getConditionersForPlanning(@RequestBody DatesForPlanningDto dates){
-        validationService.checkDatesForPlanning(dates);
-        return conditionerService.getConditionersForPlanning(dates);
-    }
+//    @GetMapping("/for-planning")
+//    public List<ConditionerDto> getConditionersForPlanning(@RequestBody DatesForPlanningDto dates){
+//        validationService.checkDatesForPlanning(dates);
+//        return conditionerService.getConditionersForPlanning(dates);
+//    }
 
     @GetMapping("/not-start")
     public List<ConditionerDto> getAllNotStartedConditioners(){
