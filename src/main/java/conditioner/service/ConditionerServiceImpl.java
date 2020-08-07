@@ -118,6 +118,9 @@ public class ConditionerServiceImpl {
         );
         if (optionalConditionerEntity.isPresent()) {
             ConditionerEntity conditionerEntity = optionalConditionerEntity.get();
+            if(conditionerEntity.getMaintenance().size() == 0){
+                LOGGER.info(Messages.CONDITIONER_WITHOUT_TYPE_MAINTENANCE + conditionerEntity.getUuidConditioner());
+            }
             if (conditionerEntity.getStart()) {
                 LOGGER.info(Messages.CHECK_UNIQUE_CONDITIONER + conditionerEntity.getInventoryNumber() +
                         Messages.WORKING_NOW);
@@ -223,8 +226,13 @@ public class ConditionerServiceImpl {
                 .map(
                         this::conditionerToDto)
                 .collect(Collectors.toList());
+        if(conditionerDtoList.size() ==0 ){
+            LOGGER.info(Messages.NOT_STARTED + Messages.CONDITIONER + Messages.NOT_FOUND);
+            return conditionerDtoList;
+        }
+        LOGGER.info(Messages.NOT_STARTED + Messages.CONDITIONER + Messages.FOUND +
+                conditionerDtoList);
         return conditionerDtoList;
-//        TODO Logger
     }
 
     public List<ConditionerDto> getAllNotTypeMaintenanceConditioners() {
@@ -232,6 +240,12 @@ public class ConditionerServiceImpl {
         List<ConditionerDto> conditionerDtoList = allConditioners.stream().filter(
                 x -> x.getMaintenance().size() == 0
         ).map(this::conditionerToDto).collect(Collectors.toList());
+        if(conditionerDtoList.size() ==0 ){
+            LOGGER.info(  Messages.CONDITIONER + Messages.WITHOUT_TYPE_MAINTENANCE + Messages.NOT_FOUND);
+            return conditionerDtoList;
+        }
+        LOGGER.info(Messages.CONDITIONER + Messages.WITHOUT_TYPE_MAINTENANCE + Messages.NOT_FOUND +
+                conditionerDtoList);
         return conditionerDtoList;
 //        TODO LOGGER
     }

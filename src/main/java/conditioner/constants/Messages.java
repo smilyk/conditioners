@@ -18,4 +18,9 @@ public class Messages {
     public static final String SHOULD_BE_BEFORE = " should be befor ";
     public static final String RECORD_FOR_PLANNING = " records for planning for ";
     public static final String CREATED = " created ";
+    public static final String CONDITIONER_WITHOUT_TYPE_MAINTENANCE =" you can not start conditioner without Type" +
+            "Maintenance" ;
+    public static final String NOT_STARTED = " not started ";
+    public static final String FOUND = " found ";
+    public static final String WITHOUT_TYPE_MAINTENANCE = " without type maintenance";
 }
