@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 
 public interface ForPlanningTypeMaintenanceRepository extends JpaRepository<ForPlanningTypeMaintenanceEntity, Long> {
@@ -20,4 +21,6 @@ public interface ForPlanningTypeMaintenanceRepository extends JpaRepository<ForP
             nativeQuery = true)
     List<ForPlanningTypeMaintenanceEntity> getAllPlanningTypeMaintenanceConditioners(
             @Param("from") LocalDateTime startDate, @Param("to") LocalDateTime finishDate);
+
+    Optional<ForPlanningTypeMaintenanceEntity> findByUuidRecord(String planningRecordUuid);
 }

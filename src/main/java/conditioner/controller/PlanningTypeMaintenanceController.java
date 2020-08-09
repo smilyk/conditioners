@@ -1,17 +1,15 @@
 package conditioner.controller;
 
 import conditioner.dto.DatesForPlanningDto;
+import conditioner.dto.PlannedTypeMaintenanceDto;
+import conditioner.service.PlanedService;
 import conditioner.service.PlanningService;
 import conditioner.dto.PlanningTypeMaintenanceConditioner;
 import conditioner.service.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -23,6 +21,9 @@ public class PlanningTypeMaintenanceController{
 
     @Autowired
     ValidationService validationService;
+
+    @Autowired
+    PlanedService planedService;
 
     @GetMapping("/missed")
     public List<PlanningTypeMaintenanceConditioner> getAllConditionerWithMissedTypeMaintenance(){
@@ -47,5 +48,11 @@ public class PlanningTypeMaintenanceController{
         return planningService.getAllForPlanning(dates);
     }
 
+
+    @PostMapping("/plan")
+    public String plannedTypeMaintenance(@RequestBody PlannedTypeMaintenanceDto
+                                                                        plannedTypeMaintenanceDto){
+        return planedService.toPlanTypeMaintenance(plannedTypeMaintenanceDto);
+    }
 
 }

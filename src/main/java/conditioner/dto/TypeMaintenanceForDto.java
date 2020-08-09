@@ -18,6 +18,9 @@ public class TypeMaintenanceForDto {
 
     private Boolean deleted = false;
 
+    /**
+     * сколько часов нужно ортработать до следущего ТО
+     */
     private Integer hoursBeforeTypeMaintenance;
 
 }
