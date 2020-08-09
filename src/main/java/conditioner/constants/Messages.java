@@ -24,4 +24,8 @@ public class Messages {
     public static final String FOUND = " found ";
     public static final String WITHOUT_TYPE_MAINTENANCE = " without type maintenance";
     public static final String USER_WITH_EMAIL = " user with email: ";
+    public static final String UPDATED = " was updated ";
+    public static final String BUSY_WORKER = " hours of work for manager ";
+    public static final String DATE_OF_START_WORK = " work planning from ";
+    public static final String DATE_OF_FINISH_WORK = " to ";
 }

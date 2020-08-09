@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
-
     private static final Logger LOGGER = LogManager.getLogger(UserService.class);
     private ObjectMapper mapper = new ObjectMapper();
     private ModelMapper modelMapper = new ModelMapper();

@@ -51,7 +51,7 @@ public class PlanningService {
                 forPlanningEntities.getUuidTypeMaintenance(), false
         );
         if (!maintenance.isPresent()) {
-//            TODO error
+
         }
         TypeMaintenanceForDto maintenanceDto = maintenanceToDto(maintenance.get());
         PlanningTypeMaintenanceConditioner missedCond = getPlanningTypeMaintenanceConditioner(forPlanningEntities,
