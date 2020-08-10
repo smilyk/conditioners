@@ -28,4 +28,5 @@ public class Messages {
     public static final String BUSY_WORKER = " hours of work for manager ";
     public static final String DATE_OF_START_WORK = " work planning from ";
     public static final String DATE_OF_FINISH_WORK = " to ";
+    public static final String FREE_WORKERS = " free workers: ";
 }

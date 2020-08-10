@@ -1,9 +1,9 @@
 package conditioner.controller;
 
-import conditioner.dto.DatesForPlanningDto;
+import conditioner.dto.RequestForBusyWorkersDto;
 import conditioner.dto.UserDetailsRequestModel;
 import conditioner.dto.UserDto;
-import conditioner.model.UserEntity;
+import conditioner.dto.WorkerDto;
 import conditioner.service.UserService;
 import conditioner.service.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @GetMapping("/all-not-busy")
-    public List<UserDto> getUser(@RequestBody DatesForPlanningDto dates){
-        return userService.getAllNotBusyUsers(dates);
+    public List<WorkerDto> getUser(@RequestBody RequestForBusyWorkersDto request){
+        return userService.getAllNotBusyUsers(request);
     }
 }

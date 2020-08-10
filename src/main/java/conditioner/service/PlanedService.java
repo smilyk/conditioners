@@ -62,7 +62,8 @@ public class PlanedService {
         //получение даты окончания работ
         LocalDateTime finishTime = getFinishDate(plannedTypeMaintenanceDto);
         //получили данные ТО
-        TypeMaintenanceEntity typeMaintenanceEntity = getTypeMaintenanceEntity(plannedTypeMaintenanceDto);
+        TypeMaintenanceEntity typeMaintenanceEntity = getTypeMaintenanceEntity(plannedTypeMaintenanceDto
+                .getTypeMaintenance().getUuidTypeMaintenance());
         //добавили запись в таблицу занятых работников
         addWorkersToBusyWorkersTable(plannedTypeMaintenanceDto, finishTime);
        // обновили запись в таблице - для планирования
@@ -138,7 +139,8 @@ public class PlanedService {
 
     private LocalDateTime getFinishDate(PlannedTypeMaintenanceDto plannedTypeMaintenanceDto) {
 
-        TypeMaintenanceEntity typeMaintenanceEntity = getTypeMaintenanceEntity(plannedTypeMaintenanceDto);
+        TypeMaintenanceEntity typeMaintenanceEntity = getTypeMaintenanceEntity(plannedTypeMaintenanceDto
+                .getTypeMaintenance().getUuidTypeMaintenance());
 
         int howTimeShouldWork = typeMaintenanceEntity.getPeopleHours()
                 / plannedTypeMaintenanceDto.getWorkers().size();
@@ -148,6 +150,15 @@ public class PlanedService {
         //        сколько времени осталось до конца рабочего дня т е сколько отработал сегодня
         int timeSpend = howTimeShouldWork - (workDayFinishTime - startHours);
         int countWorkedDays = 1;
+        //время начала
+        LocalDateTime startTime = plannedTypeMaintenanceDto.getStartTime();
+        LocalDateTime finishTime = createFinishTime(startTime, timeSpend, countWorkedDays);
+        LOGGER.info(Messages.DATE_OF_START_WORK + startTime + "," +
+                Messages.DATE_OF_FINISH_WORK + finishTime.toLocalDate());
+        return createFinishTime(startTime, timeSpend, countWorkedDays);
+    }
+
+    public LocalDateTime createFinishTime(LocalDateTime startTime, int timeSpend, int countWorkedDays) {
         while (timeSpend >= howHoursWorkInDay) {
 
 //        сколько времени осталось на завтра
@@ -156,27 +167,27 @@ public class PlanedService {
         }
         LocalDateTime finishTime = null;
         if (timeSpend == 0) {
-            finishTime = plannedTypeMaintenanceDto.getStartTime().toLocalDate().atStartOfDay()
+            finishTime = startTime.toLocalDate().atStartOfDay()
                     .plusDays(countWorkedDays).minusDays(1).plusHours(workDayFinishTime);
         } else {
-            finishTime = plannedTypeMaintenanceDto.getStartTime().toLocalDate().atStartOfDay()
+            finishTime = startTime.toLocalDate().atStartOfDay()
                     .plusDays(countWorkedDays).plusHours(timeSpend + workDayStartTime);
         }
-        LOGGER.info(Messages.DATE_OF_START_WORK + plannedTypeMaintenanceDto.getStartTime()+ "," +
-                Messages.DATE_OF_FINISH_WORK + finishTime.toLocalDate());
+//        LOGGER.info(Messages.DATE_OF_START_WORK + startTime + "," +
+//                Messages.DATE_OF_FINISH_WORK + finishTime.toLocalDate());
         return finishTime;
     }
 
-    private TypeMaintenanceEntity getTypeMaintenanceEntity(PlannedTypeMaintenanceDto plannedTypeMaintenanceDto) {
+    public TypeMaintenanceEntity getTypeMaintenanceEntity(String uuidTypeMaintenance ) {
         TypeMaintenanceEntity typeMaintenanceEntity = typeMaintenanceRepository
-                .findByUuidTypeMaintenance(plannedTypeMaintenanceDto.getTypeMaintenance().getUuidTypeMaintenance())
+                .findByUuidTypeMaintenance(uuidTypeMaintenance)
                 .orElse(null);
         if (typeMaintenanceEntity == null) {
             LOGGER.error(Messages.CHECK_UNIQUE_TYPE_MAINTENANCE +
-                    plannedTypeMaintenanceDto.getTypeMaintenance().getUuidTypeMaintenance() +
+                    uuidTypeMaintenance +
                     Messages.NOT_FOUND);
             throw new ConditionerException(Messages.CHECK_UNIQUE_TYPE_MAINTENANCE +
-                    plannedTypeMaintenanceDto.getTypeMaintenance().getUuidTypeMaintenance() +
+                    uuidTypeMaintenance +
                     Messages.NOT_FOUND);
         }
         return typeMaintenanceEntity;
