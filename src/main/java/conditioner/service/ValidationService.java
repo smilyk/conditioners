@@ -7,9 +7,11 @@ import conditioner.dto.TypeMaintenanceDto;
 import conditioner.dto.UserDetailsRequestModel;
 import conditioner.exceptions.ConditionerException;
 import conditioner.model.ConditionerEntity;
+import conditioner.model.InWorkEntity;
 import conditioner.model.TypeMaintenanceEntity;
 import conditioner.model.UserEntity;
 import conditioner.repository.ConditionerRepository;
+import conditioner.repository.InWorkRepository;
 import conditioner.repository.TypeMaintenanceRepository;
 import conditioner.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
@@ -31,20 +33,22 @@ public class ValidationService {
     TypeMaintenanceRepository typeMaintenanceRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    InWorkRepository inWorkRepository;
 
     public void validConditioner(ConditionerDto conditionerDto) {
         String field = "Name of conditioner";
-        if(conditionerDto.getNameConditioner().equals("")){
+        if (conditionerDto.getNameConditioner().equals("")) {
             LOGGER.error(field + Messages.CAN_NOT_BE_EMPTY);
             throw new ConditionerException(field + Messages.CAN_NOT_BE_EMPTY);
         }
         field = " Inventory number";
-        if (conditionerDto.getInventoryNumber().equals("")){
+        if (conditionerDto.getInventoryNumber().equals("")) {
             LOGGER.error(field + Messages.CAN_NOT_BE_EMPTY);
             throw new ConditionerException(field + Messages.CAN_NOT_BE_EMPTY);
         }
         field = "Place";
-        if (conditionerDto.getPlace().equals("")){
+        if (conditionerDto.getPlace().equals("")) {
             LOGGER.error(field + Messages.CAN_NOT_BE_EMPTY);
             throw new ConditionerException(field + Messages.CAN_NOT_BE_EMPTY);
         }
@@ -52,7 +56,7 @@ public class ValidationService {
 
     public void validUniqConditioner(String inventoryNumber) {
         Optional<ConditionerEntity> entity = conditionerRepository.findByInventoryNumber(inventoryNumber);
-        if(entity.isPresent()){
+        if (entity.isPresent()) {
             LOGGER.error(Messages.CHECK_UNIQUE_CONDITIONER + inventoryNumber + Messages.EXISTS);
             throw new ConditionerException(Messages.CHECK_UNIQUE_CONDITIONER + inventoryNumber + Messages.EXISTS);
         }
@@ -62,19 +66,18 @@ public class ValidationService {
     public void validTypeMaintenance(TypeMaintenanceDto typeMaintenanceDto) {
         Optional<TypeMaintenanceEntity> typeMaintenanceEntity = typeMaintenanceRepository
                 .findByNameMaintenanceAndPeopleHours(
-                typeMaintenanceDto.getNameMaintenance(), typeMaintenanceDto.getPeopleHours()
-        );
-        if(typeMaintenanceEntity.isPresent()){
+                        typeMaintenanceDto.getNameMaintenance(), typeMaintenanceDto.getPeopleHours()
+                );
+        if (typeMaintenanceEntity.isPresent()) {
             LOGGER.error(Messages.CHECK_UNIQUE_TYPE_MAINTENANCE + typeMaintenanceDto.getNameMaintenance()
-            + Messages.EXISTS);
+                    + Messages.EXISTS);
             throw new ConditionerException(Messages.CHECK_UNIQUE_TYPE_MAINTENANCE + typeMaintenanceDto.getNameMaintenance()
                     + Messages.EXISTS);
         }
     }
 
     public void checkDatesForPlanning(DatesForPlanningDto dates) {
-        if(!dates.getStartDate().isBefore(dates.getFinishDate()))
-             {
+        if (!dates.getStartDate().isBefore(dates.getFinishDate())) {
             LOGGER.error(Messages.DATES_NOT_RELEVANT + dates.getStartDate() + Messages.SHOULD_BE_BEFORE +
                     dates.getFinishDate());
             throw new ConditionerException(Messages.DATES_NOT_RELEVANT + dates.getStartDate() + Messages.SHOULD_BE_BEFORE +
@@ -84,7 +87,7 @@ public class ValidationService {
 
     public void validUser(UserDetailsRequestModel user) {
         Optional<UserEntity> userEntityOptional = userRepository.findByEmail(user.getEmail());
-        if (userEntityOptional.isPresent()){
+        if (userEntityOptional.isPresent()) {
             LOGGER.error(Messages.USER_WITH_EMAIL + user.getEmail() + Messages.EXISTS);
             throw new ConditionerException(Messages.USER_WITH_EMAIL + user.getEmail() + Messages.EXISTS);
         }
@@ -92,9 +95,21 @@ public class ValidationService {
 
     public void checkWorker(String workersUuid) {
         Optional<UserEntity> userServiceOptional = userRepository.findByUserUuid(workersUuid);
-        if(!userServiceOptional.isPresent()){
+        if (!userServiceOptional.isPresent()) {
             LOGGER.error(Messages.USER_WITH_UUID + workersUuid + Messages.NOT_FOUND);
             throw new ConditionerException(Messages.USER_WITH_UUID + workersUuid + Messages.NOT_FOUND);
         }
+    }
+
+    public InWorkEntity checkWorkerAndRecord(String recordUuid, String workerUuid) {
+        InWorkEntity inWorkEntity = inWorkRepository.findByWorkersUuidAndRecordsUuid(workerUuid, recordUuid);
+        if (inWorkEntity == null) {
+            LOGGER.error(Messages.WORKER_WITH_ID + workerUuid + " or " + Messages.GET_IN_WORK_RECORD + recordUuid +
+                    Messages.NOT_FOUND);
+            throw new ConditionerException(Messages.WORKER_WITH_ID + workerUuid + " or " + Messages.GET_IN_WORK_RECORD
+                    + recordUuid +
+                    Messages.NOT_FOUND);
+        }
+        return inWorkEntity;
     }
 }

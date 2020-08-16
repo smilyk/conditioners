@@ -23,4 +23,9 @@ public interface InWorkRepository extends JpaRepository<InWorkEntity, Long> {
     List<InWorkEntity> findByWorkersUuidAndDate(@Param("workerUuid") String workerUuid,
                                                 @Param("from") LocalDateTime startDate,
                                                 @Param("to") LocalDateTime finishDate);
+
+    @Query(value = "SELECT * FROM conditioner.in_work where first_worker_uuid=:workerUuid or\n" +
+            "second_worker_uuid=:workerUuid and records_uuid=:recordUuid", nativeQuery = true)
+    InWorkEntity findByWorkersUuidAndRecordsUuid(@Param("workerUuid")String workerUuid,
+                                                 @Param("recordUuid")String recordUuid);
 }

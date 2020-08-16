@@ -47,4 +47,14 @@ public class WorkersController {
         return workersService.getAllRecordsForWork(dates, workerUuid);
     }
 
+    @PutMapping("/{recordUuid}/{workerUuid}")
+    public WorkersTypeMaintenanceResponseDto makeTypeMaintenanceInWork( @PathVariable String recordUuid,
+                                                                        @PathVariable String workerUuid){
+        /**
+         * проверка - может ли этот работник брать в работу эту запись
+         */
+       validationService.checkWorkerAndRecord(recordUuid, workerUuid);
+       return workersService.getTypeMaintenanceInWork(recordUuid, workerUuid);
+    }
+
 }

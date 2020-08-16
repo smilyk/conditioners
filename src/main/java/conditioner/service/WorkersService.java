@@ -38,6 +38,8 @@ public class WorkersService {
     UserRepository userRepository;
     @Autowired
     TypeMaintenanceRepository typeMaintenanceRepository;
+    @Autowired
+    ValidationService validationService;
 
     public List<WorkersTypeMaintenanceResponseDto> getAllConditionerWithMissedTypeMaintenance(String workersUuid) {
         LocalDateTime now = LocalDateTime.now();
@@ -57,6 +59,16 @@ public class WorkersService {
                 .map(this::getWorkersTypeMaintenanceResponseDtoFromInWorkEntity).collect(Collectors.toList());
         LOGGER.info(Messages.RECORDS_FOR_GETTING_IN_WORK);
         return plannedTypeMaintenanceDto;
+    }
+
+    public WorkersTypeMaintenanceResponseDto getTypeMaintenanceInWork(String recordUuid, String workerUuid) {
+        InWorkEntity inWorkEntity = validationService.checkWorkerAndRecord(recordUuid, workerUuid);
+        inWorkEntity.setIn_work(true);
+        inWorkRepository.save(inWorkEntity);
+        WorkersTypeMaintenanceResponseDto workersTypeMaintenanceResponseDto =
+                getWorkersTypeMaintenanceResponseDtoFromInWorkEntity(inWorkEntity);
+        LOGGER.info(Messages.WORKER_WITH_ID + workerUuid + Messages.GET_IN_WORK_RECORD + Messages.WITH_ID + recordUuid);
+        return workersTypeMaintenanceResponseDto;
     }
 
     private WorkersTypeMaintenanceResponseDto getWorkersTypeMaintenanceResponseDtoFromInWorkEntity(InWorkEntity inWorkEntity) {
