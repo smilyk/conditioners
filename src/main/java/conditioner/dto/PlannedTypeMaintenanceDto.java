@@ -1,5 +1,6 @@
 package conditioner.dto;
 
+import conditioner.model.InWorkEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -20,5 +21,6 @@ public class PlannedTypeMaintenanceDto {
     private String place;
     private TypeMaintenanceForDto typeMaintenance;
     private String planningRecordUuid;
+
 
 }

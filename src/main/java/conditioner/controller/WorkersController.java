@@ -1,37 +1,36 @@
 package conditioner.controller;
 
 import conditioner.dto.DatesForPlanningDto;
-import conditioner.dto.PlannedTypeMaintenanceDto;
-import conditioner.service.PlanedService;
-import conditioner.service.PlanningService;
 import conditioner.dto.PlanningTypeMaintenanceConditioner;
+import conditioner.dto.response.WorkersTypeMaintenanceResponseDto;
 import conditioner.service.ValidationService;
+import conditioner.service.WorkersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 @RestController
-@RequestMapping("/planning")
-public class PlanningTypeMaintenanceController{
+@RequestMapping("/workers")
+public class WorkersController {
 
     @Autowired
-    PlanningService planningService;
-
+    WorkersService workersService;
     @Autowired
     ValidationService validationService;
+    
+   @GetMapping("/missed/{workerUuid}")
+   public List<WorkersTypeMaintenanceResponseDto> getAllConditionerWithMissedTypeMaintenance(
+           @PathVariable String workerUuid){
+       validationService.checkWorker(workerUuid);
+       return workersService.getAllConditionerWithMissedTypeMaintenance(workerUuid);
+   }
 
-    @Autowired
-    PlanedService planedService;
-
-    @GetMapping("/missed")
-    public List<PlanningTypeMaintenanceConditioner> getAllConditionerWithMissedTypeMaintenance(){
-        return planningService.getAllConditionerWithMissedTypeMaintenance();
-    }
-
-    @PostMapping()
-    public List<PlanningTypeMaintenanceConditioner> getAllForPlanning(@RequestBody DatesForPlanningDto dates){
+    @PostMapping("/{workerUuid}")
+    public List<WorkersTypeMaintenanceResponseDto> getAllRecordsForWork(@RequestBody DatesForPlanningDto dates,
+                                                                        @PathVariable String workerUuid){
         /**
          * startDate == null ->  запрос на следующие Т дней (до конечной даты)
          * startDate and finishDate == null -> запрос на сегодня
@@ -45,14 +44,7 @@ public class PlanningTypeMaintenanceController{
         if(!dates.getStartDate().equals(dates.getFinishDate())){
             validationService.checkDatesForPlanning(dates);
         }
-        return planningService.getAllForPlanning(dates);
-    }
-
-
-    @PostMapping("/plan")
-    public String plannedTypeMaintenance(@RequestBody PlannedTypeMaintenanceDto
-                                                                        plannedTypeMaintenanceDto){
-        return planedService.toPlanTypeMaintenance(plannedTypeMaintenanceDto);
+        return workersService.getAllRecordsForWork(dates, workerUuid);
     }
 
 }

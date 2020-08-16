@@ -89,4 +89,12 @@ public class ValidationService {
             throw new ConditionerException(Messages.USER_WITH_EMAIL + user.getEmail() + Messages.EXISTS);
         }
     }
+
+    public void checkWorker(String workersUuid) {
+        Optional<UserEntity> userServiceOptional = userRepository.findByUserUuid(workersUuid);
+        if(!userServiceOptional.isPresent()){
+            LOGGER.error(Messages.USER_WITH_UUID + workersUuid + Messages.NOT_FOUND);
+            throw new ConditionerException(Messages.USER_WITH_UUID + workersUuid + Messages.NOT_FOUND);
+        }
+    }
 }

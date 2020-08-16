@@ -1,7 +1,6 @@
 package conditioner.repository;
 
 import conditioner.enums.RoleEnum;
-import conditioner.model.ConditionerEntity;
 import conditioner.model.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,4 +13,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByEmail(String email);
 
     List<UserEntity> findByRole(RoleEnum role);
+
+    Optional<UserEntity> findByUserUuid(String workersUuid);
 }
