@@ -141,7 +141,7 @@
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>1.4.9</version>
+                <version>1.4.7</version>
                 <executions>
                     <execution>
                         <id>default</id>
@@ -152,9 +152,10 @@
                         </goals>
                     </execution>
                 </executions>
-
-                    <configuration>
-                        <repository>${docker.image.prefix}/${project.artifactId}</repository>
+                <configuration>
+                    <repository>${docker.image.prefix}/${project.artifactId}</repository>
+                    <registryUrl>https://index.docker.io:443/v1/</registryUrl>
+                    <serverId>index.docker.io</serverId>
                 </configuration>
             </plugin>
             <!-- maven-dependency-plugin useful for creating docker image -->

@@ -6,3 +6,5 @@
 
 
 [![Build Status](https://travis-ci.com/smilyk/conditioners.svg)](https://travis-ci.com/smilyk/conditioners.svg)
+
+![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/smilyk/conditioners)
