@@ -35,4 +35,7 @@ public class Messages {
     public static final String WORKER_WITH_ID = " worker with id: ";
     public static final String GET_IN_WORK_RECORD = " planning record ";
     public static final String FINISHED = " finish type maintenance with record number: ";
+    public static final String LIST = " list";
+    public static final String MISSED_TYPE = " missed date of Type Maintenance";
+    public static final String FOR_PLANNING = " planned";
 }

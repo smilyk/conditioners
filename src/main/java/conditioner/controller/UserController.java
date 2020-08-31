@@ -9,6 +9,7 @@ import conditioner.service.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,7 +23,7 @@ public class UserController {
     ValidationService validationService;
     
     @PostMapping()
-    public UserDto createUser(@RequestBody UserDetailsRequestModel user){
+    public UserDto createUser(@Valid @RequestBody UserDetailsRequestModel user){
         validationService.validUser(user);
         return userService.createUser(user);
     }

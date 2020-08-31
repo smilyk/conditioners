@@ -1,13 +1,8 @@
 package conditioner.dto;
 
-import conditioner.model.ConditionerEntity;
 import lombok.*;
 
-
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor

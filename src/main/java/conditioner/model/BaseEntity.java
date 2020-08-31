@@ -1,13 +1,11 @@
 package conditioner.model;
+
 import lombok.Data;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 
 @MappedSuperclass
 @Data
@@ -25,8 +23,7 @@ public class BaseEntity {
     public void onPersist() {
         final DateTime nowDt = new DateTime(DateTimeZone.UTC);
         final LocalDateTime current = LocalDateTime.now();
-//
-//                new Date(nowDt.getMillis());
+
         setCreateDate(current);
         setUpdateDate(current);
     }

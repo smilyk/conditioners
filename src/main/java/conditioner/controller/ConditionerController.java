@@ -1,10 +1,11 @@
 package conditioner.controller;
-import conditioner.dto.DatesForPlanningDto;
-import conditioner.service.ConditionerServiceImpl;
+
 import conditioner.dto.ConditionerDto;
+import conditioner.service.ConditionerServiceImpl;
 import conditioner.service.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.List;
 
@@ -54,19 +55,9 @@ public class ConditionerController {
         return conditionerService.addTypeMaintenanceToConditioner(conditionerUuid, typeMaintenanceUuid);
     }
 
-//    @GetMapping("/for-planning")
-//    public List<ConditionerDto> getConditionersForPlanning(@RequestBody DatesForPlanningDto dates){
-//        validationService.checkDatesForPlanning(dates);
-//        return conditionerService.getConditionersForPlanning(dates);
-//    }
-
     @GetMapping("/not-start")
     public List<ConditionerDto> getAllNotStartedConditioners(){
         return conditionerService.getAllNotStartedConditioner();
     }
-
-
-
-
 
 }

@@ -2,10 +2,8 @@ package conditioner.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import conditioner.constants.Messages;
-import conditioner.dto.ConditionerDto;
 import conditioner.dto.TypeMaintenanceDto;
 import conditioner.exceptions.ConditionerException;
-import conditioner.model.ConditionerEntity;
 import conditioner.model.TypeMaintenanceEntity;
 import conditioner.repository.TypeMaintenanceRepository;
 import conditioner.utils.Utils;
@@ -78,6 +76,7 @@ public class MaintenanceServiceImpl {
         List<TypeMaintenanceEntity> typeMaintenanceEntities = typeMaintenanceRepository.findAll();
         List<TypeMaintenanceDto> typeMaintenanceDtos = typeMaintenanceEntities.stream()
                 .map(this::typeMaintenanceToDto).collect(Collectors.toList());
+        LOGGER.info(Messages.LIST + Messages.TYPE_MAINTENANCE + Messages.FOUND);
         return typeMaintenanceDtos;
 
     }

@@ -1,7 +1,5 @@
-package conditioner.dto.response;
+package conditioner.dto;
 
-import conditioner.dto.TypeMaintenanceForDto;
-import conditioner.dto.WorkerDto;
 import lombok.*;
 
 import java.time.LocalDateTime;

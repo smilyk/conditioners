@@ -3,7 +3,6 @@ package conditioner.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import conditioner.constants.Messages;
 import conditioner.dto.ConditionerDto;
-import conditioner.dto.DatesForPlanningDto;
 import conditioner.exceptions.ConditionerException;
 import conditioner.model.ConditionerEntity;
 import conditioner.model.ForPlanningTypeMaintenanceEntity;
@@ -12,16 +11,13 @@ import conditioner.repository.ConditionerRepository;
 import conditioner.repository.ForPlanningTypeMaintenanceRepository;
 import conditioner.repository.TypeMaintenanceRepository;
 import conditioner.utils.Utils;
-import org.apache.logging.log4j.message.MapMessage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,7 +41,7 @@ public class ConditionerServiceImpl {
 
 
     public ConditionerDto createConditioner(ConditionerDto conditionerDto) {
-
+        try {
 //        TODO написать проверку - существует ли то ТО которое собираются подключить к кондиционеру
         ConditionerEntity conditioner = conditionerDtoToEntity(conditionerDto);
         conditioner.setStart(false);
@@ -53,7 +49,6 @@ public class ConditionerServiceImpl {
         conditioner.setUuidConditioner(utils.createRandomUuid());
         String conditionerUuid = conditionerRepository.save(conditioner).getUuidConditioner();
         conditionerDto.setUuidConditioner(conditionerUuid);
-        try {
             LOGGER.info("Conditioner created {}", mapper.writeValueAsString(conditioner));
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
@@ -80,8 +75,10 @@ public class ConditionerServiceImpl {
     }
 
     public List<ConditionerDto> getAllConditioners() {
-        List<ConditionerEntity> conditionerEntities = conditionerRepository.findAll();
-        List<ConditionerDto> conditionerDtos = conditionerEntities.stream().map(this::conditionerToDto).collect(Collectors.toList());
+
+            List<ConditionerEntity> conditionerEntities = conditionerRepository.findAll();
+            List<ConditionerDto> conditionerDtos = conditionerEntities.stream().map(this::conditionerToDto).collect(Collectors.toList());
+            LOGGER.info(Messages.LIST + Messages.CONDITIONER + Messages.FOUND);
         return conditionerDtos;
     }
 
@@ -215,13 +212,7 @@ public class ConditionerServiceImpl {
         }
         return optionalConditionerEntity;
     }
-//
-//    public List<ConditionerDto> getConditionersForPlanning(DatesForPlanningDto dates) {
-//// TODO проверяем, есть ли уже в таблице выполненных работ или в таблице планируемых работа такой кондиционер
-////        TODO
-////        Optional<List<ConditionerDto>> conditionerDtos = conditionerRepository.
-//        return null;
-//    }
+
 
     public List<ConditionerDto> getAllNotStartedConditioner() {
         List<ConditionerEntity> notStartedConditioners = conditionerRepository.findByStart(false);
@@ -251,6 +242,5 @@ public class ConditionerServiceImpl {
         LOGGER.info(Messages.CONDITIONER + Messages.WITHOUT_TYPE_MAINTENANCE + Messages.NOT_FOUND +
                 conditionerDtoList);
         return conditionerDtoList;
-//        TODO LOGGER
     }
 }

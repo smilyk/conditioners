@@ -1,11 +1,8 @@
 package conditioner.dto;
 
-import conditioner.model.TypeMaintenanceEntity;
 import lombok.*;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor

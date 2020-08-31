@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import conditioner.constants.Messages;
 import conditioner.dto.DatesForPlanningDto;
 import conditioner.dto.WorkerDto;
-import conditioner.dto.response.WorkersTypeMaintenanceResponseDto;
+import conditioner.dto.WorkersTypeMaintenanceResponseDto;
 import conditioner.enums.TypeMaintenanceStatus;
 import conditioner.exceptions.ConditionerException;
 import conditioner.model.*;

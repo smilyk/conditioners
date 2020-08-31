@@ -1,8 +1,7 @@
 package conditioner.controller;
 
 import conditioner.dto.DatesForPlanningDto;
-import conditioner.dto.PlanningTypeMaintenanceConditioner;
-import conditioner.dto.response.WorkersTypeMaintenanceResponseDto;
+import conditioner.dto.WorkersTypeMaintenanceResponseDto;
 import conditioner.service.ValidationService;
 import conditioner.service.WorkersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +47,6 @@ public class WorkersController {
     }
 
     @PutMapping("/{recordUuid}/{workerUuid}")
-//    TODO разоюраться с записью и ее номером
     public WorkersTypeMaintenanceResponseDto makeTypeMaintenanceInWork(@PathVariable String recordUuid,
                                                                         @PathVariable String workerUuid){
         /**

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class DatesForPlanningDto {
+
     private LocalDateTime startDate;
     private LocalDateTime finishDate;
 }

@@ -1,8 +1,6 @@
 package conditioner.controller;
 
 
-
-import conditioner.dto.ConditionerDto;
 import conditioner.dto.TypeMaintenanceDto;
 import conditioner.service.MaintenanceServiceImpl;
 import conditioner.service.ValidationService;
