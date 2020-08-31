@@ -137,8 +137,9 @@
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
             </plugin>
-
-            <plugin>
+<!---->
+<!--pull to Docler-->
+                        <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>1.4.7</version>
@@ -153,9 +154,9 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>smilyk/conditioners</repository>
+                    <serverId>docker-hub</serverId>
                     <registryUrl>https://index.docker.io:443/v1/</registryUrl>
-                    <serverId>index.docker.io</serverId>
+                    <repository>${docker.image.prefix}/${project.artifactId}</repository>
                 </configuration>
             </plugin>
             <!-- maven-dependency-plugin useful for creating docker image -->
