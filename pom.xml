@@ -11,7 +11,7 @@
     <groupId>smilyks-team</groupId>
     <artifactId>conditioners</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>conditioner</name>
+    <name>conditioners</name>
     <description>conditioner project</description>
 
     <licenses>
