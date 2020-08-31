@@ -48,13 +48,24 @@ public class WorkersController {
     }
 
     @PutMapping("/{recordUuid}/{workerUuid}")
-    public WorkersTypeMaintenanceResponseDto makeTypeMaintenanceInWork( @PathVariable String recordUuid,
+//    TODO разоюраться с записью и ее номером
+    public WorkersTypeMaintenanceResponseDto makeTypeMaintenanceInWork(@PathVariable String recordUuid,
                                                                         @PathVariable String workerUuid){
         /**
          * проверка - может ли этот работник брать в работу эту запись
          */
        validationService.checkWorkerAndRecord(recordUuid, workerUuid);
        return workersService.getTypeMaintenanceInWork(recordUuid, workerUuid);
+    }
+
+    @PutMapping("/done/{recordUuid}/{workerUuid}")
+    public WorkersTypeMaintenanceResponseDto makeTypeMaintenanceInDone(@PathVariable String recordUuid,
+                                                                       @PathVariable String workerUuid){
+        /**
+         * проверка - может ли этот работник брать в работу эту запись
+         */
+        validationService.checkWorkerAndRecord(recordUuid, workerUuid);
+        return workersService.getTypeMaintenanceDone(recordUuid, workerUuid);
     }
 
 }

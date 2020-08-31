@@ -9,18 +9,21 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+
 @SpringBootApplication
 public class ConditionerApplication  implements ApplicationRunner {
 	private static final Logger logger = LogManager.getLogger(ConditionerApplication.class);
 
 	public static void main(String[] args) {
-
-
-
 		SpringApplication.run(ConditionerApplication.class, args);
 	}
 	@Override
-	public void run(ApplicationArguments applicationArguments) throws Exception {
+	public void run(ApplicationArguments applicationArguments){
 		logger.info("Logger start");
 	}
 

@@ -5,19 +5,20 @@ import conditioner.constants.Messages;
 import conditioner.dto.DatesForPlanningDto;
 import conditioner.dto.WorkerDto;
 import conditioner.dto.response.WorkersTypeMaintenanceResponseDto;
+import conditioner.enums.TypeMaintenanceStatus;
 import conditioner.exceptions.ConditionerException;
 import conditioner.model.*;
-import conditioner.repository.ConditionerRepository;
-import conditioner.repository.InWorkRepository;
-import conditioner.repository.TypeMaintenanceRepository;
-import conditioner.repository.UserRepository;
+import conditioner.repository.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,15 @@ public class WorkersService {
     private ObjectMapper mapper = new ObjectMapper();
     private ModelMapper modelMapper = new ModelMapper();
 
+    @Value("${work_day_start}")
+    private Integer workDayStartTime;
+
+    @Value("${work_dat_finish}")
+    private Integer workDayFinishTime;
+
+    @Value("${work_in_day}")
+    private Integer howHoursWorkInDay;
+
     @Autowired
     InWorkRepository inWorkRepository;
     @Autowired
@@ -38,6 +48,9 @@ public class WorkersService {
     UserRepository userRepository;
     @Autowired
     TypeMaintenanceRepository typeMaintenanceRepository;
+    @Autowired
+    ArchiveRepository archiveRepository;
+
     @Autowired
     ValidationService validationService;
 
@@ -64,6 +77,7 @@ public class WorkersService {
     public WorkersTypeMaintenanceResponseDto getTypeMaintenanceInWork(String recordUuid, String workerUuid) {
         InWorkEntity inWorkEntity = validationService.checkWorkerAndRecord(recordUuid, workerUuid);
         inWorkEntity.setIn_work(true);
+        inWorkEntity.setStartTime(LocalDateTime.now());
         inWorkRepository.save(inWorkEntity);
         WorkersTypeMaintenanceResponseDto workersTypeMaintenanceResponseDto =
                 getWorkersTypeMaintenanceResponseDtoFromInWorkEntity(inWorkEntity);
@@ -71,13 +85,72 @@ public class WorkersService {
         return workersTypeMaintenanceResponseDto;
     }
 
+    public WorkersTypeMaintenanceResponseDto getTypeMaintenanceDone(String recordUuid, String workerUuid) {
+//        получение записи о том, какую работу будем делать
+        InWorkEntity inWorkEntity = validationService.checkWorkerAndRecord(recordUuid, workerUuid);
+//        получение записи о ТО которое будет делаться
+        WorkersTypeMaintenanceResponseDto workersTypeMaintenanceResponseDto =
+                getWorkersTypeMaintenanceResponseDtoFromInWorkEntity(inWorkEntity);
+        LOGGER.info(Messages.WORKER_WITH_ID + workerUuid + Messages.FINISHED + recordUuid);
+//        создание архивной записи
+        createArchiveRecord(workersTypeMaintenanceResponseDto);
+//        удаление из таблицв, в которой хранятся задачи, которые должны быть в работе
+        inWorkRepository.delete(inWorkEntity);
+        return workersTypeMaintenanceResponseDto;
+    }
+
+    private void createArchiveRecord(WorkersTypeMaintenanceResponseDto workersTypeMaintenanceResponseDto) {
+//        в архиве должны храниться записи о том, сколько времени какой работник потратил на этот конкретный кондиционер
+        Integer hours = getWorkedHours(workersTypeMaintenanceResponseDto.getStartTimes());
+        ArchiveEntity archiveEntity = ArchiveEntity.builder()
+                .description("")
+                .firstWorkerUuid(workersTypeMaintenanceResponseDto.getWorkers().get(0).getUserUuid())
+                .secondWorkerUuid(workersTypeMaintenanceResponseDto.getWorkers().get(0).getUserUuid())
+                .inventoryNumber(workersTypeMaintenanceResponseDto.getInventoryNumber())
+                .nameConditioner(workersTypeMaintenanceResponseDto.getNameConditioner())
+                .place(workersTypeMaintenanceResponseDto.getPlace())
+                .startWorkTime(workersTypeMaintenanceResponseDto.getStartTimes())
+                .finishWorkTime(LocalDateTime.now())
+                .status(TypeMaintenanceStatus.FINISH)
+                .typeMaintenanceName(workersTypeMaintenanceResponseDto.getTypeMaintenanceName())
+                .workedHours(hours)
+                .build();
+        archiveRepository.save(archiveEntity);
+    }
+
+    private Integer getWorkedHours(LocalDateTime startTimes) {
+
+        LocalDateTime finishFirstDayHours = startTimes.toLocalDate().atTime(workDayFinishTime, 00, 00);
+        long hoursFirstDay = getHoursFirstOrLastDay(startTimes, finishFirstDayHours);
+        LocalDateTime startLastDayHourse = LocalDateTime.now().toLocalDate().atTime(workDayStartTime,
+                00, 00);
+        long hoursLastDay = getHoursFirstOrLastDay(startLastDayHourse, LocalDateTime.now());
+        Duration duration = Duration.between(startTimes, LocalDateTime.now());
+        long allWorkedDays = Math.abs(duration.toDays() -1);
+        long workByDay = workDayFinishTime - workDayStartTime;
+
+        return Math.toIntExact(((allWorkedDays * workByDay) + hoursFirstDay + hoursLastDay));
+    }
+
+    private long getHoursFirstOrLastDay(LocalDateTime startTimes, LocalDateTime finishTime) {
+        Duration firstDayWorked = Duration.between(startTimes, finishTime);
+//        сколько часов и минут отработано в первый день
+        long hours = Math.abs(firstDayWorked.toHours());
+        long minutes = Math.abs(firstDayWorked.toMinutes());
+        if (minutes % 60 >= 30) {
+            hours++;
+        }
+        return hours;
+    }
+
+
     private WorkersTypeMaintenanceResponseDto getWorkersTypeMaintenanceResponseDtoFromInWorkEntity(InWorkEntity inWorkEntity) {
         ConditionerEntity conditioner = findConditioner(inWorkEntity.getInventoryNumber());
         List<UserEntity> users = findUser(inWorkEntity.getFirstWorkerUuid(), inWorkEntity.getSecondWorkerUuid());
         List<WorkerDto> workers = workersFromUsers(users);
         TypeMaintenanceEntity typeMaintenance = findTypeMaintenancy(inWorkEntity.getTypeMaintenanceUuid());
 
-        WorkersTypeMaintenanceResponseDto rez = WorkersTypeMaintenanceResponseDto.builder()
+        return WorkersTypeMaintenanceResponseDto.builder()
                 .inventoryNumber(inWorkEntity.getInventoryNumber())
                 .nameConditioner(conditioner.getNameConditioner())
                 .place(conditioner.getPlace())
@@ -88,7 +161,6 @@ public class WorkersService {
                 .planningRecordsUuid(inWorkEntity.getRecordsUuid())
                 .build();
 
-        return rez;
     }
 
     private List<WorkerDto> workersFromUsers(List<UserEntity> users) {
@@ -96,6 +168,7 @@ public class WorkersService {
         for(UserEntity user : users){
             workers.add(
                     WorkerDto.builder()
+                            .userUuid(user.getUserUuid())
                             .firstName(user.getFirstName())
                             .lastName(user.getLastName())
                             .email(user.getEmail())

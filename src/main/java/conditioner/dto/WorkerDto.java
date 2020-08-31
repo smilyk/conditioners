@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 public class WorkerDto {
 
-    String userUuid;
+    private String userUuid;
 
     private String firstName;
 

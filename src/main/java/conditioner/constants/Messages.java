@@ -29,9 +29,10 @@ public class Messages {
     public static final String DATE_OF_START_WORK = " work planning from ";
     public static final String DATE_OF_FINISH_WORK = " to ";
     public static final String FREE_WORKERS = " free workers: ";
-    public static final String USER_WITH_UUID =  " user with uuid: ";;
+    public static final String USER_WITH_UUID =  " user with uuid: ";
     public static final String WITH_INVENTORY_NUMBER = " with inventory number: ";
     public static final String RECORDS_FOR_GETTING_IN_WORK = " records for workers (for getting in work) was got ";
     public static final String WORKER_WITH_ID = " worker with id: ";
     public static final String GET_IN_WORK_RECORD = " planning record ";
+    public static final String FINISHED = " finish type maintenance with record number: ";
 }

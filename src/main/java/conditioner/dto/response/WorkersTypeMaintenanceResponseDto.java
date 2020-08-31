@@ -18,7 +18,6 @@ import java.util.List;
 @Builder
 @ToString
 public class WorkersTypeMaintenanceResponseDto {
-
     String planningRecordsUuid;
     String nameConditioner;
     String inventoryNumber;
