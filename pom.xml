@@ -14,6 +14,30 @@
 	<name>conditioner</name>
 	<description>conditioner project</description>
 
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<email>smilyk1982@gmail.com</email>
+			<name>Natalya Khrebtiivsky</name>
+			<url>https://github.com/smilyk</url>
+			<id>smilyk</id>
+			<organization>smilyks-team</organization>
+		</developer>
+	</developers>
+
+	<organization>
+		<name>smilyk</name>
+		<url>https://github.com/smilyk/</url>
+	</organization>
+
+
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
@@ -104,29 +128,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<licenses>
-		<license>
-			<name>MIT License</name>
-			<url>http://www.opensource.org/licenses/mit-license.php</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-
-	<developers>
-		<developer>
-			<email>smilyk1982@gmail.com</email>
-			<name>smilyk</name>
-			<url>https://github.com/smilyk</url>
-			<id>smilyk</id>
-		</developer>
-
-	</developers>
-
-	<organization>
-		<name>smilyk</name>
-		<url>https://github.com/smilyk/</url>
-	</organization>
-
 
 </project>
