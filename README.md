@@ -10,7 +10,9 @@
 #
 #actuator
 http://localhost:8082/actuator
+https://conditioners.herokuapp.com/actuator
 #
 #Swagger
 http://localhost:8082/swagger-ui.html#/
+https://conditioners.herokuapp.com/swagger-ui.html#/conditioner-controller/getAllConditionersUsingGET
 #

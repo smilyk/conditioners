@@ -35,8 +35,8 @@ public class ConditionerEntity extends BaseEntity implements Serializable  {
     @Column
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
+            CascadeType.MERGE,
+    }, fetch=FetchType.EAGER)
     @JoinTable(name = "conditioner_type_maintenance",
             joinColumns = @JoinColumn(name = "conditioner_id"),
             inverseJoinColumns = @JoinColumn(name = "type_maintenance_id")
