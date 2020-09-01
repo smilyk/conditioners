@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/conditioner")
 @Api(value = "Conditioners", description = "methods that collect data about the conditioners ")

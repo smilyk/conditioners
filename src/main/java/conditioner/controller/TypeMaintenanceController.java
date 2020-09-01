@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/maintenance")
 @Api(value = "Type Maintenance", description = "methods that collect data about the conditioners ")
