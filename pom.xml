@@ -123,6 +123,10 @@
             <artifactId>spring-security-crypto</artifactId>
             <version>5.3.3.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
 
 
     </dependencies>
@@ -138,27 +142,27 @@
                 <artifactId>git-commit-id-plugin</artifactId>
             </plugin>
 <!---->
-<!--pull to Docler-->
-                        <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>1.4.7</version>
-                <executions>
-                    <execution>
-                        <id>default</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>build</goal>
-                            <goal>push</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <serverId>docker-hub</serverId>
-                    <registryUrl>https://index.docker.io:443/v1/</registryUrl>
-                    <repository>${docker.image.prefix}/${project.artifactId}</repository>
-                </configuration>
-            </plugin>
+<!--pull to Docker-->
+<!--                        <plugin>-->
+<!--                <groupId>com.spotify</groupId>-->
+<!--                <artifactId>dockerfile-maven-plugin</artifactId>-->
+<!--                <version>1.4.9</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>default</id>-->
+<!--                        <phase>install</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>build</goal>-->
+<!--                            <goal>push</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <configuration>-->
+<!--                    <serverId>docker-hub</serverId>-->
+<!--                    <registryUrl>https://index.docker.io:443/v1/</registryUrl>-->
+<!--                    <repository>${docker.image.prefix}/${project.artifactId}</repository>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
 
             <!-- jacoco-maven-plugin useful for Codecov -->
 
