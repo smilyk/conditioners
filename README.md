@@ -10,3 +10,7 @@
 #
 #actuator
 http://localhost:8082/actuator
+#
+#Swagger
+http://localhost:8082/swagger-ui.html#/
+#
