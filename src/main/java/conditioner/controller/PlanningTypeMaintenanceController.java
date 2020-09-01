@@ -6,6 +6,10 @@ import conditioner.service.PlanedService;
 import conditioner.service.PlanningService;
 import conditioner.dto.PlanningTypeMaintenanceConditioner;
 import conditioner.service.ValidationService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +18,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/planning")
+@Api(value = "Planning Types Maintenance", description = "methods that collect data about the types maintenance ")
+
 public class PlanningTypeMaintenanceController{
 
     @Autowired
@@ -25,11 +31,27 @@ public class PlanningTypeMaintenanceController{
     @Autowired
     PlanedService planedService;
 
+    @ApiOperation(value = "Getting all conditioners with missed date of type maintenance")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully get all conditioners with missed date of type maintenance"),
+//            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+//            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    }
+    )
     @GetMapping("/missed")
     public List<PlanningTypeMaintenanceConditioner> getAllConditionerWithMissedTypeMaintenance(){
         return planningService.getAllConditionerWithMissedTypeMaintenance();
     }
 
+    @ApiOperation(value = "Get  all conditioners for planning type maintenance")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully get all all conditioners for planning type maintenance"),
+//            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+//            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    }
+    )
     @PostMapping()
     public List<PlanningTypeMaintenanceConditioner> getAllForPlanning(@RequestBody DatesForPlanningDto dates){
         /**
@@ -48,7 +70,14 @@ public class PlanningTypeMaintenanceController{
         return planningService.getAllForPlanning(dates);
     }
 
-
+    @ApiOperation(value = "to plan conditioners for type maintenance")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully planned conditioners for type maintenance"),
+//            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+//            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    }
+    )
     @PostMapping("/plan")
     public String plannedTypeMaintenance(@RequestBody PlannedTypeMaintenanceDto
                                                                         plannedTypeMaintenanceDto){
