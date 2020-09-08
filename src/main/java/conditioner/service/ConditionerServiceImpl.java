@@ -59,7 +59,8 @@ public class ConditionerServiceImpl {
     }
 
     public ConditionerDto getConditionerById(String conditionerUuid) {
-        Optional<ConditionerEntity> optionalConditionerEntity = conditionerRepository.findByUuidConditionerAndDeleted(conditionerUuid, false);
+//        Optional<ConditionerEntity> optionalConditionerEntity = conditionerRepository.findByUuidConditionerAndDeleted(conditionerUuid, false);
+        Optional<ConditionerEntity> optionalConditionerEntity = conditionerRepository.findByUuidConditioner(conditionerUuid);
         if (!optionalConditionerEntity.isPresent()) {
             LOGGER.error(Messages.CONDITIONER + Messages.WITH_ID + conditionerUuid + Messages.NOT_FOUND);
             throw new ConditionerException(Messages.CONDITIONER + Messages.WITH_ID + conditionerUuid + Messages.NOT_FOUND);
