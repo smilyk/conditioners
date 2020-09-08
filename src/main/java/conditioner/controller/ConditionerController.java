@@ -60,7 +60,7 @@ public class ConditionerController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     }
     )
-    @GetMapping("/{conditionerInventoryNumber}")
+    @GetMapping("inv-number/{conditionerInventoryNumber}")
     public ConditionerDto getConditionerByInventoryNumber(@PathVariable String conditionerInventoryNumber){
         return conditionerService.getConditionerByInventoryNumber(conditionerInventoryNumber);
     }
