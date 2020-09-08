@@ -52,6 +52,19 @@ public class ConditionerController {
         return conditionerService.getConditionerById(conditionerUuid);
     }
 
+    @ApiOperation(value = "Getting a conditioner from DB by inventoryNumber")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully get conditioner"),
+//            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+//            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    }
+    )
+    @GetMapping("/{conditionerInventoryNumber}")
+    public ConditionerDto getConditionerByInventoryNumber(@PathVariable String conditionerInventoryNumber){
+        return conditionerService.getConditionerByInventoryNumber(conditionerInventoryNumber);
+    }
+
     @ApiOperation(value = "Getting all conditioners from DB")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully get all conditioners"),

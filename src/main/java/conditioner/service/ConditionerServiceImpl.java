@@ -58,6 +58,25 @@ public class ConditionerServiceImpl {
         return conditionerDto;
     }
 
+    public ConditionerDto getConditionerByInventoryNumber(String conditionerInventoryNumber) {
+        Optional<ConditionerEntity> optionalConditionerEntity = conditionerRepository
+                .findByInventoryNumber(conditionerInventoryNumber);
+        if (!optionalConditionerEntity.isPresent()) {
+            LOGGER.error(Messages.CONDITIONER + Messages.WITH_ID + conditionerInventoryNumber + Messages.NOT_FOUND);
+            throw new ConditionerException(Messages.CONDITIONER + Messages.WITH_ID
+                    + conditionerInventoryNumber + Messages.NOT_FOUND);
+        }
+        ConditionerEntity conditioner = optionalConditionerEntity.get();
+        ConditionerDto conditionerDto = conditionerToDto(conditioner);
+        try {
+            LOGGER.info("Conditioner with id {} found", conditionerInventoryNumber);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            throw new ConditionerException(e.getMessage());
+        }
+        return conditionerDto;
+    }
+
     public ConditionerDto getConditionerById(String conditionerUuid) {
 //        Optional<ConditionerEntity> optionalConditionerEntity = conditionerRepository.findByUuidConditionerAndDeleted(conditionerUuid, false);
         Optional<ConditionerEntity> optionalConditionerEntity = conditionerRepository.findByUuidConditioner(conditionerUuid);
