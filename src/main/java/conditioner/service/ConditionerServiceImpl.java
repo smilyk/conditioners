@@ -63,8 +63,7 @@ public class ConditionerServiceImpl {
                 .findByInventoryNumber(conditionerInventoryNumber);
         if (!optionalConditionerEntity.isPresent()) {
             LOGGER.error(Messages.CONDITIONER + Messages.WITH_ID + conditionerInventoryNumber + Messages.NOT_FOUND);
-            throw new ConditionerException(Messages.CONDITIONER + Messages.WITH_ID
-                    + conditionerInventoryNumber + Messages.NOT_FOUND);
+            return null;
         }
         ConditionerEntity conditioner = optionalConditionerEntity.get();
         ConditionerDto conditionerDto = conditionerToDto(conditioner);
