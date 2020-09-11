@@ -54,7 +54,7 @@ public class MaintenanceServiceImpl {
 
     public TypeMaintenanceDto getTypeMaintenanceById(String typeMaintenanceUuid) {
         Optional<TypeMaintenanceEntity> optionalTypeMaintenanceEntity = typeMaintenanceRepository
-                .findByUuidTypeMaintenanceAndDeleted(typeMaintenanceUuid, false);
+                .findByUuidTypeMaintenance(typeMaintenanceUuid);
         if(!optionalTypeMaintenanceEntity.isPresent()){
             LOGGER.error(Messages.CONDITIONER + Messages.WITH_ID + typeMaintenanceUuid + Messages.NOT_FOUND);
             throw new ConditionerException(Messages.CONDITIONER + Messages.WITH_ID + typeMaintenanceUuid + Messages.NOT_FOUND);

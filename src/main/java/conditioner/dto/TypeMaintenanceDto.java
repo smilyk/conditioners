@@ -12,7 +12,9 @@ import javax.validation.constraints.NotNull;
 @ToString
 public class TypeMaintenanceDto {
 
-
+    /**
+     * сколько часов нужно ортработать до следущего ТО
+     */
     private String uuidTypeMaintenance;
 
     @NotNull(message = "field nameMaintenance id required")
