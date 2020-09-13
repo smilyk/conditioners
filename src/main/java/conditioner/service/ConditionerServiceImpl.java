@@ -102,6 +102,13 @@ public class ConditionerServiceImpl {
         return conditionerDtos;
     }
 
+    public List<ConditionerDto> getAllNotDeletedConditioners() {
+        List<ConditionerEntity> conditionerEntities = conditionerRepository.findAllByDeleted(false);
+        List<ConditionerDto> conditionerDtos = conditionerEntities.stream().map(this::conditionerToDto).collect(Collectors.toList());
+        LOGGER.info(Messages.LIST + Messages.CONDITIONER + Messages.NOT_DELETED + Messages.FOUND);
+        return conditionerDtos;
+    }
+
     private ConditionerDto conditionerToDto(ConditionerEntity conditioner) {
         return modelMapper.map(conditioner, ConditionerDto.class);
     }
@@ -263,4 +270,6 @@ public class ConditionerServiceImpl {
                 conditionerDtoList);
         return conditionerDtoList;
     }
+
+
 }

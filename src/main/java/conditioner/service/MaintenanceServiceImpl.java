@@ -81,6 +81,14 @@ public class MaintenanceServiceImpl {
 
     }
 
+    public List<TypeMaintenanceDto> getAllNotDeletedTypeMaintenances() {
+        List<TypeMaintenanceEntity> typeMaintenanceEntities = typeMaintenanceRepository.findAllByDeleted(false);
+        List<TypeMaintenanceDto> typeMaintenanceDtos = typeMaintenanceEntities.stream()
+                .map(this::typeMaintenanceToDto).collect(Collectors.toList());
+        LOGGER.info(Messages.LIST + Messages.TYPE_MAINTENANCE + Messages.NOT_DELETED+ Messages.FOUND);
+        return typeMaintenanceDtos;
+    }
+
     public TypeMaintenanceDto deleteTypeMaintenance(String typeMaintenanceUuid) {
          Optional<TypeMaintenanceEntity> optionalTypeMaintenanceEntity =
                  typeMaintenanceRepository.findByUuidTypeMaintenance(typeMaintenanceUuid);
@@ -101,4 +109,6 @@ public class MaintenanceServiceImpl {
         }
         return typeMaintenanceDto;
     }
+
+
 }

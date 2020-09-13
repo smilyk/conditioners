@@ -83,6 +83,23 @@ public class ConditionerController {
         return conditionerService.deleteConditionerById(conditionerUuid);
     }
 
+    @ApiOperation(value = "Getting all not deleted conditioners from DB")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully get all conditioners"),
+//            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+//            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    }
+    )
+
+    @GetMapping("/not-deleted")
+    public List<ConditionerDto> getAllNotDeletedConditioners(){
+        return conditionerService.getAllNotDeletedConditioners();
+    }
+
+
+
+
     @ApiOperation(value = "To start conditioner")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "To start conditione"),

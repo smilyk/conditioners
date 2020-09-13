@@ -52,6 +52,7 @@ public class TypeMaintenanceController {
         return maintenanceService.getTypeMaintenanceById(typeMaintenanceUuid);
     }
 
+
     @ApiOperation(value = "Getting all type maintenance from DB")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully get all type maintenance"),
@@ -61,9 +62,21 @@ public class TypeMaintenanceController {
     }
     )
     @GetMapping()
-    public List<TypeMaintenanceDto> getAllTypeMalignancies(){
-
+    public List<TypeMaintenanceDto> getAllTypeMaintenance(){
         return maintenanceService.getAllTypeMaintenances();
+    }
+
+    @ApiOperation(value = "Getting all not deleted type maintenance from DB")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully get all type maintenance"),
+//            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+//            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    }
+    )
+    @GetMapping("/not-deleted")
+    public List<TypeMaintenanceDto> getAllNotDeletedTypeMaintenance(){
+        return maintenanceService.getAllNotDeletedTypeMaintenances();
     }
 
     @ApiOperation(value = "Delete type maintenance from DB")

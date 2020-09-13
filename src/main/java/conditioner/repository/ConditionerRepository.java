@@ -15,4 +15,6 @@ public interface ConditionerRepository extends JpaRepository<ConditionerEntity, 
     Optional<ConditionerEntity> findByUuidConditionerAndDeleted(String conditionerUuid, boolean deleted);
 
     List<ConditionerEntity> findByStart(boolean started);
+
+    List<ConditionerEntity> findAllByDeleted(boolean deleted);
 }

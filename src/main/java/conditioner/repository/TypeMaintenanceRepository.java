@@ -5,6 +5,7 @@ import conditioner.model.TypeMaintenanceEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -15,4 +16,6 @@ public interface TypeMaintenanceRepository extends JpaRepository<TypeMaintenance
     Optional<TypeMaintenanceEntity> findByUuidTypeMaintenanceAndDeleted(String typeMaintenanceUuid, boolean b);
 
     Optional<TypeMaintenanceEntity> findByUuidTypeMaintenance(String typeMaintenanceUuid);
+
+    List<TypeMaintenanceEntity> findAllByDeleted(boolean b);
 }
