@@ -157,7 +157,7 @@ public class ConditionerServiceImpl {
             /**
              * making record to table for planning
              */
-            createForPlanningTypeMaintenance(conditionerEntity);
+//            createForPlanningTypeMaintenance(conditionerEntity);
             LOGGER.info(Messages.CHECK_UNIQUE_CONDITIONER + conditionerEntity.getInventoryNumber() +
                     Messages.STARTED_WORK);
             return Messages.CHECK_UNIQUE_CONDITIONER + conditionerEntity.getInventoryNumber() +
@@ -193,11 +193,14 @@ public class ConditionerServiceImpl {
                 Messages.CHECK_UNIQUE_CONDITIONER + conditionerEntity.getUuidConditioner());
 //        TODO не добавлять ТО к работающему кондиционеру - реализоыать проверку.
 //        TODO можем останавливать и запускать кондиционер. Продумать как учитывать часы, которые уже отработаны
-//        createForPlanningTypeMaintenance(conditionerEntity);
+        /**
+         * making record to table for planning
+         */
+        createForPlanningTypeMaintenance(conditionerEntity, typeMaintenanceUuid);
         return conditionerDto;
     }
 
-    private void createForPlanningTypeMaintenance(ConditionerEntity conditionerEntity) {
+    private void createForPlanningTypeMaintenance(ConditionerEntity conditionerEntity, String typeMaintenanceUuid) {
 
         List<TypeMaintenanceEntity> listOdMaintenancy = conditionerEntity.getMaintenance();
         for (TypeMaintenanceEntity entity : listOdMaintenancy) {
@@ -211,7 +214,7 @@ public class ConditionerServiceImpl {
                     .nextTypeMaintenanceDate(nextTypeMaintenancy)
                     .place(conditionerEntity.getPlace())
                     .uuidConditioner(conditionerEntity.getUuidConditioner())
-                    .uuidTypeMaintenance(entity.getUuidTypeMaintenance())
+                    .uuidTypeMaintenance(typeMaintenanceUuid)
                     .uuidRecord(utils.createRandomUuid())
                     .build();
             forPlanningTypeMaintenanceRepository.save(en);
