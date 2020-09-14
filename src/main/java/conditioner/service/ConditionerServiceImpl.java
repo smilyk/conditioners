@@ -202,8 +202,9 @@ public class ConditionerServiceImpl {
 
     private void createForPlanningTypeMaintenance(ConditionerEntity conditionerEntity, String typeMaintenanceUuid) {
 
+//        List<TypeMaintenanceEntity> listOdMaintenancy = conditionerEntity.getMaintenance();
         List<TypeMaintenanceEntity> typeMaint = conditionerEntity.getMaintenance().stream()
-                .filter(m -> m.getUuidTypeMaintenance() == typeMaintenanceUuid).collect(Collectors.toList());
+                .filter(m -> m.getUuidTypeMaintenance().equals(typeMaintenanceUuid)).collect(Collectors.toList());
         for (TypeMaintenanceEntity entity : typeMaint) {
             Integer hoursBeforeTypeMaintenance = entity.getHoursBeforeTypeMaintenance();
             LocalDateTime startDate = conditionerEntity.getStartDate();
