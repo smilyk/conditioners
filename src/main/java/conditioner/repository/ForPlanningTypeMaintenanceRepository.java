@@ -13,10 +13,10 @@ import java.util.Optional;
 
 public interface ForPlanningTypeMaintenanceRepository extends JpaRepository<ForPlanningTypeMaintenanceEntity, Long> {
 
-    @Query(value = "SELECT * FROM conditioner.for_planning where next_type_maintenance_date <:now", nativeQuery = true)
+    @Query(value = "SELECT * FROM for_planning where next_type_maintenance_date <:now", nativeQuery = true)
     List<ForPlanningTypeMaintenanceEntity> getAllMissedTypeMaintenanceConditioners(LocalDateTime now);
 
-    @Query(value = "SELECT * FROM conditioner.for_planning where next_type_maintenance_date " +
+    @Query(value = "SELECT * FROM for_planning where next_type_maintenance_date " +
             "between :from and :to",
             nativeQuery = true)
     List<ForPlanningTypeMaintenanceEntity> getAllPlanningTypeMaintenanceConditioners(
