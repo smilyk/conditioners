@@ -2,9 +2,10 @@ package conditioner.controller;
 
 import conditioner.dto.DatesForPlanningDto;
 import conditioner.dto.PlannedTypeMaintenanceDto;
+import conditioner.dto.PlanningTypeMaintenanceConditioner;
+import conditioner.model.ForPlanningTypeMaintenanceEntity;
 import conditioner.service.PlanedService;
 import conditioner.service.PlanningService;
-import conditioner.dto.PlanningTypeMaintenanceConditioner;
 import conditioner.service.ValidationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -69,6 +70,19 @@ public class PlanningTypeMaintenanceController{
             validationService.checkDatesForPlanning(dates);
         }
         return planningService.getAllForPlanning(dates);
+    }
+
+    @ApiOperation(value = "get plan conditioners for type maintenance by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully g0t plan conditioners for type maintenance by id"),
+//            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+//            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    }
+    )
+    @GetMapping("/plan/{recordUuid}")
+    public PlanningTypeMaintenanceConditioner getPlannedTypeMaintenanceRecordById(@PathVariable String recordUuid){
+        return planedService.getPlannedTypeMaintenanceRecordById(recordUuid);
     }
 
     @ApiOperation(value = "to plan conditioners for type maintenance")

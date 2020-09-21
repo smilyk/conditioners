@@ -3,6 +3,8 @@ package conditioner.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import conditioner.constants.Messages;
 import conditioner.dto.PlannedTypeMaintenanceDto;
+import conditioner.dto.PlanningTypeMaintenanceConditioner;
+import conditioner.dto.TypeMaintenanceForDto;
 import conditioner.dto.WorkerDto;
 import conditioner.exceptions.ConditionerException;
 import conditioner.model.BusyWorkerEntity;
@@ -50,12 +52,54 @@ public class PlanedService {
     private BusyWorkersRepository busyWorkersRepository;
 
     @Autowired
-    ForPlanningTypeMaintenanceRepository forPlanningTypeMaintenanceRepository;
+    private ForPlanningTypeMaintenanceRepository forPlanningTypeMaintenanceRepository;
 
     @Autowired
     TypeMaintenanceRepository typeMaintenanceRepository;
 
 //TODO что делаем, если время то позде чем конец рабочего дня - validator
+
+    public PlanningTypeMaintenanceConditioner getPlannedTypeMaintenanceRecordById(String recordUuid) {
+        Optional<ForPlanningTypeMaintenanceEntity> recordOptional = forPlanningTypeMaintenanceRepository
+                .findByUuidRecord(recordUuid);
+        if(!recordOptional.isPresent()){
+            LOGGER.error(Messages.RECORD_FOR_PLANNING + Messages.WITH_ID +
+                    recordUuid + Messages.NOT_FOUND);
+            throw new ConditionerException(Messages.RECORD_FOR_PLANNING + Messages.WITH_ID +
+                    recordUuid + Messages.NOT_FOUND);
+        }
+        LOGGER.info(Messages.RECORD_FOR_PLANNING + Messages.WITH_ID +
+                recordUuid + Messages.FOUND);
+        return fromEntityPlannedRecordToDtoPlannedRecord(recordOptional.get());
+    }
+
+    private PlanningTypeMaintenanceConditioner fromEntityPlannedRecordToDtoPlannedRecord(
+            ForPlanningTypeMaintenanceEntity entity) {
+        Optional<TypeMaintenanceEntity> maintOption = typeMaintenanceRepository.findByUuidTypeMaintenanceAndDeleted(
+                entity.getUuidTypeMaintenance(), false);
+        if(!maintOption.isPresent()){
+            LOGGER.error(Messages.TYPE_MAINTENANCE+ Messages.WITH_ID + entity.getUuidTypeMaintenance()
+            + Messages.NOT_FOUND);
+            throw new ConditionerException(Messages.TYPE_MAINTENANCE+ Messages.WITH_ID + entity.getUuidTypeMaintenance()
+                    + Messages.NOT_FOUND);
+        }
+        TypeMaintenanceForDto maint = TypeMaintenanceForDto.builder()
+                .hoursBeforeTypeMaintenance(maintOption.get().getHoursBeforeTypeMaintenance())
+                .nameMaintenance(maintOption.get().getNameMaintenance())
+                .peopleHours(maintOption.get().getPeopleHours())
+                .uuidTypeMaintenance(maintOption.get().getUuidTypeMaintenance())
+                .build();
+       return PlanningTypeMaintenanceConditioner.builder()
+                .inventoryNumber(entity.getInventoryNumber())
+                .maintenance(maint)
+                .nameConditioner(entity.getNameConditioner())
+                .place(entity.getPlace())
+                .uuidConditioner(entity.getUuidConditioner())
+                .uuidRecords(entity.getUuidTypeMaintenance())
+                .lastTypeMaintenanceDate(entity.getLastTypeMaintenanceDate())
+                .nextTypeMaintenanceDate(entity.getNextTypeMaintenanceDate())
+                .build();
+    }
 
     public String toPlanTypeMaintenance(PlannedTypeMaintenanceDto plannedTypeMaintenanceDto) {
         //получение даты окончания работ
@@ -191,4 +235,6 @@ public class PlanedService {
         }
         return typeMaintenanceEntity;
     }
+
+
 }
