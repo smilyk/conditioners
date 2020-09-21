@@ -95,7 +95,7 @@ public class PlanedService {
                 .nameConditioner(entity.getNameConditioner())
                 .place(entity.getPlace())
                 .uuidConditioner(entity.getUuidConditioner())
-                .uuidRecords(entity.getUuidTypeMaintenance())
+                .uuidRecords(entity.getUuidRecord())
                 .lastTypeMaintenanceDate(entity.getLastTypeMaintenanceDate())
                 .nextTypeMaintenanceDate(entity.getNextTypeMaintenanceDate())
                 .build();
