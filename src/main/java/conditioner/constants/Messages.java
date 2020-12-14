@@ -39,4 +39,6 @@ public class Messages {
     public static final String MISSED_TYPE = " missed date of Type Maintenance";
     public static final String FOR_PLANNING = " planned";
     public static final String NOT_DELETED = " not deleted";
+    public static final String ARTICLE = " article ";
+    public static final String ARTICLES = " articles ";;
 }
