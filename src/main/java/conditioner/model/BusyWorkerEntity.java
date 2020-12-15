@@ -2,6 +2,7 @@ package conditioner.model;
 
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @Entity(name = "BusyWorkers")
 @Table(name="busyWorkers")
 public class BusyWorkerEntity extends BaseEntity implements Serializable {

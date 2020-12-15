@@ -1,7 +1,8 @@
 package conditioner.model;
 
-import conditioner.dto.PicturesEntityDto;
+
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @Entity(name = "Article")
 @Table(name="article")
 public class ArticleEntity extends BaseEntity implements Serializable {
@@ -23,14 +24,16 @@ public class ArticleEntity extends BaseEntity implements Serializable {
     private String articleName;
 
     @Column(nullable = false)
+    private String articleTitle;
+
+    @Column(nullable = false)
     private String articleText;
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE,
-    }, fetch=FetchType.EAGER)
-    @JoinTable(name = "article_pictures",
-            joinColumns = @JoinColumn(name = "uuid_article"),
-            inverseJoinColumns = @JoinColumn(name = "pictures_uuid")
-    )
-    private List<PicturesEntity> picture = new ArrayList<>();
+
+    @Column
+    private String pictureName;
+
+    @Column
+    private String pictureUrl;
+
+
 }

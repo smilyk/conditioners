@@ -2,6 +2,7 @@ package conditioner.model;
 
 import conditioner.enums.TypeMaintenanceStatus;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @Entity(name = "Archive")
 @Table(name="archive")
 public class ArchiveEntity extends BaseEntity implements Serializable  {

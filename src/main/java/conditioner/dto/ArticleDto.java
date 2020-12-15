@@ -1,14 +1,8 @@
 package conditioner.dto;
 
-import conditioner.model.PicturesEntity;
-import conditioner.model.TypeMaintenanceEntity;
-import lombok.*;
 
-import javax.persistence.*;
+import lombok.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,12 +15,20 @@ public class ArticleDto {
     private String uuidArticle;
     @NotNull(message = "field articleName id required")
     private String articleName;
-    @NotNull(message = "field articleText id required")
-    @Column(nullable = false)
-    private String articleText;
-    @NotNull(message = "field pictureUrl id required")
-    @Column(nullable = false)
-    List<PicturesEntityDto> pictures = new ArrayList<>();
 
+    @NotNull(message = "field articleTitle id required")
+    private String articleTitle;
+    @NotNull(message = "field articleText id required")
+    private String articleText;
+
+    private String pictureName;
+
+    private String pictureUrl;
+
+    private String pictureBody;
+
+//    @NotNull(message = "field pictureUrl id required")
+//    @Column(nullable = false)
+//    List<PicturesEntityDto> picture = new ArrayList<>();
 
 }

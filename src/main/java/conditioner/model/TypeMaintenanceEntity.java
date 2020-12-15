@@ -1,6 +1,7 @@
 package conditioner.model;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @Entity(name="Type_maintenance")
 @Table(name="type_maintenance")
 public class TypeMaintenanceEntity extends BaseEntity implements Serializable {

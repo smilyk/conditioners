@@ -3,6 +3,7 @@ package conditioner.model;
 
 import conditioner.enums.RoleEnum;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,7 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @Entity(name = "entity")
 @Table(name = "users")
 public class UserEntity extends BaseEntity implements Serializable {
