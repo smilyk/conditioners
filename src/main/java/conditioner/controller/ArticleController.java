@@ -7,9 +7,11 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 @RestController
@@ -72,5 +74,10 @@ public class ArticleController {
         return articleService.deleteConditionerById(articleUuid);
     }
 
+    @GetMapping(path ="photo")
+    public BufferedImage getPhotoByName(){
+        String photoName = "picturec1";
+        return articleService.getPhoto(photoName);
+    }
 
 }

@@ -54,7 +54,7 @@ public class ArticleServiceimpl {
     private String saveArticleOnServer(String pictures, String pictureName) {
 
         byte[] decodedImage = Base64.getMimeDecoder().decode(pictures);
-        String link = "picture_" + pictureName + ".jpg";
+        String link = "picture_" + pictureName;
         try {
             File imgFile = new File(link);
             System.err.println("created file");
@@ -115,5 +115,15 @@ public class ArticleServiceimpl {
 
     private ArticleDto articleToArticleDto(ArticleEntity article) {
         return modelMapper.map(article, ArticleDto.class);
+    }
+
+    public BufferedImage getPhoto(String photoName) {
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(new File(photoName));
+        } catch (IOException e) {
+        }
+            return img;
+
     }
 }
