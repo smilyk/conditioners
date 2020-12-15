@@ -53,7 +53,7 @@ public class ArticleServiceimpl {
 
     private String saveArticleOnServer(String pictures, String pictureName) {
 
-        byte[] decodedImage = Base64.getDecoder().decode(pictures);
+        byte[] decodedImage = Base64.getMimeDecoder().decode(pictures);
         String link = "picture_" + pictureName + ".jpg";
         try {
             File imgFile = new File(link);
