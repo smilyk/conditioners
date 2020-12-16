@@ -13,10 +13,16 @@ import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.apache.commons.io.FileUtils;
 
 import javax.imageio.ImageIO;
+import java.io.File;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import java.io.IOException;
+
 import java.io.*;
 import java.util.Base64;
 import java.util.List;
@@ -54,12 +60,12 @@ public class ArticleServiceimpl {
     private String saveArticleOnServer(String pictures, String pictureName) {
 
         byte[] decodedImage = Base64.getMimeDecoder().decode(pictures);
-        String link = "picture_" + pictureName;
+        String link = pictureName + ".jpeg";
         try {
             File imgFile = new File(link);
             System.err.println("created file");
             BufferedImage img = ImageIO.read(new ByteArrayInputStream(decodedImage));
-            ImageIO.write(img, "png", imgFile);
+            ImageIO.write(img, "jpeg", imgFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -117,13 +123,16 @@ public class ArticleServiceimpl {
         return modelMapper.map(article, ArticleDto.class);
     }
 
-    public BufferedImage getPhoto(String photoName) {
-        BufferedImage img = null;
+    public String getPhoto(String photoName) {
+        String encodeString = "";
         try {
-            img = ImageIO.read(new File(photoName));
-        } catch (IOException e) {
-        }
-            return img;
+            String fileLink = photoName + ".png";
+            byte[] file = FileUtils.readFileToByteArray(new File(fileLink));
+            encodeString = Base64.getEncoder().encodeToString(file);
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return encodeString;
     }
 }
