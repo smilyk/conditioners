@@ -120,7 +120,13 @@ public class ArticleServiceimpl {
     }
 
     private ArticleDto articleToArticleDto(ArticleEntity article) {
-        return modelMapper.map(article, ArticleDto.class);
+        ImageDto body = getPhoto(article.getPictureName());
+        return ArticleDto.builder()
+                .articleName(article.getArticleName())
+                .articleText(article.getArticleText())
+                .uuidArticle(article.getUuidArticle())
+                .pictureBody(body.getPictureBody())
+                .build();
     }
 
     public ImageDto getPhoto(String photoName) {
