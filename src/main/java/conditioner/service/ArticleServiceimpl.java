@@ -9,22 +9,18 @@ import conditioner.exceptions.ConditionerException;
 import conditioner.model.ArticleEntity;
 import conditioner.repository.ArticleRepository;
 import conditioner.utils.Utils;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.apache.commons.io.FileUtils;
 
 import javax.imageio.ImageIO;
-import java.io.File;
-import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
-
-import java.io.IOException;
-
-import java.io.*;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -137,6 +133,11 @@ public class ArticleServiceimpl {
             encodeString = Base64.getEncoder().encodeToString(file);
 
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            Thread.sleep(180000);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         return ImageDto.builder().pictureBody(encodeString).build();
