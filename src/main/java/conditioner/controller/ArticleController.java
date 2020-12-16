@@ -76,7 +76,7 @@ public class ArticleController {
     }
 
     @PostMapping(path ="photo/{photoName}")
-    public String getPhotoByName(@PathVariable String photoName) throws IOException {
+    public byte[] getPhotoByName(@PathVariable String photoName) throws IOException {
         return articleService.getPhoto(photoName);
     }
 

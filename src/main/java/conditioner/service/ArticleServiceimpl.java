@@ -123,16 +123,17 @@ public class ArticleServiceimpl {
         return modelMapper.map(article, ArticleDto.class);
     }
 
-    public String getPhoto(String photoName) {
+    public byte[] getPhoto(String photoName) {
         String encodeString = "";
+        byte[] file = null;
         try {
             String fileLink = photoName + ".jpeg";
-            byte[] file = FileUtils.readFileToByteArray(new File(fileLink));
+             file = FileUtils.readFileToByteArray(new File(fileLink));
             encodeString = Base64.getEncoder().encodeToString(file);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return encodeString;
+        return file;
     }
 }
