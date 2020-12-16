@@ -1,6 +1,7 @@
 package conditioner.controller;
 
 import conditioner.dto.ArticleDto;
+import conditioner.dto.ImageDto;
 import conditioner.service.ArticleServiceimpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -76,7 +77,7 @@ public class ArticleController {
     }
 
     @PostMapping(path ="photo/{photoName}")
-    public String getPhotoByName(@PathVariable String photoName) throws IOException {
+    public ImageDto getPhotoByName(@PathVariable String photoName) throws IOException {
         return articleService.getPhoto(photoName);
     }
 

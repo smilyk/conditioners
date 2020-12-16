@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import conditioner.constants.Messages;
 import conditioner.dto.ArticleDto;
+import conditioner.dto.ImageDto;
 import conditioner.exceptions.ConditionerException;
 import conditioner.model.ArticleEntity;
 import conditioner.repository.ArticleRepository;
@@ -70,7 +71,6 @@ public class ArticleServiceimpl {
             e.printStackTrace();
         }
         return link;
-
     }
 
     private ArticleEntity articleDtoToEntity(ArticleDto articleDto) {
@@ -123,7 +123,7 @@ public class ArticleServiceimpl {
         return modelMapper.map(article, ArticleDto.class);
     }
 
-    public String getPhoto(String photoName) {
+    public ImageDto getPhoto(String photoName) {
         String encodeString = "";
         try {
             String fileLink = photoName + ".jpeg";
@@ -133,6 +133,6 @@ public class ArticleServiceimpl {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return encodeString;
+        return ImageDto.builder().pictureBody(encodeString).build();
     }
 }
