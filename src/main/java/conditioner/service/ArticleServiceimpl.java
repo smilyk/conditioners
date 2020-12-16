@@ -63,9 +63,9 @@ public class ArticleServiceimpl {
         String link = pictureName + ".jpeg";
         try {
             File imgFile = new File(link);
-            System.err.println("created file");
+            System.err.println("created file with name " + link);
             BufferedImage img = ImageIO.read(new ByteArrayInputStream(decodedImage));
-            ImageIO.write(img, "jpeg", imgFile);
+            ImageIO.write(img, "png", imgFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -126,7 +126,7 @@ public class ArticleServiceimpl {
     public String getPhoto(String photoName) {
         String encodeString = "";
         try {
-            String fileLink = photoName + ".png";
+            String fileLink = photoName + ".jpeg";
             byte[] file = FileUtils.readFileToByteArray(new File(fileLink));
             encodeString = Base64.getEncoder().encodeToString(file);
 
