@@ -136,7 +136,7 @@ public class ArticleServiceimpl {
             e.printStackTrace();
         }
         try {
-            Thread.sleep(180000);
+            Thread.sleep(1800);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
