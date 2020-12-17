@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "localhost:4200/*")
 @RequestMapping("/article")
 @Api(value = "Articles", description = "methods that collect data about the article ")
 public class ArticleController {

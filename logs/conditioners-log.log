@@ -885,3 +885,58 @@ Caused by: java.lang.NumberFormatException: For input string: "0.05"
 2020-12-17 18:00:42.284  INFO MBP-Smilyk --- [nio-8082-exec-2] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
 2020-12-17 18:00:42.295  INFO MBP-Smilyk --- [nio-8082-exec-2] o.s.w.s.DispatcherServlet                : Completed initialization in 11 ms
 2020-12-17 18:00:42.753  INFO MBP-Smilyk --- [nio-8082-exec-2] c.s.ArticleServiceimpl                   : Article with id e69474bb-dfdc-4ddf-9ef0-eec8ca1a205e found
+2020-12-17 18:11:21.363  INFO MBP-Smilyk --- [extShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-12-17 18:11:21.367  INFO MBP-Smilyk --- [extShutdownHook] o.s.s.c.ThreadPoolTaskExecutor           : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-12-17 18:11:21.367  INFO MBP-Smilyk --- [extShutdownHook] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+2020-12-17 18:11:21.373  INFO MBP-Smilyk --- [extShutdownHook] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
+2020-12-17 18:11:26.815  INFO MBP-Smilyk --- [           main] c.ConditionerApplication                 : Starting ConditionerApplication on MBP-Smilyk with PID 34164 (/Users/smilyk/Desktop/Project_in_work/Conditioners/conditioners-back/target/classes started by smilyk in /Users/smilyk/Desktop/Project_in_work/Conditioners/conditioners-back)
+2020-12-17 18:11:26.828  INFO MBP-Smilyk --- [           main] c.ConditionerApplication                 : No active profile set, falling back to default profiles: default
+2020-12-17 18:11:28.559  INFO MBP-Smilyk --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-12-17 18:11:28.742  INFO MBP-Smilyk --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 173ms. Found 8 JPA repository interfaces.
+2020-12-17 18:11:29.785  INFO MBP-Smilyk --- [           main] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port(s): 8082 (http)
+2020-12-17 18:11:29.798  INFO MBP-Smilyk --- [           main] o.a.c.h.Http11NioProtocol                : Initializing ProtocolHandler ["http-nio-8082"]
+2020-12-17 18:11:29.799  INFO MBP-Smilyk --- [           main] o.a.c.c.StandardService                  : Starting service [Tomcat]
+2020-12-17 18:11:29.800  INFO MBP-Smilyk --- [           main] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/9.0.36]
+2020-12-17 18:11:29.998  INFO MBP-Smilyk --- [           main] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+2020-12-17 18:11:29.999  INFO MBP-Smilyk --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3065 ms
+2020-12-17 18:11:30.443  INFO MBP-Smilyk --- [           main] o.s.s.c.ThreadPoolTaskExecutor           : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-17 18:11:30.497  INFO MBP-Smilyk --- [         task-1] o.h.j.i.u.LogHelper                      : HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-12-17 18:11:30.562  INFO MBP-Smilyk --- [         task-1] o.h.Version                              : HHH000412: Hibernate ORM core version 5.4.17.Final
+2020-12-17 18:11:30.774  INFO MBP-Smilyk --- [         task-1] o.h.a.c.Version                          : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-12-17 18:11:30.925  INFO MBP-Smilyk --- [         task-1] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+2020-12-17 18:11:31.383  INFO MBP-Smilyk --- [           main] o.s.b.a.e.w.EndpointLinksResolver        : Exposing 14 endpoint(s) beneath base path '/actuator'
+2020-12-17 18:11:31.507  INFO MBP-Smilyk --- [           main] pertySourcedRequestMappingHandlerMapping : Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-12-17 18:11:31.731  WARN MBP-Smilyk --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-12-17 18:11:32.252  INFO MBP-Smilyk --- [         task-1] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+2020-12-17 18:11:32.299  INFO MBP-Smilyk --- [         task-1] o.h.d.Dialect                            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2020-12-17 18:11:35.703  INFO MBP-Smilyk --- [         task-1] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-12-17 18:11:35.721  INFO MBP-Smilyk --- [         task-1] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-12-17 18:11:35.882  INFO MBP-Smilyk --- [           main] o.a.c.h.Http11NioProtocol                : Starting ProtocolHandler ["http-nio-8082"]
+2020-12-17 18:11:35.933  INFO MBP-Smilyk --- [           main] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port(s): 8082 (http) with context path ''
+2020-12-17 18:11:35.934  INFO MBP-Smilyk --- [           main] d.s.w.p.DocumentationPluginsBootstrapper : Context refreshed
+2020-12-17 18:11:35.966  INFO MBP-Smilyk --- [           main] d.s.w.p.DocumentationPluginsBootstrapper : Found 1 custom documentation plugin(s)
+2020-12-17 18:11:36.034  INFO MBP-Smilyk --- [           main] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+2020-12-17 18:11:36.361  INFO MBP-Smilyk --- [           main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: handleUsingGET_1
+2020-12-17 18:11:36.367  INFO MBP-Smilyk --- [           main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: handleUsingGET_2
+2020-12-17 18:11:36.370  INFO MBP-Smilyk --- [           main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: handleUsingDELETE_1
+2020-12-17 18:11:36.373  INFO MBP-Smilyk --- [           main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: handleUsingGET_3
+2020-12-17 18:11:36.377  INFO MBP-Smilyk --- [           main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: handleUsingGET_4
+2020-12-17 18:11:36.380  INFO MBP-Smilyk --- [           main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: handleUsingGET_5
+2020-12-17 18:11:36.388  INFO MBP-Smilyk --- [           main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: handleUsingGET_6
+2020-12-17 18:11:36.395  INFO MBP-Smilyk --- [           main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: handleUsingGET_7
+2020-12-17 18:11:36.406  INFO MBP-Smilyk --- [           main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: handleUsingGET_8
+2020-12-17 18:11:36.410  INFO MBP-Smilyk --- [           main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: handleUsingGET_9
+2020-12-17 18:11:36.413  INFO MBP-Smilyk --- [           main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: handleUsingGET_10
+2020-12-17 18:11:36.418  INFO MBP-Smilyk --- [           main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: handleUsingGET_11
+2020-12-17 18:11:36.421  INFO MBP-Smilyk --- [           main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: handleUsingGET_12
+2020-12-17 18:11:36.425  INFO MBP-Smilyk --- [           main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: handleUsingGET_13
+2020-12-17 18:11:36.427  INFO MBP-Smilyk --- [           main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: handleUsingGET_14
+2020-12-17 18:11:36.430  INFO MBP-Smilyk --- [           main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: handleUsingGET_15
+2020-12-17 18:11:36.432  INFO MBP-Smilyk --- [           main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: handleUsingGET_16
+2020-12-17 18:11:36.436  INFO MBP-Smilyk --- [           main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: handleUsingPOST_1
+2020-12-17 18:11:36.438  INFO MBP-Smilyk --- [           main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: handleUsingGET_17
+2020-12-17 18:11:36.540  INFO MBP-Smilyk --- [           main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: getAllConditionerWithMissedTypeMaintenanceUsingGET_1
+2020-12-17 18:11:36.572  INFO MBP-Smilyk --- [           main] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
+2020-12-17 18:11:37.370  INFO MBP-Smilyk --- [           main] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
+2020-12-17 18:11:37.384  INFO MBP-Smilyk --- [           main] c.ConditionerApplication                 : Started ConditionerApplication in 11.2 seconds (JVM running for 13.215)
+2020-12-17 18:11:37.393  INFO MBP-Smilyk --- [           main] c.ConditionerApplication                 : Logger start
