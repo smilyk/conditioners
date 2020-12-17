@@ -13,5 +13,6 @@ public class CalculatorResponseDto {
 
     Double min;
     Double max;
+    Double recom;
 
 }

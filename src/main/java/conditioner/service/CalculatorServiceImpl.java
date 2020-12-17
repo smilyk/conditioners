@@ -45,6 +45,7 @@ public class CalculatorServiceImpl {
         return CalculatorResponseDto.builder()
                 .max(queryMax)
                 .min(queryMin)
+                .recom(query)
                 .build();
     }
 }
