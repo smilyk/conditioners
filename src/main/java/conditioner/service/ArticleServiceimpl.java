@@ -135,11 +135,6 @@ public class ArticleServiceimpl {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            Thread.sleep(1800);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         return ImageDto.builder().pictureBody(encodeString).build();
     }
 }
