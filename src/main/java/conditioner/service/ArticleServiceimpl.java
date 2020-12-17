@@ -73,7 +73,7 @@ public class ArticleServiceimpl {
         return modelMapper.map(articleDto, ArticleEntity.class);
     }
 
-    public ArticleDto getConditionerById(String articleUuid) {
+    public ArticleDto getArticleByUuid(String articleUuid) {
         Optional<ArticleEntity> optionalArticleEntity = articleRepository.findByUuidArticle(articleUuid);
         if (!optionalArticleEntity.isPresent()) {
             LOGGER.error(Messages.ARTICLE + Messages.WITH_ID + articleUuid + Messages.NOT_FOUND);
@@ -97,7 +97,7 @@ public class ArticleServiceimpl {
         return articlesDto;
     }
 
-    public ArticleDto deleteConditionerById(String articleUuid) {
+    public ArticleDto deleteArticleByUuid(String articleUuid) {
         Optional<ArticleEntity> optionalArticleEntity = articleRepository.findByUuidArticle(articleUuid);
         if (!optionalArticleEntity.isPresent()) {
             LOGGER.error(Messages.ARTICLE + Messages.WITH_ID + articleUuid + Messages.NOT_FOUND);
@@ -122,6 +122,8 @@ public class ArticleServiceimpl {
                 .articleText(article.getArticleText())
                 .uuidArticle(article.getUuidArticle())
                 .pictureBody(body.getPictureBody())
+                .articleTitle(article.getArticleTitle())
+                .pictureName(article.getPictureName())
                 .build();
     }
 

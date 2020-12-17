@@ -47,7 +47,7 @@ public class ArticleController {
     )
     @GetMapping("/{articleUuid}")
     public ArticleDto getArticle(@PathVariable String articleUuid){
-        return articleService.getConditionerById(articleUuid);
+        return articleService.getArticleByUuid(articleUuid);
     }
     @ApiOperation(value = "Getting all articles from DB")
     @ApiResponses(value = {
@@ -73,11 +73,11 @@ public class ArticleController {
     )
     @DeleteMapping("/{articleUuid}")
     public ArticleDto deleteArticle(@PathVariable String articleUuid){
-        return articleService.deleteConditionerById(articleUuid);
+        return articleService.deleteArticleByUuid(articleUuid);
     }
 
     @PostMapping(path ="photo/{photoName}")
-    public ImageDto getPhotoByName(@PathVariable String photoName) throws IOException {
+    public ImageDto getPhotoByName(@PathVariable String photoName) {
         return articleService.getPhoto(photoName);
     }
 
