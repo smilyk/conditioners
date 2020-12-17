@@ -19,9 +19,9 @@ public class CalculatorServiceImpl {
 
 
     @Value("${QRangeMin}")
-    private Integer QRangeMin;
+    private Double QRangeMin;
     @Value("${QRangeMax}")
-    private Integer QRangeMax;
+    private Double QRangeMax;
     @Value("${peopleCount}")
     private Double peopleCount;
     @Value("${computerCount}")
@@ -35,19 +35,15 @@ public class CalculatorServiceImpl {
         Double tmp = calculatorDto.getH()*calculatorDto.getS()*Integer.parseInt(calculatorDto.getQ());
         Double q1 = tmp/1000;
         Double q2 = calculatorDto.getN()*peopleCount;
-        Double computerCountTmp = calculatorDto.getK() * computerCount;
-        Double tvCountTmp = calculatorDto.getT() * tvCount;
-        Double othersCountTmp = calculatorDto.getA() * othersCount;
-        Double q3 = computerCountTmp + tvCountTmp + othersCountTmp;
+        Double q3 = (calculatorDto.getK() * computerCount) +
+                (calculatorDto.getT() * tvCount)+
+                (calculatorDto.getA() * othersCount);
         Double query = q1 + q2 + q3;
-        Double maxProc = QRangeMax * 0.1;
-        Double minProc = QRangeMin * 0.1;
-        Double queryMin = query*minProc;
-        Double queryMax = query*maxProc;
+        Double queryMin = query*((100-QRangeMin)/100);
+        Double queryMax = query*((100+QRangeMax)/100);
         return CalculatorResponseDto.builder()
-                .max(query - queryMax)
-                .min(query + queryMin).
-                        build();
-
+                .max(queryMax)
+                .min(queryMin)
+                        .build();
     }
 }
