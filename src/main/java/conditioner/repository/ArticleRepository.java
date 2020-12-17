@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface ArticleRepository extends JpaRepository<ArticleEntity, Long> {
 
     Optional<ArticleEntity> findByUuidArticle(String articleUuid);
+
+    Optional<ArticleEntity> findBypictureName(String pictureName);
 }

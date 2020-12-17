@@ -41,6 +41,7 @@ public class ArticleServiceimpl {
         try {
             ArticleEntity article = articleDtoToEntity(articleDto);
             article.setUuidArticle(utils.createRandomUuid());
+            checkPhotoName(article.getPictureName());
             String pictureLink = saveArticleOnServer(articleDto.getPictureBody(), articleDto.getPictureName());
 //            article.setPictureUrl(pictureLink);
             String articleUuid = articleRepository.save(article).getUuidArticle();
@@ -53,6 +54,17 @@ public class ArticleServiceimpl {
         }
         return articleDto;
     }
+
+    private void checkPhotoName(String pictureName) {
+        Optional<ArticleEntity> article = articleRepository.findBypictureName(pictureName);
+        if(article.isPresent()){
+            LOGGER.error("photoName " + pictureName + "" +
+                    " is present in DB, choose another name for picture");
+            throw new ConditionerException("photoName " + pictureName + "" +
+                    " is present in DB, choose another name for picture");
+        }
+    }
+
 
     private String saveArticleOnServer(String pictures, String pictureName) {
 
