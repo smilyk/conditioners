@@ -80,5 +80,4 @@ public class ArticleController {
     public ImageDto getPhotoByName(@PathVariable String photoName) {
         return articleService.getPhoto(photoName);
     }
-
 }
