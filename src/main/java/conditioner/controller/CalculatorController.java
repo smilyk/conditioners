@@ -1,6 +1,5 @@
 package conditioner.controller;
 
-import conditioner.dto.ArticleDto;
 import conditioner.dto.CalculatorDto;
 import conditioner.dto.CalculatorResponseDto;
 import conditioner.service.CalculatorServiceImpl;
@@ -31,6 +30,6 @@ public class CalculatorController {
     )
     @PostMapping
     public CalculatorResponseDto getPower(@Valid @RequestBody CalculatorDto calculatorDto){
-        return calculatorService.getRecomendationPower(calculatorDto);
+        return calculatorService.getRecommendationPower(calculatorDto);
     }
 }

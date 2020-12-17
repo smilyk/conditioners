@@ -31,19 +31,21 @@ public class CalculatorServiceImpl {
     @Value("${othersCount}")
     private Double othersCount;
 
-    public CalculatorResponseDto getRecomendationPower(CalculatorDto calculatorDto) {
-        Double tmp = calculatorDto.getH()*calculatorDto.getS()*Integer.parseInt(calculatorDto.getQ());
-        Double q1 = tmp/1000;
-        Double q2 = calculatorDto.getN()*peopleCount;
-        Double q3 = (calculatorDto.getK() * computerCount) +
-                (calculatorDto.getT() * tvCount)+
-                (calculatorDto.getA() * othersCount);
+    public CalculatorResponseDto getRecommendationPower(CalculatorDto calculatorDto) {
+        Double tmp = calculatorDto.getH() * calculatorDto.getS() * Integer.parseInt(calculatorDto.getQ());
+        Double q1 = tmp / 1000;
+
+        Double computerCountTmp = calculatorDto.getK() * computerCount;
+        Double othersCountTmp = calculatorDto.getA() * othersCount;
+        Double tvCountTmp = calculatorDto.getT() * tvCount;
+        Double q2 = calculatorDto.getN() * peopleCount;
+        Double q3 = computerCountTmp + othersCountTmp + computerCountTmp;
         Double query = q1 + q2 + q3;
-        Double queryMin = query*((100-QRangeMin)/100);
-        Double queryMax = query*((100+QRangeMax)/100);
+        Double queryMin = query * ((100 - QRangeMin) / 100);
+        Double queryMax = query * ((100 + QRangeMax) / 100);
         return CalculatorResponseDto.builder()
                 .max(queryMax)
                 .min(queryMin)
-                        .build();
+                .build();
     }
 }
