@@ -128,12 +128,12 @@ public class ArticleServiceimpl {
     }
 
     private ArticleDto articleToArticleDto(ArticleEntity article) {
-        ImageDto body = getPhoto(article.getPictureName());
+//        ImageDto body = getPhoto(article.getPictureName());
         return ArticleDto.builder()
                 .articleName(article.getArticleName())
                 .articleText(article.getArticleText())
                 .uuidArticle(article.getUuidArticle())
-                .pictureBody(body.getPictureBody())
+//                .pictureBody(body.getPictureBody())
                 .articleTitle(article.getArticleTitle())
                 .pictureName(article.getPictureName())
                 .build();
