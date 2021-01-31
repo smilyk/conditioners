@@ -1,5 +1,7 @@
 package conditioner.controller;
 
+import conditioner.dto.UploadFileDto;
+import conditioner.exceptions.ConditionerException;
 import conditioner.service.PriceService;
 import conditioner.utils.ExcelUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,7 @@ public class PriceController {
     PriceService priceService;
 
     @PostMapping("/api/uploadfiles")
-    public String uploadFileMulti(
+    public UploadFileDto uploadFileMulti(
             @RequestParam("file") MultipartFile[] file) {
 
         // Get file name
@@ -27,7 +29,8 @@ public class PriceController {
                 .filter(x -> !StringUtils.isEmpty(x)).collect(Collectors.joining(" , "));
 
         if (StringUtils.isEmpty(uploadedFileName)) {
-            return "please select a file!";
+            return UploadFileDto.builder().rez(
+            "please select a file!").build();
         }
 
         String notExcelFiles = Arrays.stream(file).filter(x -> !ExcelUtils.isExcelFile(x))
@@ -35,16 +38,18 @@ public class PriceController {
                 .collect(Collectors.joining(" , "));
 
         if(!StringUtils.isEmpty(notExcelFiles)) {
-            return "Not Excel Files";
+            return UploadFileDto.builder().rez(
+                    "Not Excel Files!").build();
         }
         try {
             for(MultipartFile fileForParse: file) {
                 priceService.store(fileForParse);
             }
-            return "Upload Successfully" + uploadedFileName;
+            return UploadFileDto.builder().rez(
+                    "Upload Successfully \" + uploadedFileName").build();
 
         } catch (Exception e) {
-            return  e.getMessage() + uploadedFileName;
+            throw new ConditionerException(e.getMessage() + uploadedFileName);
         }
     }
 }
