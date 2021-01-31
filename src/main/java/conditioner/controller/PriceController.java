@@ -4,6 +4,7 @@ import conditioner.service.PriceService;
 import conditioner.utils.ExcelUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
-
+@CrossOrigin(value = "*")
 @RestController
 public class PriceController {
     @Autowired
@@ -19,17 +20,17 @@ public class PriceController {
 
     @PostMapping("/api/uploadfiles")
     public String uploadFileMulti(
-            @RequestParam("uploadfiles") MultipartFile[] uploadfiles) {
+            @RequestParam("file") MultipartFile[] file) {
 
         // Get file name
-        String uploadedFileName = Arrays.stream(uploadfiles).map(MultipartFile::getOriginalFilename)
+        String uploadedFileName = Arrays.stream(file).map(MultipartFile::getOriginalFilename)
                 .filter(x -> !StringUtils.isEmpty(x)).collect(Collectors.joining(" , "));
 
         if (StringUtils.isEmpty(uploadedFileName)) {
             return "please select a file!";
         }
 
-        String notExcelFiles = Arrays.stream(uploadfiles).filter(x -> !ExcelUtils.isExcelFile(x))
+        String notExcelFiles = Arrays.stream(file).filter(x -> !ExcelUtils.isExcelFile(x))
                 .map(MultipartFile::getOriginalFilename)
                 .collect(Collectors.joining(" , "));
 
@@ -37,8 +38,8 @@ public class PriceController {
             return "Not Excel Files";
         }
         try {
-            for(MultipartFile file: uploadfiles) {
-                priceService.store(file);
+            for(MultipartFile fileForParse: file) {
+                priceService.store(fileForParse);
             }
             return "Upload Successfully" + uploadedFileName;
 
