@@ -2,8 +2,11 @@ package conditioner.controller;
 
 import conditioner.dto.UploadFileDto;
 import conditioner.exceptions.ConditionerException;
+import conditioner.service.ArticleServiceimpl;
 import conditioner.service.PriceService;
 import conditioner.utils.ExcelUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,6 +20,8 @@ import java.util.stream.Collectors;
 @CrossOrigin(value = "*")
 @RestController
 public class PriceController {
+    private static final Logger LOGGER = LogManager.getLogger(PriceController.class);
+
     @Autowired
     PriceService priceService;
 
@@ -29,6 +34,7 @@ public class PriceController {
                 .filter(x -> !StringUtils.isEmpty(x)).collect(Collectors.joining(" , "));
 
         if (StringUtils.isEmpty(uploadedFileName)) {
+            LOGGER.error("file not selected");
             return UploadFileDto.builder().rez(
             "please select a file!").build();
         }
@@ -38,20 +44,22 @@ public class PriceController {
                 .collect(Collectors.joining(" , "));
 
         if(!StringUtils.isEmpty(notExcelFiles)) {
+            LOGGER.error("format of file - not excel");
             return UploadFileDto.builder().rez(
                     "Not Excel Files!").build();
         }
         try {
             for(MultipartFile fileForParse: file) {
                 priceService.store(fileForParse);
+                LOGGER.info("file with name " + uploadedFileName + "was upload successfully");
             }
             return UploadFileDto.builder().rez(
-                    "Upload Successfully \" + uploadedFileName").build();
+                    "Upload Successfully file with name: " + uploadedFileName).build();
 
         } catch (Exception e) {
             throw new ConditionerException(e.getMessage() + uploadedFileName);
         }
     }
 }
-//TODO logger
+//TODO Swager
 

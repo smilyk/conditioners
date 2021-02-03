@@ -1,7 +1,10 @@
 package conditioner.utils;
 
+import conditioner.controller.PriceController;
 import conditioner.model.PriceEntity;
 import lombok.SneakyThrows;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -18,6 +21,8 @@ import java.util.List;
 public class ExcelUtils {
 
     public static String EXCELTYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    private static final Logger LOGGER = LogManager.getLogger(ExcelUtils.class);
+
     @SneakyThrows
     public static List parseExcelFile(InputStream is) {
         try {
@@ -46,25 +51,31 @@ public class ExcelUtils {
                 while (cellsInRow.hasNext()) {
                     Cell currentCell = (Cell) cellsInRow.next();
 //cellIndex == 0 => uuid generic in server not from file
-                    if (cellIndex == 1) { // FIRM
-                        price.setFirm(currentCell.getStringCellValue());
-                    } else if (cellIndex == 2) { // Name
-                        price.setName(currentCell.getStringCellValue());
-                    } else if (cellIndex == 3) { // Model
-                        price.setModel(currentCell.getStringCellValue());
-                    } else if (cellIndex == 4) { // priceUkr
+                    if (cellIndex == 0) { // наименование
+                        price.setNamePosition(currentCell.getStringCellValue());
+                    }
+                    else if (cellIndex == 1) { // модель
+                        price.setModelPosition(currentCell.getStringCellValue());
+                    } else if (cellIndex == 2) { // цена usa
                         price.setPriceUsa(currentCell.getNumericCellValue());
-                    } else if (cellIndex == 5) { // priceUsa
-                        price.setPriceUkr( currentCell.getNumericCellValue());
-                    } else if (cellIndex == 6) { // coef
-                        price.setCoefficient( currentCell.getNumericCellValue());
+                    } else if (cellIndex == 3) { // цена укр
+                        price.setPriceUkr(currentCell.getNumericCellValue());
+                    } else if (cellIndex == 4) { // удиница измерения
+                        price.setUnitsPosition( currentCell.getStringCellValue());
+                    } else if (cellIndex == 5) { // уена рынок
+                        price.setPriceMarketPosition( currentCell.getNumericCellValue());
+                    }else if (cellIndex == 6) { // коэф
+                        price.setCoefficientPosition( currentCell.getNumericCellValue());
+                    }else if (cellIndex == 7) { // уена работы
+                        price.setWorkPricePosition( currentCell.getNumericCellValue());
+                    }else if (cellIndex == 8) { // описание
+                        price.setDescriptionPosition( currentCell.getStringCellValue());
                     }
                     cellIndex++;
                 }
-
+LOGGER.info("Parsing of file was finished");
                 lstCustomers.add(price);
             }
-
             // Close WorkBook
             workbook.close();
 
@@ -78,11 +89,10 @@ public class ExcelUtils {
     public static boolean isExcelFile(MultipartFile file) {
 
         if(!EXCELTYPE.equals(file.getContentType())) {
+            LOGGER.error("wrong format of file");
             return false;
         }
-
         return true;
     }
 }
 
-//TODO logger

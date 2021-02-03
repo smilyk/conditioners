@@ -22,13 +22,10 @@ public class PriceEntity extends BaseEntity implements Serializable {
     private String uuidPosition;
 
     @Column(nullable = false, length = 100)
-    private String firm;
+    private String namePosition;
 
     @Column(nullable = false, length = 100)
-    private String name;
-
-    @Column(nullable = false, length = 100)
-    private String model;
+    private String modelPosition;
 
     @Column(nullable = false)
     private Double priceUkr;
@@ -37,5 +34,20 @@ public class PriceEntity extends BaseEntity implements Serializable {
     private Double priceUsa;
 
     @Column(nullable = false)
-    private Double coefficient;
+    private Double priceMarketPosition;
+
+    @Column(nullable = false)
+    private Double workPricePosition;
+
+    @Column(nullable = false)
+    private Double coefficientPosition;
+
+//    единицы измерения
+    @Column(nullable = false, length = 100)
+    private String unitsPosition;
+
+    @Column(nullable = false, length = 100)
+    private String descriptionPosition;
+
+
 }
