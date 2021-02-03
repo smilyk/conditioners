@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class PriceServiceImpl implements PriceService {
@@ -23,12 +25,20 @@ Utils utils;
     @SneakyThrows
     @Override
     public void store(MultipartFile file) {
+        List<PriceEntity> restoredPriceList = priceRepository.findAll();
+        Map<String, String> mapModelUuid =  restoredPriceList.stream()
+        .collect(Collectors.toMap(PriceEntity::getModelPosition, PriceEntity::getUuidPosition));
         try {
             List<PriceEntity> listPrice = ExcelUtils.parseExcelFile(file.getInputStream());
             // Save Customers to DataBase
             for(PriceEntity p : listPrice){
-                p.setUuidPosition(utils.createRandomUuid());
+                if(mapModelUuid.containsKey(p.getModelPosition())){
+                    p.setUuidPosition(mapModelUuid.get(p.getModelPosition()));
+                }else {
+                    p.setUuidPosition(utils.createRandomUuid());
+                }
             }
+
             priceRepository.saveAll(listPrice);
         } catch (IOException e) {
             throw new RuntimeException("FAIL! -> message = " + e.getMessage());

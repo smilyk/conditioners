@@ -1,6 +1,5 @@
 package conditioner.utils;
 
-import conditioner.controller.PriceController;
 import conditioner.model.PriceEntity;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
@@ -53,27 +52,26 @@ public class ExcelUtils {
 //cellIndex == 0 => uuid generic in server not from file
                     if (cellIndex == 0) { // наименование
                         price.setNamePosition(currentCell.getStringCellValue());
-                    }
-                    else if (cellIndex == 1) { // модель
+                    } else if (cellIndex == 1) { // модель
                         price.setModelPosition(currentCell.getStringCellValue());
                     } else if (cellIndex == 2) { // цена usa
                         price.setPriceUsa(currentCell.getNumericCellValue());
                     } else if (cellIndex == 3) { // цена укр
                         price.setPriceUkr(currentCell.getNumericCellValue());
                     } else if (cellIndex == 4) { // удиница измерения
-                        price.setUnitsPosition( currentCell.getStringCellValue());
+                        price.setUnitsPosition(currentCell.getStringCellValue());
                     } else if (cellIndex == 5) { // уена рынок
-                        price.setPriceMarketPosition( currentCell.getNumericCellValue());
-                    }else if (cellIndex == 6) { // коэф
-                        price.setCoefficientPosition( currentCell.getNumericCellValue());
-                    }else if (cellIndex == 7) { // уена работы
-                        price.setWorkPricePosition( currentCell.getNumericCellValue());
-                    }else if (cellIndex == 8) { // описание
-                        price.setDescriptionPosition( currentCell.getStringCellValue());
+                        price.setPriceMarketPosition(currentCell.getNumericCellValue());
+                    } else if (cellIndex == 6) { // коэф
+                        price.setCoefficientPosition(currentCell.getNumericCellValue());
+                    } else if (cellIndex == 7) { // уена работы
+                        price.setWorkPricePosition(currentCell.getNumericCellValue());
+                    } else if (cellIndex == 8) { // описание
+                        price.setDescriptionPosition(currentCell.getStringCellValue());
                     }
                     cellIndex++;
                 }
-LOGGER.info("Parsing of file was finished");
+                LOGGER.info("Parsing of file was finished");
                 lstCustomers.add(price);
             }
             // Close WorkBook
@@ -88,7 +86,7 @@ LOGGER.info("Parsing of file was finished");
 
     public static boolean isExcelFile(MultipartFile file) {
 
-        if(!EXCELTYPE.equals(file.getContentType())) {
+        if (!EXCELTYPE.equals(file.getContentType())) {
             LOGGER.error("wrong format of file");
             return false;
         }

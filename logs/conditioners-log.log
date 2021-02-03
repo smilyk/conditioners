@@ -577,3 +577,7 @@
 2021-02-03 17:03:31.870  INFO MBP-Smilyk --- [nio-8080-exec-1] o.a.c.c.C.[.[.[/]                        : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2021-02-03 17:03:31.871  INFO MBP-Smilyk --- [nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
 2021-02-03 17:03:31.877  INFO MBP-Smilyk --- [nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Completed initialization in 6 ms
+2021-02-03 17:11:34.304  INFO MBP-Smilyk --- [extShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-02-03 17:11:34.307  INFO MBP-Smilyk --- [extShutdownHook] o.s.s.c.ThreadPoolTaskExecutor           : Shutting down ExecutorService 'applicationTaskExecutor'
+2021-02-03 17:11:34.308  INFO MBP-Smilyk --- [extShutdownHook] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+2021-02-03 17:11:34.314  INFO MBP-Smilyk --- [extShutdownHook] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
