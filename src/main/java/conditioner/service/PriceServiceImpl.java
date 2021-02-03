@@ -1,5 +1,6 @@
 package conditioner.service;
 
+import conditioner.dto.NameModelListDto;
 import conditioner.model.PriceEntity;
 import conditioner.repository.PriceRepository;
 import conditioner.utils.ExcelUtils;
@@ -19,22 +20,22 @@ public class PriceServiceImpl implements PriceService {
 
     @Autowired
     public PriceRepository priceRepository;
-@Autowired
-Utils utils;
+    @Autowired
+    Utils utils;
 
     @SneakyThrows
     @Override
     public void store(MultipartFile file) {
         List<PriceEntity> restoredPriceList = priceRepository.findAll();
-        Map<String, String> mapModelUuid =  restoredPriceList.stream()
-        .collect(Collectors.toMap(PriceEntity::getModelPosition, PriceEntity::getUuidPosition));
+        Map<String, String> mapModelUuid = restoredPriceList.stream()
+                .collect(Collectors.toMap(PriceEntity::getModelPosition, PriceEntity::getUuidPosition));
         try {
             List<PriceEntity> listPrice = ExcelUtils.parseExcelFile(file.getInputStream());
             // Save Customers to DataBase
-            for(PriceEntity p : listPrice){
-                if(mapModelUuid.containsKey(p.getModelPosition())){
+            for (PriceEntity p : listPrice) {
+                if (mapModelUuid.containsKey(p.getModelPosition())) {
                     p.setUuidPosition(mapModelUuid.get(p.getModelPosition()));
-                }else {
+                } else {
                     p.setUuidPosition(utils.createRandomUuid());
                 }
             }
@@ -43,6 +44,21 @@ Utils utils;
         } catch (IOException e) {
             throw new RuntimeException("FAIL! -> message = " + e.getMessage());
         }
+    }
+
+    @Override
+    public NameModelListDto getNameAndModelList() {
+        List<PriceEntity> listPriceEntity = priceRepository.findAll();
+        if(listPriceEntity.isEmpty()){
+            return NameModelListDto.builder().build();
+        }
+        Map<String, List<String>> mapNameModelList = listPriceEntity.stream()
+                .collect(Collectors.groupingBy(PriceEntity::getNamePosition,
+                        Collectors.mapping(PriceEntity::getModelPosition, Collectors.toList())));
+        return NameModelListDto.builder()
+                .rez(mapNameModelList)
+                .build();
+
     }
 
 }
