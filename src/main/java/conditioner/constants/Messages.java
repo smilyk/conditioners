@@ -40,5 +40,8 @@ public class Messages {
     public static final String FOR_PLANNING = " planned";
     public static final String NOT_DELETED = " not deleted";
     public static final String ARTICLE = " article ";
-    public static final String ARTICLES = " articles ";;
+    public static final String ARTICLES = " articles ";
+    public static final String RECORD = " record for model: ";
+    public static final String CREATE_OFFER = " creating offer for client: ";
+    public static final String SAVE_OFFER = " saving offer for client: ";
 }

@@ -1,25 +1,35 @@
 package conditioner.service;
 
-import conditioner.dto.NameModelListDto;
+import conditioner.constants.Messages;
+import conditioner.dto.*;
+import conditioner.model.OfferEntity;
 import conditioner.model.PriceEntity;
+import conditioner.repository.OfferRepository;
 import conditioner.repository.PriceRepository;
 import conditioner.utils.ExcelUtils;
 import conditioner.utils.Utils;
 import lombok.SneakyThrows;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class PriceServiceImpl implements PriceService {
+    private static final Logger LOGGER = LogManager.getLogger(PriceServiceImpl.class);
 
     @Autowired
     public PriceRepository priceRepository;
+    @Autowired
+    OfferRepository offerRepository;
     @Autowired
     Utils utils;
 
@@ -39,7 +49,6 @@ public class PriceServiceImpl implements PriceService {
                     p.setUuidPosition(utils.createRandomUuid());
                 }
             }
-
             priceRepository.saveAll(listPrice);
         } catch (IOException e) {
             throw new RuntimeException("FAIL! -> message = " + e.getMessage());
@@ -49,7 +58,7 @@ public class PriceServiceImpl implements PriceService {
     @Override
     public NameModelListDto getNameAndModelList() {
         List<PriceEntity> listPriceEntity = priceRepository.findAll();
-        if(listPriceEntity.isEmpty()){
+        if (listPriceEntity.isEmpty()) {
             return NameModelListDto.builder().build();
         }
         Map<String, List<String>> mapNameModelList = listPriceEntity.stream()
@@ -58,8 +67,112 @@ public class PriceServiceImpl implements PriceService {
         return NameModelListDto.builder()
                 .rez(mapNameModelList)
                 .build();
-
     }
 
+    @Override
+    public List<ResponseGetPriceDto> getPrice(List<RequestGetPriceDto> req) {
+        List<ResponseGetPriceDto> rez = new ArrayList<>();
+        for (RequestGetPriceDto r : req) {
+            Optional<PriceEntity> optionalPriceEntity = priceRepository.findByModelPosition(r.getModel());
+            if (optionalPriceEntity.isPresent()) {
+                rez.add(createResponsePriceDto(r.getCount(), optionalPriceEntity.get()));
+            } else {
+                LOGGER.error(Messages.RECORD + r.getModel() + Messages.NOT_FOUND);
+            }
+        }
+        return rez;
+    }
+
+    @Override
+    public ResponseOfferDto getOfferDto(RequestOfferDto req) {
+        List<RequestGetPriceDto> getPriceDto = req.getModel();
+        List<OfferPriceDto> offerPriceDtoList = new ArrayList<>();
+        List<OfferEntity> offerEntityList = new ArrayList<>();
+        String uuid = utils.createRandomUuid();
+        for (RequestGetPriceDto r : getPriceDto) {
+            Optional<PriceEntity> optionalPriceEntity = priceRepository.findByModelPosition(r.getModel());
+            if (optionalPriceEntity.isPresent()) {
+                OfferPriceDto offerPriceDto = createOfferPriceDto(r.getCount(), optionalPriceEntity.get());
+                offerPriceDtoList.add(offerPriceDto);
+                LOGGER.info(Messages.CREATE_OFFER + req.getClient());
+
+                OfferEntity offerEntity = getOfferEntity(offerPriceDto, req.getClient(), uuid);
+                offerEntityList.add(offerEntity);
+            } else {
+                LOGGER.error(Messages.RECORD + r.getModel() + Messages.NOT_FOUND);
+            }
+        }
+        LOGGER.info(Messages.SAVE_OFFER + req.getClient());
+        offerRepository.saveAll(offerEntityList);
+        return ResponseOfferDto.builder()
+                .client(req.getClient())
+                .price(offerPriceDtoList)
+                .build();
+    }
+
+    private OfferEntity getOfferEntity(OfferPriceDto offerPriceDto, String client, String uuid) {
+        return OfferEntity.builder()
+                .uuidOffer(uuid)
+                .client(client)
+                .nameModel(offerPriceDto.getModel())
+                .priceUkr(offerPriceDto.getPriceUkr())
+                .priceUsa(offerPriceDto.getPriceUsa())
+                .priceWork(offerPriceDto.getWorkPriceUkr())
+                .sum(offerPriceDto.getSumUkr())
+                .priceInternet(offerPriceDto.getPriceInternet())
+                .build();
+    }
+
+    private OfferPriceDto createOfferPriceDto(Double count, PriceEntity priceEntity) {
+        Double priceGlobalUkr = priceEntity.getPriceUkr();
+        Double profitUkr = priceGlobalUkr * priceEntity.getCoefficientPosition();
+        Double priceUkr = profitUkr + priceGlobalUkr;
+
+        Double priceGlobalUsa = priceEntity.getPriceUsa();
+        Double profitUsa = priceGlobalUsa * priceEntity.getCoefficientPosition();
+        Double priceUsa = profitUsa + priceGlobalUsa;
+
+        Double workPrice = priceEntity.getWorkPricePosition();
+        Double sumUkr = priceUkr + workPrice;
+
+        return OfferPriceDto.builder()
+                .model(priceEntity.getModelPosition())
+                .priceUsa(priceUsa)
+                .priceUkr(priceUkr)
+                .workPriceUkr(workPrice)
+                .sumUkr(sumUkr)
+                .priceInternet(priceEntity.getPriceMarketPosition())
+                .build();
+    }
+
+    private ResponseGetPriceDto createResponsePriceDto(Double count, PriceEntity priceEntity) {
+//        usa
+        Double priceGlobalUsa = priceEntity.getPriceUsa() + count;
+        Double profitUsa = priceGlobalUsa * priceEntity.getCoefficientPosition();
+        Double priceUsa = profitUsa + priceGlobalUsa;
+        Double profitabilityUsa = priceUsa / priceGlobalUsa * 100;
+//        ukr
+        Double priceGlobalUkr = priceEntity.getPriceUkr() + count;
+        Double profitUkr = priceGlobalUkr * priceEntity.getCoefficientPosition();
+        Double priceUkr = profitUkr + priceGlobalUkr;
+        Double profitabilityUkr = priceUkr / priceGlobalUkr * 100;
+
+        return ResponseGetPriceDto.builder()
+                .name(priceEntity.getNamePosition())
+                .model(priceEntity.getModelPosition())
+                .count(count)
+                .priceDefaultUsa(priceEntity.getPriceUsa())
+                .priceGlobalUsa(priceGlobalUsa)
+                .profitUsa(profitUsa)
+                .priceUsa(priceUsa)
+                .profitabilityUsa(profitabilityUsa)
+                .priceDefaultUkr(priceEntity.getPriceUkr())
+                .priceGlobalUkr(priceGlobalUkr)
+                .profitUkr(profitUkr)
+                .priceUkr(priceUkr)
+                .profitabilityUkr(profitabilityUkr)
+                .build();
+    }
+
+
 }
-//TODO logger

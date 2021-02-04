@@ -1,7 +1,6 @@
 package conditioner.controller;
 
-import conditioner.dto.NameModelListDto;
-import conditioner.dto.UploadFileDto;
+import conditioner.dto.*;
 import conditioner.exceptions.ConditionerException;
 import conditioner.service.ArticleServiceimpl;
 import conditioner.service.PriceService;
@@ -14,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
+
 @CrossOrigin(value = "*")
 @RestController
 public class PriceController {
@@ -34,20 +35,20 @@ public class PriceController {
         if (StringUtils.isEmpty(uploadedFileName)) {
             LOGGER.error("file not selected");
             return UploadFileDto.builder().rez(
-            "please select a file!").build();
+                    "please select a file!").build();
         }
 
         String notExcelFiles = Arrays.stream(file).filter(x -> !ExcelUtils.isExcelFile(x))
                 .map(MultipartFile::getOriginalFilename)
                 .collect(Collectors.joining(" , "));
 
-        if(!StringUtils.isEmpty(notExcelFiles)) {
+        if (!StringUtils.isEmpty(notExcelFiles)) {
             LOGGER.error("format of file - not excel");
             return UploadFileDto.builder().rez(
                     "Not Excel Files!").build();
         }
         try {
-            for(MultipartFile fileForParse: file) {
+            for (MultipartFile fileForParse : file) {
                 priceService.store(fileForParse);
                 LOGGER.info("file with name " + uploadedFileName + "was upload successfully");
             }
@@ -60,8 +61,19 @@ public class PriceController {
     }
 
     @GetMapping()
-    public NameModelListDto getNameAndModelsList(){
+    public NameModelListDto getNameAndModelsList() {
         return priceService.getNameAndModelList();
+    }
+
+
+    @PostMapping("/price")
+    public List<ResponseGetPriceDto> getPriceForChosenPosition(@RequestBody List<RequestGetPriceDto> req) {
+        return priceService.getPrice(req);
+    }
+
+    @PostMapping("/price/proposition")
+    public ResponseOfferDto getProposition(@RequestBody RequestOfferDto req){
+        return priceService.getOfferDto(req);
     }
 }
 //TODO Swager
