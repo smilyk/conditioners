@@ -136,6 +136,7 @@ public class PriceServiceImpl implements PriceService {
         Double sumUkr = priceUkr + workPrice;
 
         return OfferPriceDto.builder()
+                .name(priceEntity.getNamePosition())
                 .model(priceEntity.getModelPosition())
                 .priceUsa(priceUsa)
                 .priceUkr(priceUkr)

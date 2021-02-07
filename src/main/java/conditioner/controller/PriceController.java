@@ -71,8 +71,9 @@ public class PriceController {
         return priceService.getPrice(req);
     }
 
+//    TODO созранять в базу предложение только если клиент обозначен
     @PostMapping("/price/proposition")
-    public ResponseOfferDto getProposition(@RequestBody RequestOfferDto req){
+    public ResponseOfferDto getProposition(@RequestBody RequestOfferDto req) {
         return priceService.getOfferDto(req);
     }
 }

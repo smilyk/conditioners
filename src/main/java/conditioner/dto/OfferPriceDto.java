@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 @ToString
 public class OfferPriceDto {
+    String name;
     String model;
     Double priceUkr;
     Double priceUsa;
