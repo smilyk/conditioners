@@ -148,14 +148,22 @@ public class PriceServiceImpl implements PriceService {
 
     private ResponseGetPriceDto createResponsePriceDto(Double count, PriceEntity priceEntity) {
 //        usa
+//        общая закупка = закупка (priceEntity.getPriceUsa()) * количество
         Double priceGlobalUsa = priceEntity.getPriceUsa() * count;
-        Double profitUsa = priceGlobalUsa * priceEntity.getCoefficientPosition();
-        Double priceUsa = profitUsa + priceGlobalUsa;
+        //        цена продажи = общая закупка * коэф
+        Double priceUsa = priceGlobalUsa * priceEntity.getCoefficientPosition();
+//        прибыль = цена продажи - общая закупка
+        Double profitUsa = priceUsa - priceGlobalUsa;
+//        рентабельность = прибыль/общая закупка * 100
         Double profitabilityUsa = profitUsa / priceGlobalUsa * 100;
 //        ukr
+        //        общая закупка = закупка (priceEntity.getPriceUsa()) * количество
         Double priceGlobalUkr = priceEntity.getPriceUkr() * count;
-        Double profitUkr = priceGlobalUkr * priceEntity.getCoefficientPosition();
-        Double priceUkr = profitUkr + priceGlobalUkr;
+        //        цена продажи = общая закупка * коэф
+        Double priceUkr = priceGlobalUkr * priceEntity.getCoefficientPosition();
+//        прибыль = цена продажи - общая закупка
+        Double profitUkr = priceUkr - priceGlobalUkr;
+//        рентабельность = прибыль/общая закупка * 100
         Double profitabilityUkr = profitUkr / priceGlobalUkr * 100;
 
         return ResponseGetPriceDto.builder()

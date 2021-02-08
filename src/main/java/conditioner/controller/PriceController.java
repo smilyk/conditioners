@@ -65,12 +65,12 @@ public class PriceController {
         return priceService.getNameAndModelList();
     }
 
-
+//подробная таблица
     @PostMapping("/price")
     public List<ResponseGetPriceDto> getPriceForChosenPosition(@RequestBody List<RequestGetPriceDto> req) {
         return priceService.getPrice(req);
     }
-
+//сводная таблица + предлжение клиенту
 //    TODO созранять в базу предложение только если клиент обозначен
     @PostMapping("/price/proposition")
     public ResponseOfferDto getProposition(@RequestBody RequestOfferDto req) {
