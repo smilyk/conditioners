@@ -65,22 +65,35 @@ public class PriceController {
         return priceService.getNameAndModelList();
     }
 
-//подробная таблица
+    //подробная таблица
     @PostMapping("/price")
     public List<ResponseGetPriceDto> getPriceForChosenPosition(@RequestBody List<RequestGetPriceDto> req) {
         return priceService.getPrice(req);
     }
-//сводная таблица + предлжение клиенту
+
+    //сводная таблица + предлжение клиенту
 //    TODO созранять в базу предложение только если клиент обозначен
     @PostMapping("/price/proposition")
     public ResponseOfferDto getProposition(@RequestBody RequestOfferDto req) {
         return priceService.getOfferDto(req);
     }
 
-@GetMapping("/price")
-    public List<PriceDto> getPrice(){
+//    получить весь прайс
+    @GetMapping("/price")
+    public List<PriceDto> getPrice() {
         return priceService.getAllPrice();
-}
+    }
+
+//    удалить позицию из прайса
+    @DeleteMapping("{/uuidPosition}")
+    public PriceDto deletePositionInPrice( @PathVariable String uuidPosition){
+        return priceService.deletePositionFromPrice(uuidPosition);
+    }
+//    обновить позицию в прайсе
+    @PutMapping()
+    public PriceDto updatePricePosition(@RequestBody PriceDto priceDto){
+        return priceService.updatePricePosition(priceDto);
+    }
 }
 //TODO Swager
 

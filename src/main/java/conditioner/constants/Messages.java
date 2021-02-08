@@ -46,4 +46,7 @@ public class Messages {
     public static final String SAVE_OFFER = " saving offer for client: ";
     public static final String ALL_PRICE = " price list ";
     public static final String IS_EMPTY = " id empty ";
+    public static final String PRICE = "position in price " ;
+    public static final String UUID = " with uuid: ";
+    public static final String DELETED = " was deleted ";
 }

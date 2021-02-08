@@ -2,6 +2,7 @@ package conditioner.service;
 
 import conditioner.constants.Messages;
 import conditioner.dto.*;
+import conditioner.exceptions.ConditionerException;
 import conditioner.model.OfferEntity;
 import conditioner.model.PriceEntity;
 import conditioner.repository.OfferRepository;
@@ -122,6 +123,31 @@ public class PriceServiceImpl implements PriceService {
         }
         return priceEntityList.stream().map(priceEntity -> priceToPriceEntity(priceEntity))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public PriceDto deletePositionFromPrice(String uuidPosition) {
+        Optional<PriceEntity> optionalPriceEntity = priceRepository.findByUuidPosition(uuidPosition);
+        if(!optionalPriceEntity.isPresent()){
+            LOGGER.error(Messages.PRICE + Messages.UUID + uuidPosition + Messages.NOT_FOUND);
+            throw new ConditionerException(Messages.PRICE + Messages.UUID + uuidPosition + Messages.NOT_FOUND);
+        }
+        PriceEntity priceEntity = optionalPriceEntity.get();
+        priceRepository.delete(priceEntity);
+        LOGGER.info(Messages.PRICE + Messages.UUID + uuidPosition + Messages.DELETED);
+        return modelMapper.map(priceEntity, PriceDto.class);
+    }
+
+    @Override
+    public PriceDto updatePricePosition(PriceDto priceDto) {
+        Optional<PriceEntity> optionalPriceEntity = priceRepository.findByModelPosition(priceDto.getModelPosition());
+        if(!optionalPriceEntity.isPresent()){
+            LOGGER.error(Messages.PRICE + Messages.UUID + priceDto.getUuidPosition() + Messages.NOT_FOUND);
+            throw new ConditionerException(Messages.PRICE + Messages.UUID + priceDto.getUuidPosition() + Messages.NOT_FOUND);
+        }
+        priceRepository.save(optionalPriceEntity.get());
+        LOGGER.info(Messages.PRICE + Messages.WITH_ID + priceDto.getUuidPosition() + Messages.UPDATED);
+        return modelMapper.map(optionalPriceEntity.get(), PriceDto.class);
     }
 
     private PriceDto priceToPriceEntity(PriceEntity priceEntity) {

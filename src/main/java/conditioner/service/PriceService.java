@@ -17,4 +17,8 @@ public interface PriceService {
     ResponseOfferDto getOfferDto(RequestOfferDto req);
 
     List<PriceDto> getAllPrice();
+
+    PriceDto deletePositionFromPrice(String uuidPosition);
+
+    PriceDto updatePricePosition(PriceDto priceDto);
 }

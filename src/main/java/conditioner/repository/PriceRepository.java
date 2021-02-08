@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface PriceRepository extends JpaRepository<PriceEntity, Long> {
     Optional<PriceEntity> findByModelPosition(String model);
+
+    Optional<PriceEntity> findByUuidPosition(String uuidPosition);
 }
