@@ -94,6 +94,11 @@ public class PriceController {
     public PriceDto updatePricePosition(@RequestBody PriceDto priceDto){
         return priceService.updatePricePosition(priceDto);
     }
+
+    @GetMapping("/price/{uuidPosition}")
+    public PriceDto getPricePositionByUuid(@PathVariable String uuidPosition){
+        return priceService.getPricePositionByUuid(uuidPosition);
+    }
 }
 //TODO Swager
 

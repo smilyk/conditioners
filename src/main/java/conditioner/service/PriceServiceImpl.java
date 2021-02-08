@@ -150,6 +150,16 @@ public class PriceServiceImpl implements PriceService {
         return modelMapper.map(optionalPriceEntity.get(), PriceDto.class);
     }
 
+    @Override
+    public PriceDto getPricePositionByUuid(String uuidPosition) {
+        Optional<PriceEntity> optionalPriceEntity = priceRepository.findByUuidPosition(uuidPosition);
+        if(!optionalPriceEntity.isPresent()){
+            LOGGER.error(Messages.PRICE + Messages.UUID + uuidPosition + Messages.NOT_FOUND);
+            throw new ConditionerException(Messages.PRICE + Messages.UUID + uuidPosition + Messages.NOT_FOUND);
+        }
+        return modelMapper.map(optionalPriceEntity.get(), PriceDto.class);
+    }
+
     private PriceDto priceToPriceEntity(PriceEntity priceEntity) {
         return modelMapper.map(priceEntity, PriceDto.class);
     }

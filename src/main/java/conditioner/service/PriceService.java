@@ -21,4 +21,6 @@ public interface PriceService {
     PriceDto deletePositionFromPrice(String uuidPosition);
 
     PriceDto updatePricePosition(PriceDto priceDto);
+
+    PriceDto getPricePositionByUuid(String uuidPosition);
 }
