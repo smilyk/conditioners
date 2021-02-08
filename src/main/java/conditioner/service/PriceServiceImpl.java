@@ -124,14 +124,19 @@ public class PriceServiceImpl implements PriceService {
     }
 
     private OfferPriceDto createOfferPriceDto(Double count, PriceEntity priceEntity) {
-        Double priceGlobalUkr = priceEntity.getPriceUkr();
-        Double profitUkr = priceGlobalUkr * priceEntity.getCoefficientPosition();
-        Double priceUkr = profitUkr + priceGlobalUkr;
+//        общая закупка = закупка * количество
+        Double priceGlobalUkr = priceEntity.getPriceUkr()* count;
+//        цена продажи = общая закупка * коэф
+        Double priceUkr = priceGlobalUkr + priceEntity.getCoefficientPosition();
+        //        прибыль = цена продажи - общая закупка
+        Double profitUkr = priceUkr - priceGlobalUkr;
 
-        Double priceGlobalUsa = priceEntity.getPriceUsa();
-        Double profitUsa = priceGlobalUsa * priceEntity.getCoefficientPosition();
-        Double priceUsa = profitUsa + priceGlobalUsa;
-
+        //        общая закупка = закупка * количество
+        Double priceGlobalUsa = priceEntity.getPriceUsa()* count;
+//        цена продажи = общая закупка * коэф
+        Double priceUsa = priceGlobalUsa + priceEntity.getCoefficientPosition();
+        //        прибыль = цена продажи - общая закупка
+        Double profitUsa = priceUsa - priceGlobalUsa;
         Double workPrice = priceEntity.getWorkPricePosition();
         Double sumUkr = priceUkr + workPrice;
 
