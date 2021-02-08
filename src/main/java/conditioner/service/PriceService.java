@@ -15,4 +15,6 @@ public interface PriceService {
     List<ResponseGetPriceDto> getPrice(List<RequestGetPriceDto> req);
 
     ResponseOfferDto getOfferDto(RequestOfferDto req);
+
+    List<PriceDto> getAllPrice();
 }

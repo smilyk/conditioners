@@ -11,6 +11,7 @@ import conditioner.utils.Utils;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,8 @@ import java.util.stream.Collectors;
 @Service
 public class PriceServiceImpl implements PriceService {
     private static final Logger LOGGER = LogManager.getLogger(PriceServiceImpl.class);
+    private ModelMapper modelMapper = new ModelMapper();
+
 
     @Autowired
     public PriceRepository priceRepository;
@@ -108,6 +111,21 @@ public class PriceServiceImpl implements PriceService {
                 .client(req.getClient())
                 .price(offerPriceDtoList)
                 .build();
+    }
+
+    @Override
+    public List<PriceDto> getAllPrice() {
+        List<PriceEntity> priceEntityList = priceRepository.findAll();
+        if(priceEntityList.size() == 0){
+            LOGGER.info(Messages.ALL_PRICE + Messages.IS_EMPTY);
+            return new ArrayList<>();
+        }
+        return priceEntityList.stream().map(priceEntity -> priceToPriceEntity(priceEntity))
+                .collect(Collectors.toList());
+    }
+
+    private PriceDto priceToPriceEntity(PriceEntity priceEntity) {
+        return modelMapper.map(priceEntity, PriceDto.class);
     }
 
     private OfferEntity getOfferEntity(OfferPriceDto offerPriceDto, String client, String uuid) {

@@ -15,7 +15,7 @@ public class Messages {
     public static final String ADDED = " was added to ";
     public static final String IN = " in the ";
     public static final String DATES_NOT_RELEVANT = " dates not relevant ";
-    public static final String SHOULD_BE_BEFORE = " should be befor ";
+    public static final String SHOULD_BE_BEFORE = " should be before ";
     public static final String RECORD_FOR_PLANNING = " records for planning for ";
     public static final String CREATED = " created ";
     public static final String CONDITIONER_WITHOUT_TYPE_MAINTENANCE =" you can not start conditioner without Type" +
@@ -44,4 +44,6 @@ public class Messages {
     public static final String RECORD = " record for model: ";
     public static final String CREATE_OFFER = " creating offer for client: ";
     public static final String SAVE_OFFER = " saving offer for client: ";
+    public static final String ALL_PRICE = " price list ";
+    public static final String IS_EMPTY = " id empty ";
 }

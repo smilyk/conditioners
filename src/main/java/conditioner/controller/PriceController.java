@@ -76,6 +76,11 @@ public class PriceController {
     public ResponseOfferDto getProposition(@RequestBody RequestOfferDto req) {
         return priceService.getOfferDto(req);
     }
+
+@GetMapping("/price")
+    public List<PriceDto> getPrice(){
+        return priceService.getAllPrice();
+}
 }
 //TODO Swager
 

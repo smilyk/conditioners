@@ -13,5 +13,4 @@ import java.util.Map;
 @ToString
 public class NameModelListDto {
     Map<String, List<String>> rez;
-
 }
