@@ -41,22 +41,17 @@ public class PriceServiceImpl implements PriceService {
     @Override
     public void store(MultipartFile file) {
         List<PriceEntity> restoredPriceList = priceRepository.findAll();
-        Map<String, String> mapModelUuid = restoredPriceList.stream()
-                .collect(Collectors.toMap(PriceEntity::getModelPosition, PriceEntity::getUuidPosition));
-        try {
-            List<PriceEntity> listPrice = ExcelUtils.parseExcelFile(file.getInputStream());
-            // Save Customers to DataBase
-            for (PriceEntity p : listPrice) {
-                if (mapModelUuid.containsKey(p.getModelPosition())) {
-                    p.setUuidPosition(mapModelUuid.get(p.getModelPosition()));
-                } else {
-                    p.setUuidPosition(utils.createRandomUuid());
+        List<PriceEntity> listPrice = ExcelUtils.parseExcelFile(file.getInputStream());
+            try {
+//                TODO - check if pricePosition exist in DB;
+                for(PriceEntity pr : listPrice){
+                    pr.setUuidPosition(utils.createRandomUuid());
                 }
+                priceRepository.saveAll(listPrice);
+            } catch (Exception e) {
+                throw new RuntimeException("FAIL! -> message = " + e.getMessage());
             }
-            priceRepository.saveAll(listPrice);
-        } catch (IOException e) {
-            throw new RuntimeException("FAIL! -> message = " + e.getMessage());
-        }
+
     }
 
     @Override
@@ -145,9 +140,11 @@ public class PriceServiceImpl implements PriceService {
             LOGGER.error(Messages.PRICE + Messages.UUID + priceDto.getUuidPosition() + Messages.NOT_FOUND);
             throw new ConditionerException(Messages.PRICE + Messages.UUID + priceDto.getUuidPosition() + Messages.NOT_FOUND);
         }
-        priceRepository.save(optionalPriceEntity.get());
+        PriceEntity priceEntity = modelMapper.map(priceDto, PriceEntity.class);
+        priceRepository.delete(optionalPriceEntity.get());
+        priceRepository.save(priceEntity);
         LOGGER.info(Messages.PRICE + Messages.WITH_ID + priceDto.getUuidPosition() + Messages.UPDATED);
-        return modelMapper.map(optionalPriceEntity.get(), PriceDto.class);
+        return priceDto;
     }
 
     @Override

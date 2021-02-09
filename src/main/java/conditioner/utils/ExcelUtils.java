@@ -55,17 +55,22 @@ public class ExcelUtils {
                     } else if (cellIndex == 1) { // модель
                         price.setModelPosition(currentCell.getStringCellValue());
                     } else if (cellIndex == 2) { // цена usa
-                        price.setPriceUsa(currentCell.getNumericCellValue());
+                        String tmp = currentCell.getStringCellValue();
+                        price.setPriceUsa(Double.valueOf(tmp));
                     } else if (cellIndex == 3) { // цена укр
-                        price.setPriceUkr(currentCell.getNumericCellValue());
+                        String tmp = currentCell.getStringCellValue();
+                        price.setPriceUkr(Double.valueOf(tmp));
                     } else if (cellIndex == 4) { // удиница измерения
                         price.setUnitsPosition(currentCell.getStringCellValue());
                     } else if (cellIndex == 5) { // уена рынок
-                        price.setPriceMarketPosition(currentCell.getNumericCellValue());
+                        String tmp = currentCell.getStringCellValue();
+                        price.setPriceMarketPosition(Double.valueOf(tmp));
                     } else if (cellIndex == 6) { // коэф
-                        price.setCoefficientPosition(currentCell.getNumericCellValue());
+                        String tmp = currentCell.getStringCellValue();
+                        price.setCoefficientPosition(Double.valueOf(tmp));
                     } else if (cellIndex == 7) { // уена работы
-                        price.setWorkPricePosition(currentCell.getNumericCellValue());
+                        String tmp = currentCell.getStringCellValue();
+                        price.setWorkPricePosition(Double.valueOf(tmp));
                     } else if (cellIndex == 8) { // описание
                         price.setDescriptionPosition(currentCell.getStringCellValue());
                     }
