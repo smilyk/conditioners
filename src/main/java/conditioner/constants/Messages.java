@@ -49,4 +49,5 @@ public class Messages {
     public static final String PRICE = "position in price " ;
     public static final String UUID = " with uuid: ";
     public static final String DELETED = " was deleted ";
+    public static final String MODEL = " model";
 }

@@ -85,9 +85,9 @@ public class PriceController {
     }
 
 //    удалить позицию из прайса
-    @DeleteMapping("{/uuidPosition}")
-    public PriceDto deletePositionInPrice( @PathVariable String uuidPosition){
-        return priceService.deletePositionFromPrice(uuidPosition);
+    @DeleteMapping("/{model}")
+    public PriceDto deletePositionInPrice( @PathVariable String model){
+        return priceService.deletePositionFromPrice(model);
     }
 //    обновить позицию в прайсе
     @PutMapping()

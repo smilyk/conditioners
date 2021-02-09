@@ -135,15 +135,15 @@ public class PriceServiceImpl implements PriceService {
     }
 
     @Override
-    public PriceDto deletePositionFromPrice(String uuidPosition) {
-        Optional<PriceEntity> optionalPriceEntity = priceRepository.findByUuidPosition(uuidPosition);
+    public PriceDto deletePositionFromPrice(String modelPosition) {
+        Optional<PriceEntity> optionalPriceEntity = priceRepository.findByModelPosition(modelPosition);
         if(!optionalPriceEntity.isPresent()){
-            LOGGER.error(Messages.PRICE + Messages.UUID + uuidPosition + Messages.NOT_FOUND);
-            throw new ConditionerException(Messages.PRICE + Messages.UUID + uuidPosition + Messages.NOT_FOUND);
+            LOGGER.error(Messages.PRICE +Messages.MODEL + modelPosition + Messages.NOT_FOUND);
+            throw new ConditionerException(Messages.PRICE + Messages.MODEL + modelPosition + Messages.NOT_FOUND);
         }
         PriceEntity priceEntity = optionalPriceEntity.get();
         priceRepository.delete(priceEntity);
-        LOGGER.info(Messages.PRICE + Messages.UUID + uuidPosition + Messages.DELETED);
+        LOGGER.info(Messages.PRICE + Messages.MODEL + modelPosition + Messages.DELETED);
         return modelMapper.map(priceEntity, PriceDto.class);
     }
 
