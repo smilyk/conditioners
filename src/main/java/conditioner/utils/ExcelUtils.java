@@ -49,7 +49,6 @@ public class ExcelUtils {
                     Cell currentCell = (Cell) cellsInRow.next();
 //cellIndex == 0 => uuid generic in server not from file
                     if (cellIndex == 0) { // наименование
-                        System.err.println(currentCell.getCellType());
                         price.setNamePosition(currentCell.getStringCellValue());
                     } else if (cellIndex == 1) { // модель
                         price.setModelPosition(currentCell.getStringCellValue());
@@ -57,7 +56,6 @@ public class ExcelUtils {
                         if(currentCell.getCellType().equals(CellType.NUMERIC)){
                             price.setPriceUsa(currentCell.getNumericCellValue());
                         }else{
-                        System.err.println(currentCell.getCellType());
                         String tmp = currentCell.getStringCellValue();
                         price.setPriceUsa(Double.valueOf(tmp));
                         }
