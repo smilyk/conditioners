@@ -4,10 +4,8 @@ import conditioner.model.PriceEntity;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -51,26 +49,48 @@ public class ExcelUtils {
                     Cell currentCell = (Cell) cellsInRow.next();
 //cellIndex == 0 => uuid generic in server not from file
                     if (cellIndex == 0) { // наименование
+                        System.err.println(currentCell.getCellType());
                         price.setNamePosition(currentCell.getStringCellValue());
                     } else if (cellIndex == 1) { // модель
                         price.setModelPosition(currentCell.getStringCellValue());
                     } else if (cellIndex == 2) { // цена usa
+                        if(currentCell.getCellType().equals(CellType.NUMERIC)){
+                            price.setPriceUsa(currentCell.getNumericCellValue());
+                        }else{
+                        System.err.println(currentCell.getCellType());
                         String tmp = currentCell.getStringCellValue();
                         price.setPriceUsa(Double.valueOf(tmp));
+                        }
                     } else if (cellIndex == 3) { // цена укр
-                        String tmp = currentCell.getStringCellValue();
-                        price.setPriceUkr(Double.valueOf(tmp));
+                        if(currentCell.getCellType().equals(CellType.NUMERIC)){
+                            price.setPriceUkr(currentCell.getNumericCellValue());
+                        }else {
+                            String tmp = currentCell.getStringCellValue();
+                            price.setPriceUkr(Double.valueOf(tmp));
+                        }
                     } else if (cellIndex == 4) { // удиница измерения
                         price.setUnitsPosition(currentCell.getStringCellValue());
-                    } else if (cellIndex == 5) { // уена рынок
-                        String tmp = currentCell.getStringCellValue();
-                        price.setPriceMarketPosition(Double.valueOf(tmp));
+                    } else if (cellIndex == 5) { // цена рынок
+                        if(currentCell.getCellType().equals(CellType.NUMERIC)){
+                            price.setPriceMarketPosition(currentCell.getNumericCellValue());
+                        }else {
+                            String tmp = currentCell.getStringCellValue();
+                            price.setPriceMarketPosition(Double.valueOf(tmp));
+                        }
                     } else if (cellIndex == 6) { // коэф
-                        String tmp = currentCell.getStringCellValue();
-                        price.setCoefficientPosition(Double.valueOf(tmp));
+                        if(currentCell.getCellType().equals(CellType.NUMERIC)){
+                            price.setCoefficientPosition(currentCell.getNumericCellValue());
+                        }else {
+                            String tmp = currentCell.getStringCellValue();
+                            price.setCoefficientPosition(Double.valueOf(tmp));
+                        }
                     } else if (cellIndex == 7) { // уена работы
-                        String tmp = currentCell.getStringCellValue();
-                        price.setWorkPricePosition(Double.valueOf(tmp));
+                        if(currentCell.getCellType().equals(CellType.NUMERIC)){
+                            price.setWorkPricePosition(currentCell.getNumericCellValue());
+                        }else {
+                            String tmp = currentCell.getStringCellValue();
+                            price.setWorkPricePosition(Double.valueOf(tmp));
+                        }
                     } else if (cellIndex == 8) { // описание
                         price.setDescriptionPosition(currentCell.getStringCellValue());
                     }

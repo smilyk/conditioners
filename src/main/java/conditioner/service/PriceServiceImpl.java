@@ -44,7 +44,7 @@ public class PriceServiceImpl implements PriceService {
         List<PriceEntity> listPrice = ExcelUtils.parseExcelFile(file.getInputStream());
             try {
                 if(restoredPriceList.isEmpty()) {
-//                TODO - check if pricePosition exist in DB;
+//                TODO - cow review
                     for (PriceEntity pr : listPrice) {
                         pr.setUuidPosition(utils.createRandomUuid());
                     }
