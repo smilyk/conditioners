@@ -43,10 +43,24 @@ public class PriceServiceImpl implements PriceService {
         List<PriceEntity> restoredPriceList = priceRepository.findAll();
         List<PriceEntity> listPrice = ExcelUtils.parseExcelFile(file.getInputStream());
             try {
+                if(restoredPriceList.isEmpty()) {
 //                TODO - check if pricePosition exist in DB;
-                for(PriceEntity pr : listPrice){
-                    pr.setUuidPosition(utils.createRandomUuid());
-                }
+                    for (PriceEntity pr : listPrice) {
+                        pr.setUuidPosition(utils.createRandomUuid());
+                    }
+                    }else {
+                        for(PriceEntity pr : listPrice){
+                            pr.getModelPosition();
+                            for(PriceEntity prTmp : restoredPriceList){
+                                if(prTmp.getModelPosition().equals(pr.getModelPosition())){
+                                    pr.setUuidPosition(prTmp.getUuidPosition());
+                                    LOGGER.info(pr.getUuidPosition());
+                                    priceRepository.delete(prTmp);
+                                }
+                            }
+                        }
+                    }
+
                 priceRepository.saveAll(listPrice);
             } catch (Exception e) {
                 throw new RuntimeException("FAIL! -> message = " + e.getMessage());
