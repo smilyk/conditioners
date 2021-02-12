@@ -7,7 +7,7 @@ import conditioner.model.OfferEntity;
 import conditioner.model.PriceEntity;
 import conditioner.repository.OfferRepository;
 import conditioner.repository.PriceRepository;
-import conditioner.utils.ExcelUtils;
+
 import conditioner.utils.Utils;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
@@ -36,6 +36,8 @@ public class PriceServiceImpl implements PriceService {
     OfferRepository offerRepository;
     @Autowired
     Utils utils;
+    @Autowired
+    ExcelUtils excelUtils;
 
     @SneakyThrows
     @Override
@@ -192,7 +194,7 @@ public class PriceServiceImpl implements PriceService {
 //        общая закупка = закупка * количество
         Double priceGlobalUkr = priceEntity.getPriceUkr()* count;
 //        цена продажи = общая закупка * коэф
-        Double priceUkr = priceGlobalUkr + priceEntity.getCoefficientPosition();
+        Double priceUkr = priceGlobalUkr * priceEntity.getCoefficientPosition();
         //        прибыль = цена продажи - общая закупка
         Double profitUkr = priceUkr - priceGlobalUkr;
 

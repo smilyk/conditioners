@@ -1,0 +1,13 @@
+2021-02-10 01:55:28.174  WARN MBP-Smilyk --- [l-1 housekeeper] c.z.h.p.HikariPool                       : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2h27s147ms).
+2021-02-10 02:33:32.377  WARN MBP-Smilyk --- [l-1 housekeeper] c.z.h.p.HikariPool                       : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=37m34s147ms).
+2021-02-10 04:33:59.536  WARN MBP-Smilyk --- [l-1 housekeeper] c.z.h.p.HikariPool                       : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2h27s159ms).
+2021-02-10 05:57:20.678  WARN MBP-Smilyk --- [l-1 housekeeper] c.z.h.p.HikariPool                       : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h22m51s139ms).
+2021-02-10 06:08:56.515  WARN MBP-Smilyk --- [l-1 housekeeper] c.z.h.p.HikariPool                       : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=11m5s830ms).
+2021-02-10 07:32:32.483  WARN MBP-Smilyk --- [l-1 housekeeper] c.z.h.p.HikariPool                       : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=14m35s240ms).
+2021-02-10 07:46:39.026  WARN MBP-Smilyk --- [l-1 housekeeper] c.z.h.p.HikariPool                       : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=14m6s543ms).
+2021-02-10 08:25:45.148  WARN MBP-Smilyk --- [l-1 housekeeper] c.z.h.p.HikariPool                       : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=38m36s116ms).
+2021-02-10 08:46:00.284  WARN MBP-Smilyk --- [l-1 housekeeper] c.z.h.p.HikariPool                       : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=19m45s130ms).
+2021-02-10 08:54:25.969  INFO MBP-Smilyk --- [extShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-02-10 08:54:25.979  INFO MBP-Smilyk --- [extShutdownHook] o.s.s.c.ThreadPoolTaskExecutor           : Shutting down ExecutorService 'applicationTaskExecutor'
+2021-02-10 08:54:25.980  INFO MBP-Smilyk --- [extShutdownHook] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+2021-02-10 08:54:25.984  INFO MBP-Smilyk --- [extShutdownHook] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
