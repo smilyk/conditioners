@@ -23,4 +23,8 @@ public interface PriceService {
     PriceDto updatePricePosition(PriceDto priceDto);
 
     PriceDto getPricePositionByUuid(String uuidPosition);
+
+    PriceDto addPricePosition(PriceDto priceDto);
+
+    Boolean getPricePositionByModel(String modelName);
 }

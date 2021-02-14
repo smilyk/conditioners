@@ -183,6 +183,37 @@ public class PriceServiceImpl implements PriceService {
         return modelMapper.map(optionalPriceEntity.get(), PriceDto.class);
     }
 
+    @Override
+    public PriceDto addPricePosition(PriceDto priceDto) {
+        Optional<PriceEntity> oprionalRestoredPriceEntity = priceRepository.findByModelPosition(priceDto.getModelPosition());
+        if(oprionalRestoredPriceEntity.isPresent()){
+            LOGGER.error(Messages.PRICE + Messages.MODEL + priceDto.getModelPosition()
+            + Messages.EXISTS);
+            throw new ConditionerException(Messages.PRICE + Messages.MODEL + priceDto.getModelPosition()
+                    + Messages.EXISTS);
+        }
+        PriceEntity priceEntity = modelMapper.map(priceDto, PriceEntity.class);
+        priceEntity.setUuidPosition(utils.createRandomUuid());
+        if(priceEntity.getDescriptionPosition() == null){
+            priceEntity.setDescriptionPosition("");
+        }
+        if(priceEntity.getUnitsPosition() == null){
+            priceEntity.setUnitsPosition("");
+        }
+        priceRepository.save(priceEntity);
+        LOGGER.info(priceEntity + Messages.ADDED + Messages.ALL_PRICE);
+        return modelMapper.map(priceEntity, PriceDto.class);
+    }
+
+    @Override
+    public Boolean getPricePositionByModel(String modelName) {
+        Optional<PriceEntity> priceEntity = priceRepository.findByModelPosition(modelName);
+        if(priceEntity.isPresent()){
+            return true;
+        }
+        return false;
+    }
+
     private PriceDto priceToPriceEntity(PriceEntity priceEntity) {
         return modelMapper.map(priceEntity, PriceDto.class);
     }

@@ -2,7 +2,6 @@ package conditioner.controller;
 
 import conditioner.dto.*;
 import conditioner.exceptions.ConditionerException;
-import conditioner.service.ArticleServiceimpl;
 import conditioner.service.PriceService;
 import conditioner.utils.ExcelUtils;
 import org.apache.logging.log4j.LogManager;
@@ -60,6 +59,10 @@ public class PriceController {
         }
     }
 
+    @PostMapping("/price/add")
+    public PriceDto addPricePosition(@RequestBody PriceDto priceDto){
+        return priceService.addPricePosition(priceDto);
+    }
     @GetMapping()
     public NameModelListDto getNameAndModelsList() {
         return priceService.getNameAndModelList();
@@ -98,6 +101,12 @@ public class PriceController {
     @GetMapping("/price/{uuidPosition}")
     public PriceDto getPricePositionByUuid(@PathVariable String uuidPosition){
         return priceService.getPricePositionByUuid(uuidPosition);
+    }
+
+    @GetMapping("/price/check/{modelName}")
+    public Boolean getPricePositionByModel(@PathVariable String modelName){
+
+        return priceService.getPricePositionByModel(modelName);
     }
 }
 //TODO Swager
