@@ -207,7 +207,6 @@ public class PriceServiceImpl implements PriceService {
         Double priceUkr = priceGlobalUkr * priceEntity.getCoefficientPosition();
         //        прибыль = цена продажи - общая закупка
         Double profitUkr = priceUkr - priceGlobalUkr;
-
         //        общая закупка = закупка * количество
         Double priceGlobalUsa = priceEntity.getPriceUsa()* count;
 //        цена продажи = общая закупка * коэф

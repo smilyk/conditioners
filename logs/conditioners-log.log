@@ -1063,3 +1063,17 @@ java.lang.NullPointerException: Cannot invoke "org.apache.catalina.Wrapper.getMu
 2021-02-14 09:14:33.942  INFO MBP-Smilyk --- [nio-8080-exec-6] c.s.PriceServiceImpl                     :  creating offer for client: ,lkj
 2021-02-14 09:14:34.031  INFO MBP-Smilyk --- [nio-8080-exec-6] c.s.PriceServiceImpl                     :  creating offer for client: ,lkj
 2021-02-14 09:14:34.032  INFO MBP-Smilyk --- [nio-8080-exec-6] c.s.PriceServiceImpl                     :  saving offer for client: ,lkj
+2021-02-14 09:19:43.717  WARN MBP-Smilyk --- [l-1 housekeeper] c.z.h.p.HikariPool                       : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m27s48ms).
+2021-02-14 09:19:43.718  INFO MBP-Smilyk --- [io-8080-exec-10] c.s.PriceServiceImpl                     :  creating offer for client: 
+2021-02-14 09:19:45.099  INFO MBP-Smilyk --- [io-8080-exec-10] c.s.PriceServiceImpl                     :  creating offer for client: 
+2021-02-14 09:19:45.099  INFO MBP-Smilyk --- [io-8080-exec-10] c.s.PriceServiceImpl                     :  saving offer for client: 
+2021-02-14 09:20:08.388  INFO MBP-Smilyk --- [nio-8080-exec-2] c.s.PriceServiceImpl                     :  creating offer for client: 
+2021-02-14 09:20:08.389  INFO MBP-Smilyk --- [nio-8080-exec-2] c.s.PriceServiceImpl                     :  saving offer for client: 
+2021-02-14 09:21:14.153  INFO MBP-Smilyk --- [nio-8080-exec-6] c.s.PriceServiceImpl                     :  creating offer for client: 
+2021-02-14 09:21:14.153  INFO MBP-Smilyk --- [nio-8080-exec-6] c.s.PriceServiceImpl                     :  saving offer for client: 
+2021-02-14 09:23:06.743  INFO MBP-Smilyk --- [io-8080-exec-10] c.s.PriceServiceImpl                     :  creating offer for client: 
+2021-02-14 09:23:06.743  INFO MBP-Smilyk --- [io-8080-exec-10] c.s.PriceServiceImpl                     :  saving offer for client: 
+2021-02-14 09:25:08.228  INFO MBP-Smilyk --- [extShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-02-14 09:25:08.230  INFO MBP-Smilyk --- [extShutdownHook] o.s.s.c.ThreadPoolTaskExecutor           : Shutting down ExecutorService 'applicationTaskExecutor'
+2021-02-14 09:25:08.230  INFO MBP-Smilyk --- [extShutdownHook] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+2021-02-14 09:25:08.234  INFO MBP-Smilyk --- [extShutdownHook] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
