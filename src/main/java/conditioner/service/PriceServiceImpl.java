@@ -7,7 +7,7 @@ import conditioner.model.OfferEntity;
 import conditioner.model.PriceEntity;
 import conditioner.repository.OfferRepository;
 import conditioner.repository.PriceRepository;
-
+import conditioner.utils.ExcelUtils;
 import conditioner.utils.Utils;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,8 +35,7 @@ public class PriceServiceImpl implements PriceService {
     OfferRepository offerRepository;
     @Autowired
     Utils utils;
-    @Autowired
-    ExcelUtils excelUtils;
+
 
     @SneakyThrows
     @Override
@@ -63,6 +61,18 @@ public class PriceServiceImpl implements PriceService {
                         }
                     }
 
+                for(PriceEntity p:listPrice){
+                    if(p.getNamePosition() == null){
+                        listPrice.remove(p);
+                        break;
+                    }
+                    if(p.getUuidPosition()==null){
+                        p.setUuidPosition(utils.createRandomUuid());
+                    }
+                    if(p.getDescriptionPosition() == null){
+                        p.setDescriptionPosition("");
+                    }
+                }
                 priceRepository.saveAll(listPrice);
             } catch (Exception e) {
                 throw new RuntimeException("FAIL! -> message = " + e.getMessage());

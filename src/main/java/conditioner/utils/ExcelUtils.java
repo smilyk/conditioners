@@ -5,7 +5,6 @@ import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -50,6 +49,9 @@ public class ExcelUtils {
 //cellIndex == 0 => uuid generic in server not from file
                     if (cellIndex == 0) { // наименование
                         price.setNamePosition(currentCell.getStringCellValue());
+                        if(price.getNamePosition() == "done"){
+                            break;
+                        }
                     } else if (cellIndex == 1) { // модель
                         price.setModelPosition(currentCell.getStringCellValue());
                     } else if (cellIndex == 2) { // цена usa
